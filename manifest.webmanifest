@@ -1,6 +1,6 @@
 {
-  "name": "Teacher Mobile - ระบบครูผู้สอน",
-  "short_name": "Teacher",
+  "name": "TeacherPR - ระบบครูผู้สอน",
+  "short_name": "TeacherPR",
   "description": "ส่งผลสอบแก้ตัวและดูเกรดนักเรียนในที่ปรึกษา",
   "start_url": "/",
   "scope": "/",
