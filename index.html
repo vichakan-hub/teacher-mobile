@@ -937,40 +937,65 @@
       }
     }
 
-    async function login(){
-      try{
-        const teacherCode = normalizeTeacherCode(el('loginTeacherCode').value);
-        const password = el('loginPassword').value || '';
+async function login(){
+  try{
+    const teacherCode = normalizeTeacherCode(el('loginTeacherCode').value);
+    const password = el('loginPassword').value || '';
 
-        if(!teacherCode) throw new Error('กรุณากรอกรหัสครู');
-        if(!teacherCode.startsWith('T')) throw new Error('หน้านี้อนุญาตเฉพาะครูรหัส T เท่านั้น');
-        if(!password) throw new Error('กรุณากรอกรหัสผ่าน');
+    if(!teacherCode) throw new Error('กรุณากรอกรหัสครู');
+    if(!teacherCode.startsWith('T')) throw new Error('หน้านี้อนุญาตเฉพาะครูรหัส T เท่านั้น');
+    if(!password) throw new Error('กรุณากรอกรหัสผ่าน');
 
-        setStatus('loginStatus','กำลังตรวจสอบสิทธิ์...','info');
-        showLoading('กำลังเข้าสู่ระบบ...');
+    setStatus('loginStatus','กำลังตรวจสอบสิทธิ์...','info');
+    showLoading('กำลังเข้าสู่ระบบ...');
 
-        const res = await runGas('loginSystem', teacherCode, password);
-        if(!res || !res.ok || !res.user) throw new Error('เข้าสู่ระบบไม่สำเร็จ');
+    const { data, error } = await supabaseClient.rpc('login_teacher', {
+      p_teacher_code: teacherCode,
+      p_password: password
+    });
 
-        state.currentUser = res.user;
-        saveSession();
+    if(error) throw error;
 
-        el('loginView').classList.add('hidden');
-        el('appView').classList.remove('hidden');
-        el('homeUserName').textContent = `คุณครู ${state.currentUser.full_name || '-'}`;
-
-        await loadMobileSettings();
-        await loadAdviserRooms();
-
-        setActiveTab('home');
-        showToast('เข้าสู่ระบบสำเร็จ', `ยินดีต้อนรับ ${state.currentUser.full_name || ''}`, 'success');
-      }catch(err){
-        setStatus('loginStatus', err.message || 'เข้าสู่ระบบไม่สำเร็จ', 'error');
-        showToast('เข้าสู่ระบบไม่สำเร็จ', err.message || 'เกิดข้อผิดพลาด', 'error');
-      }finally{
-        hideLoading();
-      }
+    if(!data || data.ok !== true || !data.user){
+      throw new Error((data && data.message) || 'รหัสผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
     }
+
+    const user = data.user || {};
+    const code = String(user.teacher_code || '').toUpperCase();
+
+    if(!code.startsWith('T')){
+      throw new Error('หน้านี้อนุญาตเฉพาะครูรหัส T เท่านั้น');
+    }
+
+    state.currentUser = {
+      id: user.id || '',
+      teacher_code: user.teacher_code || '',
+      first_name: user.first_name || '',
+      last_name: user.last_name || '',
+      full_name: user.full_name || [user.first_name || '', user.last_name || ''].join(' ').trim(),
+      role_prefix: code.charAt(0),
+      is_active: user.is_active !== false
+    };
+
+    saveSession();
+
+    el('loginView').classList.add('hidden');
+    el('appView').classList.remove('hidden');
+    el('homeUserName').textContent = `คุณครู ${state.currentUser.full_name || '-'}`;
+
+    await loadMobileSettings();
+    await loadAdviserRooms();
+
+    setActiveTab('home');
+    showToast('เข้าสู่ระบบสำเร็จ', `ยินดีต้อนรับ ${state.currentUser.full_name || ''}`, 'success');
+
+  }catch(err){
+    setStatus('loginStatus', err.message || 'เข้าสู่ระบบไม่สำเร็จ', 'error');
+    showToast('เข้าสู่ระบบไม่สำเร็จ', err.message || 'เกิดข้อผิดพลาด', 'error');
+  }finally{
+    hideLoading();
+  }
+}
 
     function logout(){
       sessionStorage.removeItem('teacherMobileUser');
@@ -986,38 +1011,20 @@
       closeGradeDetail();
     }
 
-    async function loadMobileSettings(){
-      try{
-        const res = await runGas('getTeacherImportSettings');
+async function loadMobileSettings(){
+  const fallback = {
+    academic_year: getCurrentAcademicYear(),
+    term: getCurrentTerm(),
+    lock: false,
+    year_options: [getCurrentAcademicYear()],
+    term_options: [1, 2]
+  };
 
-        const fallback = {
-          academic_year:getCurrentAcademicYear(),
-          term:getCurrentTerm(),
-          lock:false,
-          year_options:[getCurrentAcademicYear()],
-          term_options:[1,2]
-        };
+  state.retestSettings = fallback;
 
-        const settings = res && res.retest ? res.retest : fallback;
-        state.retestSettings = settings;
-
-        applyYearTermOptions('retestYear','retestTerm', settings);
-        applyYearTermOptions('adviserYear','adviserTerm', settings, false);
-      }catch(err){
-        const fallback = {
-          academic_year:getCurrentAcademicYear(),
-          term:getCurrentTerm(),
-          lock:false,
-          year_options:[getCurrentAcademicYear()],
-          term_options:[1,2]
-        };
-        state.retestSettings = fallback;
-        applyYearTermOptions('retestYear','retestTerm', fallback);
-        applyYearTermOptions('adviserYear','adviserTerm', fallback, false);
-
-        showToast('โหลดค่าปี/เทอมไม่สำเร็จ', 'ระบบใช้ค่าจากวันที่ปัจจุบันแทนชั่วคราว', 'warn');
-      }
-    }
+  applyYearTermOptions('retestYear','retestTerm', fallback);
+  applyYearTermOptions('adviserYear','adviserTerm', fallback, false);
+}
 
     function applyYearTermOptions(yearId, termId, settings, respectLock=true){
       const yearSelect = el(yearId);
