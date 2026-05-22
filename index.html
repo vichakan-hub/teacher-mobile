@@ -359,9 +359,9 @@
       backdrop-filter:blur(16px);
       padding:8px 12px calc(10px + env(safe-area-inset-bottom));
     }
-    .nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
     .nav-btn{
-      height:58px;border-radius:20px;background:transparent;color:#64748b;
+      height:56px;border-radius:20px;background:transparent;color:#64748b;
       display:flex;flex-direction:column;align-items:center;justify-content:center;
       gap:2px;font-size:11px;font-weight:800;
     }
@@ -458,6 +458,168 @@
     @media (min-width:431px){
       body{padding:0;background:linear-gradient(90deg,#dbeafe,#f5f3ff)}
     }
+.booking-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.booking-tab{
+  min-height:46px;
+  border-radius:16px;
+  background:#eef3f8;
+  color:#41536c;
+  font-weight:800;
+  font-size:14px;
+}
+
+.booking-tab.active{
+  background:var(--primary);
+  color:#fff;
+  box-shadow:0 10px 22px rgba(37,99,235,.22);
+}
+
+.booking-panel{
+  margin-top:14px;
+}
+
+.booking-free-card{
+  border-radius:20px;
+  padding:14px;
+  border:1px solid #bfe6cb;
+  background:#e9f8ef;
+  box-shadow:0 6px 16px rgba(18,38,63,.06);
+}
+
+.booking-free-card.day-mon{
+  background:#fff9e8;
+  border-color:#f3df9b;
+}
+
+.booking-free-card.day-tue{
+  background:#fff0f5;
+  border-color:#f2bfd1;
+}
+
+.booking-free-card.day-wed{
+  background:#edf9ef;
+  border-color:#bfe6cb;
+}
+
+.booking-free-card.day-thu{
+  background:#fff3e8;
+  border-color:#f3caa0;
+}
+
+.booking-free-card.day-fri{
+  background:#eef7ff;
+  border-color:#bfdcff;
+}
+
+.booking-free-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+}
+
+.booking-free-code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-weight:900;
+  color:#1d4ed8;
+  font-size:17px;
+}
+
+.booking-free-room{
+  font-weight:900;
+  color:#17324d;
+  font-size:17px;
+  margin-top:2px;
+}
+
+.booking-free-period{
+  background:#fff;
+  border:1px solid rgba(15,23,42,.08);
+  color:#0f5132;
+  border-radius:999px;
+  padding:6px 10px;
+  font-weight:900;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+.booking-free-note{
+  color:#5f7289;
+  font-size:13px;
+  line-height:1.45;
+  margin:10px 0 12px;
+}
+
+.booking-mine-card{
+  background:#fff;
+  border:1px solid #d8e4ef;
+  border-radius:20px;
+  padding:14px;
+  box-shadow:0 6px 16px rgba(18,38,63,.06);
+}
+
+.booking-mine-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+}
+
+.booking-mine-date{
+  font-size:17px;
+  font-weight:900;
+  color:#17324d;
+}
+
+.booking-mine-code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-weight:900;
+  color:#1d4ed8;
+  font-size:15px;
+}
+
+.booking-mine-pill{
+  background:#eef4ff;
+  border:1px solid #cfe0ff;
+  color:#1d4ed8;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:12px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.booking-mine-detail{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:10px 0 12px;
+}
+
+.booking-mine-detail-item{
+  background:#f8fbff;
+  border:1px solid #e1ebf5;
+  border-radius:14px;
+  padding:9px 10px;
+}
+
+.booking-mine-label{
+  font-size:11px;
+  font-weight:800;
+  color:#6b7a90;
+  margin-bottom:2px;
+}
+
+.booking-mine-value{
+  font-weight:900;
+  color:#17324d;
+}
+      
   </style>
 </head>
 
@@ -531,6 +693,15 @@
               </div>
             </div>
           </button>
+          <button id="goBookingBtn" class="action-card" type="button">
+  <div class="action-inner">
+    <div class="action-icon action-blue">🗓️</div>
+    <div>
+      <div class="action-title">จองคาบว่าง</div>
+      <div class="action-text">ค้นหาและจองคาบว่างของนักเรียน พร้อมดูรายการจองของฉัน</div>
+    </div>
+  </div>
+</button>  
         </div>
 
         <div class="card" style="margin-top:14px;background:#eff6ff;border-color:#dbeafe;">
@@ -652,11 +823,136 @@
       </section>
     </main>
 
+      <main id="bookingView" class="view hidden">
+  <header class="topbar">
+    <div class="top-row">
+      <div>
+        <div class="school-pill">🗓️ Booking</div>
+        <h1 class="page-title">จองคาบว่าง</h1>
+        <p class="page-sub">ค้นหาคาบว่างของห้องเรียน และดูรายการจองของฉัน</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="content">
+    <div class="card">
+      <div class="booking-tabs">
+        <button id="bookingSearchTabBtn" class="booking-tab active" type="button">ค้นหา</button>
+        <button id="bookingMineTabBtn" class="booking-tab" type="button">ของฉัน</button>
+      </div>
+    </div>
+
+    <section id="bookingSearchPanel" class="booking-panel">
+      <div class="card">
+        <div class="head-title">ค้นหาและจองคาบว่าง</div>
+        <div class="student-sub" style="line-height:1.65;margin-top:4px;">
+          เลือกปีการศึกษา ภาคเรียน ชั้น และห้อง เพื่อแสดงคาบว่างแบบรายการ Card
+        </div>
+
+        <div class="form-grid" style="margin-top:12px;">
+          <div class="field" style="margin-top:0;">
+            <label class="label">ปีการศึกษา</label>
+            <select id="bookingYear" class="select">
+              <option value="2569">2569</option>
+              <option value="2568">2568</option>
+              <option value="2567">2567</option>
+              <option value="2566">2566</option>
+            </select>
+          </div>
+
+          <div class="field" style="margin-top:0;">
+            <label class="label">ภาคเรียน</label>
+            <select id="bookingTerm" class="select">
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label class="label">ชั้น</label>
+            <select id="bookingClassLevel" class="select">
+              <option value="">เลือกชั้น</option>
+              <option value="1">ม.1</option>
+              <option value="2">ม.2</option>
+              <option value="3">ม.3</option>
+              <option value="4">ม.4</option>
+              <option value="5">ม.5</option>
+              <option value="6">ม.6</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="label">ห้อง</label>
+            <select id="bookingRoom" class="select">
+              <option value="">เลือกห้อง</option>
+              <option value="1">ห้อง 1</option>
+              <option value="2">ห้อง 2</option>
+              <option value="3">ห้อง 3</option>
+              <option value="4">ห้อง 4</option>
+              <option value="5">ห้อง 5</option>
+              <option value="6">ห้อง 6</option>
+              <option value="7">ห้อง 7</option>
+              <option value="8">ห้อง 8</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="loadBookingSlotsBtn" class="btn btn-primary btn-block" style="margin-top:14px;">
+          แสดงคาบว่าง
+        </button>
+
+        <div id="bookingSlotStatus" class="status info">กรุณาเลือกชั้นและห้อง</div>
+      </div>
+
+      <div class="stats-grid three">
+        <div class="stat-card">
+          <div id="bookingSelectedRoomText" class="stat-value" style="font-size:16px;">-</div>
+          <div class="stat-label">ชั้น/ห้อง</div>
+        </div>
+        <div class="stat-card">
+          <div id="bookingSlotCount" class="stat-value">0</div>
+          <div class="stat-label">คาบว่าง</div>
+        </div>
+        <div class="stat-card">
+          <div id="bookingMyCount" class="stat-value">0</div>
+          <div class="stat-label">จองของฉัน</div>
+        </div>
+      </div>
+
+      <div id="bookingSlotList" class="list">
+        <div class="card empty">ยังไม่มีข้อมูลคาบว่าง</div>
+      </div>
+    </section>
+
+    <section id="bookingMinePanel" class="booking-panel hidden">
+      <div class="card">
+        <div class="head-title">รายการจองของฉัน</div>
+        <div class="student-sub" style="line-height:1.65;margin-top:4px;">
+          แสดงรายการจองคาบว่างของครูผู้เข้าสู่ระบบ
+        </div>
+
+        <button id="loadBookingMineBtn" class="btn btn-primary btn-block" style="margin-top:14px;">
+          โหลดรายการจองของฉัน
+        </button>
+
+        <div id="bookingMineStatus" class="status info">กดโหลดรายการจองของฉัน</div>
+      </div>
+
+      <div id="bookingMineList" class="list">
+        <div class="card empty">ยังไม่มีรายการจอง</div>
+      </div>
+    </section>
+  </section>
+</main>
+
     <nav class="bottom-nav">
       <div class="nav-grid">
         <button id="navHomeBtn" class="nav-btn active" type="button"><span class="nav-icon">🏠</span><span>หน้าแรก</span></button>
         <button id="navRetestBtn" class="nav-btn" type="button"><span class="nav-icon">📝</span><span>แก้ตัว</span></button>
         <button id="navAdviserBtn" class="nav-btn" type="button"><span class="nav-icon">🎓</span><span>ดูเกรด</span></button>
+        <button id="navBookingBtn" class="nav-btn" type="button"><span class="nav-icon">🗓️</span><span>จองคาบ</span></button>
       </div>
     </nav>
   </div>
@@ -1052,13 +1348,15 @@ async function loadMobileSettings(){
 
     function setActiveTab(tab){
       state.currentTab = tab;
-      el('homeView').classList.toggle('hidden', tab !== 'home');
-      el('retestView').classList.toggle('hidden', tab !== 'retest');
-      el('adviserView').classList.toggle('hidden', tab !== 'adviser');
+el('homeView').classList.toggle('hidden', tab !== 'home');
+el('retestView').classList.toggle('hidden', tab !== 'retest');
+el('adviserView').classList.toggle('hidden', tab !== 'adviser');
+el('bookingView').classList.toggle('hidden', tab !== 'booking');
 
-      el('navHomeBtn').classList.toggle('active', tab === 'home');
-      el('navRetestBtn').classList.toggle('active', tab === 'retest');
-      el('navAdviserBtn').classList.toggle('active', tab === 'adviser');
+el('navHomeBtn').classList.toggle('active', tab === 'home');
+el('navRetestBtn').classList.toggle('active', tab === 'retest');
+el('navAdviserBtn').classList.toggle('active', tab === 'adviser');
+el('navBookingBtn').classList.toggle('active', tab === 'booking');
     }
 
     function hasRetestSearchCriteria(){
@@ -1965,6 +2263,16 @@ async function loadMobileSettings(){
       el('gradeDetailView').classList.remove('show');
     }
 
+      function setBookingSubTab(tab){
+  const isSearch = tab === 'search';
+
+  el('bookingSearchPanel').classList.toggle('hidden', !isSearch);
+  el('bookingMinePanel').classList.toggle('hidden', isSearch);
+
+  el('bookingSearchTabBtn').classList.toggle('active', isSearch);
+  el('bookingMineTabBtn').classList.toggle('active', !isSearch);
+}
+
     function bindEvents(){
       el('loginBtn').addEventListener('click', login);
       el('loginTeacherCode').addEventListener('keydown', e => { if(e.key === 'Enter') login(); });
@@ -1977,12 +2285,28 @@ async function loadMobileSettings(){
         await loadAdviserRooms();
       });
 
+        el('goBookingBtn').addEventListener('click', () => {
+         setActiveTab('booking');
+       });
+
       el('navHomeBtn').addEventListener('click', () => setActiveTab('home'));
       el('navRetestBtn').addEventListener('click', () => setActiveTab('retest'));
       el('navAdviserBtn').addEventListener('click', async () => {
         setActiveTab('adviser');
         await loadAdviserRooms();
       });
+
+        el('navBookingBtn').addEventListener('click', () => {
+  setActiveTab('booking');
+});
+
+        el('bookingSearchTabBtn').addEventListener('click', () => {
+  setBookingSubTab('search');
+});
+
+el('bookingMineTabBtn').addEventListener('click', () => {
+  setBookingSubTab('mine');
+});
 
       el('loadRetestBtn').addEventListener('click', loadRetestRows);
       el('retestStudentCodeKeyword').addEventListener('keydown', e => { if(e.key === 'Enter') loadRetestRows(); });
