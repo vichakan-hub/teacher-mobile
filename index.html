@@ -1293,6 +1293,67 @@ async function login(){
   }
 }
 
+      function normalizeTeacherCode(raw){
+  const s = String(raw || '').trim().toUpperCase();
+  if(!s) return '';
+  if(s.startsWith('T') || s.startsWith('G')) return s;
+  if(/^\d+$/.test(s)) return `T${s}`;
+  return s;
+}
+
+function isAllowedTeacherCode(code){
+  const c = String(code || '').trim().toUpperCase();
+  return c.startsWith('T') || c.startsWith('G');
+}
+
+async function loginWithTeacherRpc(teacherCodeRaw, passwordRaw){
+  const teacherCode = normalizeTeacherCode(teacherCodeRaw);
+  const password = String(passwordRaw || '').trim();
+
+  if(!teacherCode){
+    throw new Error('กรุณากรอกรหัสครู');
+  }
+
+  if(!isAllowedTeacherCode(teacherCode)){
+    throw new Error('อนุญาตเฉพาะครูรหัส T หรือ G เท่านั้น');
+  }
+
+  if(!password){
+    throw new Error('กรุณากรอกรหัสผ่าน');
+  }
+
+  const { data, error } = await supabaseClient.rpc('login_teacher', {
+    p_teacher_code: teacherCode,
+    p_password: password
+  });
+
+  if(error) throw error;
+
+  if(!data || data.ok !== true || !data.user){
+    throw new Error(data?.message || 'รหัสผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+  }
+
+  const user = data.user;
+  const code = String(user.teacher_code || '').toUpperCase();
+
+  if(!isAllowedTeacherCode(code)){
+    throw new Error('บัญชีนี้ยังไม่ได้รับสิทธิ์ใช้งานระบบ');
+  }
+
+  return {
+    id: user.id || '',
+    teacher_code: user.teacher_code || '',
+    first_name: user.first_name || '',
+    last_name: user.last_name || '',
+    full_name: user.full_name || [user.first_name || '', user.last_name || ''].join(' ').trim() || user.teacher_code,
+    role_prefix: user.role_prefix || code.charAt(0),
+    teacher_role: code.startsWith('G') ? 'admin' : 'teacher',
+    is_active: user.is_active !== false
+  };
+}
+
+
+
     function logout(){
       sessionStorage.removeItem('teacherMobileUser');
       state.currentUser = null;
