@@ -459,8 +459,16 @@ function restoreSession(){
  * เรียงกลุ่มสาระ: ท>ค>ว>ส>พ>ศ>ง>อ>ข>จ>ญ>ต>ก
  * เรียงประเภทวิชา: พื้นฐาน>เพิ่มเติม
  *******************************************************/
+/*******************************************************
+ * Grade Detail Subject Sort
+ * เรียงจากตัวอักษรหลักแรกของรหัสวิชาเท่านั้น
+ * ลำดับ: ท>ค>ว>ส>พ>ศ>ง>อ>ข>จ>ญ>ต>ก
+ * ภายในกลุ่ม: พื้นฐาน>เพิ่มเติม>กิจกรรม
+ *******************************************************/
 
-const LEARNING_AREA_SORT_ORDER = ['ท','ค','ว','ส','พ','ศ','ง','อ','ข','จ','ญ','ต','ก'];
+const SUBJECT_CODE_PREFIX_SORT_ORDER = [
+  'ท', 'ค', 'ว', 'ส', 'พ', 'ศ', 'ง', 'อ', 'ข', 'จ', 'ญ', 'ต', 'ก'
+];
 
 const SUBJECT_TYPE_SORT_ORDER = [
   'พื้นฐาน',
@@ -468,26 +476,14 @@ const SUBJECT_TYPE_SORT_ORDER = [
   'กิจกรรม'
 ];
 
-function normalizeLearningAreaKey(row){
-  const learningArea = safeText(row.learning_area || row.subjects?.learning_area, '');
-  const subjectCode = safeText(row.subject_code, '');
-
-  // ถ้ามีชื่อกลุ่มสาระใน subjects.learning_area ให้ใช้ตัวอักษรแรก
-  if(learningArea){
-    return learningArea.trim().charAt(0);
-  }
-
-  // fallback: ใช้ตัวอักษรแรกของรหัสวิชา เช่น ท21101, ค21101
-  if(subjectCode){
-    return subjectCode.trim().charAt(0);
-  }
-
-  return '';
+function getSubjectCodePrefix(row){
+  const subjectCode = safeText(row.subject_code, '').trim();
+  return subjectCode ? subjectCode.charAt(0) : '';
 }
 
-function getLearningAreaSortIndex(row){
-  const key = normalizeLearningAreaKey(row);
-  const index = LEARNING_AREA_SORT_ORDER.indexOf(key);
+function getSubjectCodePrefixSortIndex(row){
+  const prefix = getSubjectCodePrefix(row);
+  const index = SUBJECT_CODE_PREFIX_SORT_ORDER.indexOf(prefix);
   return index >= 0 ? index : 999;
 }
 
@@ -497,6 +493,26 @@ function normalizeSubjectTypeKey(row){
   if(subjectType.includes('พื้นฐาน')) return 'พื้นฐาน';
   if(subjectType.includes('เพิ่มเติม')) return 'เพิ่มเติม';
   if(subjectType.includes('กิจกรรม')) return 'กิจกรรม';
+
+  /*
+    fallback จากรหัสวิชา:
+    ตัวอย่างทั่วไป:
+    ท21101 = พื้นฐาน
+    ท21201 = เพิ่มเติม
+
+    ใช้ตัวเลขหลักที่ 2 หลังตัวอักษรกลุ่มสาระ
+    เช่น ท 2 1 101 -> หลักนี้เป็น 1 = พื้นฐาน
+         ท 2 2 101 -> หลักนี้เป็น 2 = เพิ่มเติม
+  */
+  const subjectCode = safeText(row.subject_code, '').trim();
+  const match = subjectCode.match(/^[^\d](\d)(\d)/);
+
+  if(match){
+    const subjectTypeDigit = match[2];
+
+    if(subjectTypeDigit === '1') return 'พื้นฐาน';
+    if(subjectTypeDigit === '2') return 'เพิ่มเติม';
+  }
 
   return subjectType || '';
 }
@@ -508,16 +524,19 @@ function getSubjectTypeSortIndex(row){
 }
 
 function compareGradeSubjectRows(a, b){
-  const areaA = getLearningAreaSortIndex(a);
-  const areaB = getLearningAreaSortIndex(b);
+  // 1) เรียงตามตัวอักษรหลักแรกของรหัสวิชา
+  const prefixA = getSubjectCodePrefixSortIndex(a);
+  const prefixB = getSubjectCodePrefixSortIndex(b);
 
-  if(areaA !== areaB) return areaA - areaB;
+  if(prefixA !== prefixB) return prefixA - prefixB;
 
+  // 2) ภายในกลุ่มสาระเดียวกัน เรียง พื้นฐาน > เพิ่มเติม > กิจกรรม
   const typeA = getSubjectTypeSortIndex(a);
   const typeB = getSubjectTypeSortIndex(b);
 
   if(typeA !== typeB) return typeA - typeB;
 
+  // 3) ถ้ายังเท่ากัน เรียงตามรหัสวิชา
   const codeA = safeText(a.subject_code, '');
   const codeB = safeText(b.subject_code, '');
 
