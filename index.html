@@ -344,7 +344,21 @@
     function bookingDayClass(day){const d=safeText(day,''); if(d.includes('จันทร์'))return 'day-mon'; if(d.includes('อังคาร'))return 'day-tue'; if(d.includes('พุธ'))return 'day-wed'; if(d.includes('พฤหัส'))return 'day-thu'; if(d.includes('ศุกร์'))return 'day-fri'; return '';}
     function renderBookingSlots(rows){const list=el('bookingSlotList'); if(!rows.length){list.innerHTML='<div class="card empty">ยังไม่มีข้อมูลคาบว่าง</div>'; updateBookingSummary(); return;} list.innerHTML=rows.map(s=>`<div class="booking-free-card ${bookingDayClass(s.day_of_week)}"><div class="booking-free-top"><div><div class="booking-free-code">${escapeHtml(s.slot_code||'-')}</div><div class="booking-free-room">${escapeHtml(s.class_room || `${s.class_level}/${s.room}`)}</div></div><div class="booking-free-period">คาบ ${escapeHtml(s.period_no||'-')}</div></div><div class="booking-free-note">${escapeHtml(s.day_of_week||'-')} • ${escapeHtml(s.note||'คาบว่าง')}</div><button class="btn btn-primary btn-block" data-book-slot="${escapeHtml(s.id)}">จองคาบนี้</button></div>`).join(''); document.querySelectorAll('[data-book-slot]').forEach(btn=>btn.addEventListener('click',()=>{const slot=state.bookingSlots.find(s=>String(s.id)===String(btn.dataset.bookSlot)); if(slot) openReserveModal(slot);})); updateBookingSummary();}
     function fpTodayISO(){const d=new Date(); d.setHours(0,0,0,0); const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,'0'); const day=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`;}
-    function fpFormatThaiDate(iso){if(!iso)return '-'; const d=new Date(`${iso}T00:00:00`); if(Number.isNaN(d.getTime()))return iso; return d.toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric'});}
+   function fpFormatThaiDate(iso){
+  if(!iso) return '-';
+
+  const d = new Date(`${iso}T00:00:00`);
+
+  if(Number.isNaN(d.getTime())){
+    return String(iso);
+  }
+
+  return d.toLocaleDateString('th-TH', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+}
     function getThaiDayNameFromISO(iso){const days=['วันอาทิตย์','วันจันทร์','วันอังคาร','วันพุธ','วันพฤหัสบดี','วันศุกร์','วันเสาร์']; const d=new Date(`${iso}T00:00:00`); return days[d.getDay()]||'';}
     function openReserveModal(slot){state.selectedSlot=slot; el('reserveDateInput').value=''; el('reserveDateInput').min=fpTodayISO(); el('reserveModalSub').textContent=`${slot.class_room || `${slot.class_level}/${slot.room}`} • ${slot.day_of_week} • คาบ ${slot.period_no}`; setStatus('reserveStatus',`เลือกได้เฉพาะวันที่ตรงกับ${slot.day_of_week}`,'info'); el('bookingReserveModal').classList.add('show');}
     function closeReserveModal(){el('bookingReserveModal').classList.remove('show'); state.selectedSlot=null;}
