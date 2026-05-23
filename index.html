@@ -101,7 +101,23 @@
 .booking-print-count{color:#6b7a90;font-size:13px;font-weight:800;}
 .booking-mine-head-select{display:flex;align-items:flex-start;gap:10px;}
 .booking-mine-head-select .booking-row-checkbox{margin-top:3px;flex:0 0 auto;}
+/* ===== remember me ===== */
+.remember-row{
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#41536c;
+  font-size:14px;
+  font-weight:800;
+  user-select:none;
+}
 
+.remember-row input{
+  width:20px;
+  height:20px;
+  accent-color:#2563eb;
+}
 </style>
 </head>
 <body>
@@ -113,8 +129,17 @@
     <section class="login-card">
       <div class="card-head"><div class="card-icon">👤</div><div><div class="kicker">LOGIN</div><div class="head-title">เข้าสู่ระบบครูผู้สอน</div></div></div>
       <div class="field"><label class="label" for="loginTeacherCode">รหัสครู</label><input id="loginTeacherCode" class="input" type="text" placeholder="เช่น T210" autocomplete="username"></div>
-      <div class="field"><label class="label" for="loginPassword">รหัสผ่าน</label><input id="loginPassword" class="input" type="password" placeholder="กรอกรหัสผ่าน" autocomplete="current-password"></div>
-      <button id="loginBtn" class="btn btn-primary btn-block" style="margin-top:16px;">เข้าสู่ระบบ</button>
+      <div class="field">
+  <label class="label" for="loginPassword">รหัสผ่าน</label>
+  <input id="loginPassword" class="input" type="password" placeholder="กรอกรหัสผ่าน" autocomplete="current-password">
+</div>
+
+<label class="remember-row">
+  <input id="rememberMeCheck" type="checkbox">
+  <span>จดจำฉันไว้</span>
+</label>
+
+<button id="loginBtn" class="btn btn-primary btn-block" style="margin-top:16px;">เข้าสู่ระบบ</button>
       <div id="loginStatus" class="status info">กรุณาเข้าสู่ระบบก่อนใช้งาน</div>
     </section>
   </div>
@@ -194,6 +219,9 @@
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const SCHOOL_LOGO_URL = 'assets/school-logo.png';
     const el = (id) => document.getElementById(id);
+    const TEACHER_SESSION_KEY = 'teacherMobileUser';
+    const TEACHER_REMEMBER_KEY = 'teacherMobileRemember';
+    const TEACHER_REMEMBER_CODE_KEY = 'teacherMobileRememberCode';
 
     const state = {
       currentUser:null,
@@ -280,12 +308,96 @@
       applySettingToControls(state.freePeriodSettings,'bookingYear','bookingTerm','bookingSlotStatus',s=>`ล็อคระบบจองคาบว่าง ปีการศึกษา ${s.academic_year} ภาคเรียนที่ ${s.term}`);
     }
 
-    function saveSession(){if(state.currentUser) sessionStorage.setItem('teacherMobileUser',JSON.stringify(state.currentUser));}
-    function restoreSession(){try{const raw=sessionStorage.getItem('teacherMobileUser'); if(!raw)return false; state.currentUser=JSON.parse(raw); if(!isTeacherPageAllowed(state.currentUser.teacher_code)){sessionStorage.removeItem('teacherMobileUser'); return false;} showApp(); return true;}catch(e){sessionStorage.removeItem('teacherMobileUser'); return false;}}
+ function isRememberMeChecked(){
+  return !!el('rememberMeCheck')?.checked;
+}
+
+function saveSession(){
+  if(!state.currentUser) return;
+
+  const remember = isRememberMeChecked();
+  const userJson = JSON.stringify(state.currentUser);
+  const teacherCode = safeText(state.currentUser.teacher_code, '');
+
+  // เก็บ session ปัจจุบันเสมอ
+  sessionStorage.setItem(TEACHER_SESSION_KEY, userJson);
+
+  if(remember){
+    localStorage.setItem(TEACHER_SESSION_KEY, userJson);
+    localStorage.setItem(TEACHER_REMEMBER_KEY, '1');
+    localStorage.setItem(TEACHER_REMEMBER_CODE_KEY, teacherCode);
+  }else{
+    localStorage.removeItem(TEACHER_SESSION_KEY);
+    localStorage.removeItem(TEACHER_REMEMBER_KEY);
+
+    // ยังจำรหัสครูไว้ได้ เพื่อกรอกง่าย
+    if(teacherCode){
+      localStorage.setItem(TEACHER_REMEMBER_CODE_KEY, teacherCode);
+    }
+  }
+}
+
+function restoreRememberedLoginForm(){
+  const rememberedCode = localStorage.getItem(TEACHER_REMEMBER_CODE_KEY) || '';
+  const remember = localStorage.getItem(TEACHER_REMEMBER_KEY) === '1';
+
+  if(rememberedCode && el('loginTeacherCode')){
+    el('loginTeacherCode').value = rememberedCode;
+  }
+
+  if(el('rememberMeCheck')){
+    el('rememberMeCheck').checked = remember;
+  }
+}
+
+function restoreSession(){
+  try{
+    const remember = localStorage.getItem(TEACHER_REMEMBER_KEY) === '1';
+
+    const raw =
+      sessionStorage.getItem(TEACHER_SESSION_KEY) ||
+      (remember ? localStorage.getItem(TEACHER_SESSION_KEY) : '');
+
+    if(!raw) return false;
+
+    state.currentUser = JSON.parse(raw);
+
+    if(!isTeacherPageAllowed(state.currentUser.teacher_code)){
+      sessionStorage.removeItem(TEACHER_SESSION_KEY);
+      localStorage.removeItem(TEACHER_SESSION_KEY);
+      localStorage.removeItem(TEACHER_REMEMBER_KEY);
+      return false;
+    }
+
+    showApp();
+    return true;
+  }catch(e){
+    sessionStorage.removeItem(TEACHER_SESSION_KEY);
+    localStorage.removeItem(TEACHER_SESSION_KEY);
+    return false;
+  }
+}
     function showApp(){el('loginView').classList.add('hidden'); el('appView').classList.remove('hidden'); el('bottomNav').classList.remove('hidden'); el('homeUserName').textContent=`คุณครู ${state.currentUser?.full_name || '-'}`;}
     async function login(){try{setStatus('loginStatus','กำลังตรวจสอบสิทธิ์...','info'); showLoading('กำลังเข้าสู่ระบบ...'); const user=await loginWithTeacherRpc(el('loginTeacherCode').value,el('loginPassword').value); state.currentUser=user; saveSession(); showApp(); await loadMobileSettings(); await loadAdviserRooms(); setActiveTab('home'); showToast('เข้าสู่ระบบสำเร็จ',`ยินดีต้อนรับ ${user.full_name}`,'success');}catch(err){setStatus('loginStatus',err.message||'เข้าสู่ระบบไม่สำเร็จ','error'); showToast('เข้าสู่ระบบไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error');}finally{hideLoading();}}
-    function logout(){state.currentUser=null; state.selectedMyReservationIds=new Set(); sessionStorage.removeItem('teacherMobileUser'); el('appView').classList.add('hidden'); el('bottomNav').classList.add('hidden'); el('loginView').classList.remove('hidden'); el('loginPassword').value=''; setStatus('loginStatus','ออกจากระบบแล้ว','info');}
+    function logout(){
+  state.currentUser = null;
+  state.selectedMyReservationIds = new Set();
 
+  sessionStorage.removeItem(TEACHER_SESSION_KEY);
+  localStorage.removeItem(TEACHER_SESSION_KEY);
+  localStorage.removeItem(TEACHER_REMEMBER_KEY);
+
+  el('appView').classList.add('hidden');
+  el('bottomNav').classList.add('hidden');
+  el('loginView').classList.remove('hidden');
+  el('loginPassword').value = '';
+
+  if(el('rememberMeCheck')){
+    el('rememberMeCheck').checked = false;
+  }
+
+  setStatus('loginStatus','ออกจากระบบแล้ว','info');
+}
     function setActiveTab(tab){
       ['home','retest','adviser','booking'].forEach(name=>{el(`${name}View`).classList.toggle('hidden',name!==tab); const nav=el(`nav${name.charAt(0).toUpperCase()+name.slice(1)}Btn`); if(nav) nav.classList.toggle('active',name===tab);});
       if(tab==='booking') loadMyReservations(false);
@@ -511,7 +623,19 @@
       el('adviserYear').addEventListener('change',async()=>{await loadAdviserRooms(); renderAdviserStudents([]); resetAdviserSummary();}); el('adviserTerm').addEventListener('change',async()=>{await loadAdviserRooms(); renderAdviserStudents([]); resetAdviserSummary();}); el('adviserRoomSelect').addEventListener('change',()=>{state.selectedAdviserRoomKey=safeText(el('adviserRoomSelect').value,''); renderAdviserStudents([]); resetAdviserSummary();}); el('adviserKeyword').addEventListener('input',()=>{clearTimeout(window.__mobileAdviserSearchTimer); window.__mobileAdviserSearchTimer=setTimeout(loadAdviserStudents,350);}); el('loadAdviserStudentsBtn').addEventListener('click',loadAdviserStudents); el('closeGradeDetailBtn').addEventListener('click',closeGradeDetail);
       el('bookingSearchTabBtn').addEventListener('click',()=>setBookingSubTab('search')); el('bookingMineTabBtn').addEventListener('click',()=>setBookingSubTab('mine')); el('loadBookingSlotsBtn').addEventListener('click',loadBookingSlots); el('loadMyBookingBtn').addEventListener('click',()=>loadMyReservations(true)); el('selectAllMyBookingPrint').addEventListener('change',e=>bookingToggleSelectAllMy(e.target.checked)); el('printMyBookingSelectedBtn').addEventListener('click',printSelectedMyReservations); el('cancelReserveBtn').addEventListener('click',closeReserveModal); el('confirmReserveBtn').addEventListener('click',confirmReserve);
     }
-    async function init(){bindEvents(); resetAdviserSummary(); const restored=restoreSession(); if(restored){setActiveTab('home'); await loadMobileSettings(); await loadAdviserRooms();}}
+async function init(){
+  bindEvents();
+  resetAdviserSummary();
+  restoreRememberedLoginForm();
+
+  const restored = restoreSession();
+
+  if(restored){
+    setActiveTab('home');
+    await loadMobileSettings();
+    await loadAdviserRooms();
+  }
+}
     document.addEventListener('DOMContentLoaded',init);
     if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(()=>console.log('Teacher Mobile service worker registered')).catch(err=>console.warn('Service worker registration failed:',err));});}
   </script>
