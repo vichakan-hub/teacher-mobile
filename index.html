@@ -1,32 +1,19 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#2563eb">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="TeacherPR">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="manifest.webmanifest">
-
-<meta name="theme-color" content="#2563eb">
-<meta name="background-color" content="#f4f7fb">
-
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="application-name" content="TeacherPR">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="TeacherPR">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png?v=3">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png?v=3">
-<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png?v=3">
-
-  <title>TeacherPR  - ส่งผลแก้ตัว / ดูเกรด</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png?v=3">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png?v=3">
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png?v=3">
+  <title>TeacherPR Mobile</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -51,604 +38,72 @@
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{margin:0;min-height:100%;font-family:'Kanit',sans-serif;background:#dbeafe;color:var(--text)}
     body{overscroll-behavior-y:none}
-    button,input,select{font:inherit}
+    button,input,select,textarea{font:inherit}
     button{cursor:pointer;border:0}
     .hidden{display:none!important}
 
-    .app-shell{
-      width:100%;
-      max-width:430px;
-      min-height:100dvh;
-      margin:0 auto;
-      background:var(--bg);
-      position:relative;
-      overflow-x:hidden;
-      box-shadow:0 0 50px rgba(15,23,42,.18);
-    }
+    .app-shell{width:100%;max-width:430px;min-height:100dvh;margin:0 auto;background:var(--bg);position:relative;overflow-x:hidden;box-shadow:0 0 50px rgba(15,23,42,.18)}
+    .bg-hero{position:absolute;inset:0 0 auto 0;height:230px;background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 58%,#22b8cf 100%);border-bottom-left-radius:34px;border-bottom-right-radius:34px;z-index:0}
+    .view{position:relative;z-index:1;min-height:100dvh;padding-bottom:calc(var(--bottom-nav-height) + env(safe-area-inset-bottom))}
 
-    .bg-hero{
-      position:absolute;
-      inset:0 0 auto 0;
-      height:230px;
-      background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 58%,#22b8cf 100%);
-      border-bottom-left-radius:34px;
-      border-bottom-right-radius:34px;
-      z-index:0;
-    }
-
-    .view{
-      position:relative;
-      z-index:1;
-      min-height:100dvh;
-      padding-bottom:calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
-    }
-
-    .login-view{
-      min-height:100dvh;
-      padding:42px 20px 28px;
-      background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 58%,#22b8cf 100%);
-      color:#fff;
-    }
-
-    .school-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      border:1px solid rgba(255,255,255,.25);
-      background:rgba(255,255,255,.15);
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:12px;
-      font-weight:700;
-      backdrop-filter:blur(12px);
-    }
-
-    .login-logo{
-      width:68px;height:68px;border-radius:26px;
-      background:rgba(255,255,255,.18);
-      display:flex;align-items:center;justify-content:center;
-      font-size:34px;
-      box-shadow:0 16px 34px rgba(15,23,42,.18);
-      margin-bottom:18px;
-    }
-
-    .login-title{
-      font-size:38px;
-      line-height:1.08;
-      font-weight:800;
-      margin:18px 0 10px;
-      letter-spacing:-.5px;
-    }
-
+    .login-view{min-height:100dvh;padding:42px 20px 28px;background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 58%,#22b8cf 100%);color:#fff}
+    .school-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.15);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;backdrop-filter:blur(12px)}
+    .login-logo{width:68px;height:68px;border-radius:26px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:34px;box-shadow:0 16px 34px rgba(15,23,42,.18);margin-bottom:18px}
+    .login-title{font-size:38px;line-height:1.08;font-weight:800;margin:18px 0 10px;letter-spacing:-.5px}
     .login-sub{font-size:16px;font-weight:600;opacity:.9;margin:0}
+    .login-card{margin-top:34px;background:rgba(255,255,255,.94);color:var(--text);border-radius:30px;padding:20px;box-shadow:0 22px 48px rgba(15,23,42,.20);border:1px solid rgba(255,255,255,.7)}
 
-    .login-card{
-      margin-top:34px;
-      background:rgba(255,255,255,.94);
-      color:var(--text);
-      border-radius:30px;
-      padding:20px;
-      box-shadow:0 22px 48px rgba(15,23,42,.20);
-      border:1px solid rgba(255,255,255,.7);
-    }
-
-    .card-head{
-      display:flex;align-items:center;gap:12px;margin-bottom:16px;
-    }
-    .card-icon{
-      width:50px;height:50px;border-radius:18px;
-      background:#dbeafe;color:#1d4ed8;
-      display:flex;align-items:center;justify-content:center;
-      font-size:24px;flex:0 0 auto;
-    }
+    .card-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .card-icon{width:50px;height:50px;border-radius:18px;background:#dbeafe;color:#1d4ed8;display:flex;align-items:center;justify-content:center;font-size:24px;flex:0 0 auto}
     .kicker{font-size:12px;font-weight:800;color:var(--primary);letter-spacing:.08em}
     .head-title{font-size:20px;font-weight:800;line-height:1.2}
-
     .field{margin-top:12px}
     .label{display:block;font-size:14px;font-weight:700;color:#4d6078;margin-bottom:7px}
-    .input,.select{
-      width:100%;
-      height:54px;
-      border-radius:18px;
-      border:1px solid #cbd8e6;
-      background:#fff;
-      color:var(--text);
-      padding:0 14px;
-      outline:none;
-      font-size:16px;
-      font-weight:600;
-    }
-    .input:focus,.select:focus{
-      border-color:var(--primary);
-      box-shadow:0 0 0 4px rgba(37,99,235,.12);
-    }
+    .input,.select{width:100%;height:54px;border-radius:18px;border:1px solid #cbd8e6;background:#fff;color:var(--text);padding:0 14px;outline:none;font-size:16px;font-weight:600}
+    .input:focus,.select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(37,99,235,.12)}
+    .select:disabled,.input:disabled{background:#eef3f8;color:#7d8b9a}
 
-    .btn{
-      min-height:50px;
-      border-radius:18px;
-      padding:0 16px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      font-weight:800;
-      font-size:15px;
-      transition:.12s ease;
-    }
+    .btn{min-height:50px;border-radius:18px;padding:0 16px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:15px;transition:.12s ease}
     .btn:active{transform:scale(.985)}
     .btn-primary{background:var(--primary);color:#fff;box-shadow:0 10px 22px rgba(37,99,235,.22)}
     .btn-secondary{background:#eef3f8;color:#17324d}
     .btn-danger{background:#fff0ef;color:var(--danger);border:1px solid #ffd2cf}
     .btn-success{background:#e9f8ef;color:#0f9d58;border:1px solid #bfe6cb}
     .btn-block{width:100%}
+    .btn-small{min-height:38px;border-radius:14px;font-size:13px;padding:0 12px}
     .btn:disabled{background:#d8e1ea;color:#7b8896;box-shadow:none;cursor:not-allowed}
 
-    .status{
-      margin-top:12px;
-      min-height:24px;
-      font-size:14px;
-      line-height:1.55;
-      font-weight:600;
-    }
-    .status.info{color:var(--primary-dark)}
-    .status.success{color:var(--success)}
-    .status.warn{color:var(--warning)}
-    .status.error{color:var(--danger)}
-
-    .topbar{
-      padding:18px 18px 0;
-      color:#fff;
-    }
-    .top-row{
-      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
-    }
-    .page-title{
-      margin:14px 0 0;
-      font-size:28px;
-      line-height:1.16;
-      font-weight:800;
-      letter-spacing:-.2px;
-    }
-    .page-sub{
-      margin:4px 0 0;
-      color:rgba(255,255,255,.88);
-      font-size:14px;
-      font-weight:600;
-      line-height:1.5;
-    }
-    .icon-btn{
-      width:46px;height:46px;border-radius:17px;
-      background:rgba(255,255,255,.16);
-      color:#fff;
-      display:flex;align-items:center;justify-content:center;
-      font-size:21px;
-      backdrop-filter:blur(12px);
-    }
-
-    .content{
-      padding:20px 16px 0;
-    }
-
-    .card{
-      background:var(--card);
-      border:1px solid rgba(255,255,255,.7);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:16px;
-    }
-
-    .home-card{
-      padding:18px;
-      border-radius:28px;
-    }
-
-    .action-card{
-      width:100%;
-      background:#fff;
-      border:1px solid #e6edf5;
-      border-radius:24px;
-      padding:16px;
-      text-align:left;
-      box-shadow:0 6px 18px rgba(15,23,42,.04);
-      margin-top:12px;
-    }
-    .action-inner{display:flex;gap:14px;align-items:center}
-    .action-icon{
-      width:58px;height:58px;border-radius:20px;
-      display:flex;align-items:center;justify-content:center;
-      font-size:28px;
-      flex:0 0 auto;
-    }
-    .action-blue{background:#eff6ff;color:#1d4ed8}
-    .action-green{background:#effcf3;color:#0f9d58}
-    .action-title{font-size:18px;font-weight:800;color:var(--text)}
-    .action-text{font-size:13px;color:var(--muted);line-height:1.55;margin-top:3px;font-weight:600}
-
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .search-box{
-      height:54px;border-radius:18px;border:1px solid #cbd8e6;background:#fff;
-      display:flex;align-items:center;gap:8px;padding:0 12px;
-    }
-    .search-box input{height:100%;border:0;background:transparent;outline:none;min-width:0;flex:1;font-weight:650;font-size:16px;color:var(--text)}
-    .search-icon{color:#8192a7;font-size:18px}
-
-    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
-    .stats-grid.three{grid-template-columns:repeat(3,1fr)}
-    .stat-card{
-      background:#fff;border:1px solid #edf2f7;border-radius:18px;padding:10px 6px;text-align:center;
-      box-shadow:0 5px 14px rgba(15,23,42,.04);
-    }
-    .stat-value{font-size:20px;font-weight:800;color:#17324d}
-    .stat-label{font-size:11px;font-weight:800;color:var(--muted);margin-top:1px;white-space:nowrap}
-
-    .list{display:grid;gap:12px;margin-top:14px}
-    .empty{
-      padding:28px 16px;text-align:center;color:var(--muted);font-size:14px;font-weight:600;line-height:1.7;
-    }
-
-    .student-main{font-size:18px;font-weight:800;line-height:1.35;margin-top:3px}
-    .student-sub{font-size:13px;color:var(--muted);font-weight:700;margin-top:2px}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:800;color:#1d4ed8}
-    .row-between{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-    .badge{
-      display:inline-flex;align-items:center;justify-content:center;
-      min-height:28px;padding:4px 10px;border-radius:999px;
-      border:1px solid transparent;font-size:12px;font-weight:800;white-space:nowrap;
-    }
-    .badge-none{background:#f1f5f9;color:#475569;border-color:#e2e8f0}
-    .badge-pending{background:#fff7ea;color:#b26a00;border-color:#ffe0aa}
-    .badge-approved{background:#e9f8ef;color:#0f9d58;border-color:#bfe6cb}
-    .badge-rejected,.badge-risk{background:#fff0ef;color:#d92d20;border-color:#ffd2cf}
-    .badge-normal{background:#e9f8ef;color:#0f9d58;border-color:#bfe6cb}
-
-    .subject-box{
-      margin-top:12px;
-      background:#f8fbff;
-      border:1px solid #edf2f7;
-      border-radius:20px;
-      padding:13px;
-    }
-    .subject-name{font-size:16px;font-weight:800;line-height:1.45;margin-top:2px}
-    .grade-pill{
-      display:inline-flex;align-items:center;justify-content:center;
-      min-width:54px;min-height:36px;border-radius:999px;
-      padding:4px 12px;font-size:17px;font-weight:800;
-      background:#fff1f1;color:#c81e1e;border:1px solid #f4b4b4;
-    }
-
-    .retest-actions{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:10px;
-      margin-top:12px;
-    }
-
-    .term-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-      margin-top:12px;
-    }
-    .term-btn{
-      min-height:48px;
-      border-radius:18px;
-      padding:6px 10px;
-      font-size:13px;
-      font-weight:800;
-      line-height:1.25;
-      border:1px solid #bfe6cb;
-      color:#0f9d58;
-      background:#e9f8ef;
-    }
-    .term-btn.risk{
-      border-color:#ffd2cf;
-      color:#d92d20;
-      background:#fff0ef;
-    }
-
-    .bottom-nav{
-      position:fixed;
-      left:50%;
-      bottom:0;
-      transform:translateX(-50%);
-      width:100%;
-      max-width:430px;
-      z-index:50;
-      background:rgba(255,255,255,.92);
-      border-top:1px solid rgba(216,228,239,.9);
-      backdrop-filter:blur(16px);
-      padding:8px 12px calc(10px + env(safe-area-inset-bottom));
-    }
-    .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-    .nav-btn{
-      height:56px;border-radius:20px;background:transparent;color:#64748b;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      gap:2px;font-size:11px;font-weight:800;
-    }
-    .nav-btn.active{background:var(--primary);color:#fff;box-shadow:0 10px 22px rgba(37,99,235,.22)}
-    .nav-icon{font-size:20px}
-
-    .detail-view{
-      position:fixed;
-      inset:0;
-      z-index:80;
-      background:var(--bg);
-      display:none;
-      overflow:auto;
-    }
-    .detail-view.show{display:block}
-    .detail-shell{
-      width:100%;
-      max-width:430px;
-      min-height:100dvh;
-      margin:0 auto;
-      position:relative;
-      background:var(--bg);
-    }
-    .detail-hero{
-      position:absolute;inset:0 0 auto 0;height:240px;
-      background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 58%,#22b8cf 100%);
-      border-bottom-left-radius:34px;border-bottom-right-radius:34px;
-    }
-    .detail-content{position:relative;z-index:1;padding:18px 16px 28px}
-    .back-btn{
-      height:44px;border-radius:16px;background:rgba(255,255,255,.16);color:#fff;
-      padding:0 14px;display:inline-flex;align-items:center;gap:6px;font-weight:800;
-      backdrop-filter:blur(12px);
-    }
-    .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
-    .summary-mini{border-radius:18px;padding:12px 6px;text-align:center}
-    .summary-blue{background:#eff6ff;color:#1d4ed8}
-    .summary-gray{background:#f8fafc;color:#334155}
-    .summary-green{background:#effcf3;color:#0f9d58}
-    .summary-mini-label{font-size:11px;font-weight:800}
-    .summary-mini-value{font-size:23px;font-weight:800;margin-top:2px}
-
-    .grade-card{
-      background:#fff;border:1px solid #edf2f7;border-radius:22px;padding:14px;
-      box-shadow:0 8px 22px rgba(15,23,42,.06);
-    }
-    .grade-badge{
-      min-width:56px;height:56px;border-radius:18px;
-      display:flex;align-items:center;justify-content:center;
-      font-size:20px;font-weight:800;padding:0 10px;
-    }
-    .grade-good{background:#e9f8ef;color:#0f9d58}
-    .grade-bad{background:#fff0ef;color:#d92d20}
-
-    .toast-wrap{
-      position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));
-      transform:translateX(-50%);
-      z-index:100;
-      width:min(398px, calc(100% - 28px));
-      display:grid;gap:10px;
-    }
-    .toast{
-      background:#fff;border:1px solid var(--line);border-radius:24px;
-      box-shadow:0 20px 44px rgba(15,23,42,.18);
-      padding:14px;
-      animation:toastIn .22s ease;
-    }
-    .toast-title{font-size:16px;font-weight:800;margin-bottom:2px}
-    .toast-text{font-size:13px;color:var(--muted);line-height:1.55;font-weight:600}
-    .toast.success{border-left:6px solid var(--success)}
-    .toast.error{border-left:6px solid var(--danger)}
-    .toast.warn{border-left:6px solid var(--warning)}
-
-    @keyframes toastIn{
-      from{opacity:0;transform:translateY(16px) scale(.98)}
-      to{opacity:1;transform:none}
-    }
-
-    .loading-cover{
-      position:fixed;inset:0;z-index:200;background:rgba(15,23,42,.36);
-      display:none;align-items:center;justify-content:center;padding:16px;
-    }
-    .loading-cover.show{display:flex}
-    .loading-card{
-      width:min(320px,100%);background:#fff;border-radius:26px;padding:22px;text-align:center;
-      box-shadow:0 24px 60px rgba(15,23,42,.28);
-    }
-    .spinner{
-      width:42px;height:42px;border-radius:50%;border:4px solid #dbeafe;border-top-color:var(--primary);
-      margin:0 auto 12px;animation:spin .8s linear infinite;
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    @media (min-width:431px){
-      body{padding:0;background:linear-gradient(90deg,#dbeafe,#f5f3ff)}
-    }
-.booking-tabs{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-
-.booking-tab{
-  min-height:46px;
-  border-radius:16px;
-  background:#eef3f8;
-  color:#41536c;
-  font-weight:800;
-  font-size:14px;
-}
-
-.booking-tab.active{
-  background:var(--primary);
-  color:#fff;
-  box-shadow:0 10px 22px rgba(37,99,235,.22);
-}
-
-.booking-panel{
-  margin-top:14px;
-}
-
-.booking-free-card{
-  border-radius:20px;
-  padding:14px;
-  border:1px solid #bfe6cb;
-  background:#e9f8ef;
-  box-shadow:0 6px 16px rgba(18,38,63,.06);
-}
-
-.booking-free-card.day-mon{
-  background:#fff9e8;
-  border-color:#f3df9b;
-}
-
-.booking-free-card.day-tue{
-  background:#fff0f5;
-  border-color:#f2bfd1;
-}
-
-.booking-free-card.day-wed{
-  background:#edf9ef;
-  border-color:#bfe6cb;
-}
-
-.booking-free-card.day-thu{
-  background:#fff3e8;
-  border-color:#f3caa0;
-}
-
-.booking-free-card.day-fri{
-  background:#eef7ff;
-  border-color:#bfdcff;
-}
-
-.booking-free-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:flex-start;
-}
-
-.booking-free-code{
-  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  font-weight:900;
-  color:#1d4ed8;
-  font-size:17px;
-}
-
-.booking-free-room{
-  font-weight:900;
-  color:#17324d;
-  font-size:17px;
-  margin-top:2px;
-}
-
-.booking-free-period{
-  background:#fff;
-  border:1px solid rgba(15,23,42,.08);
-  color:#0f5132;
-  border-radius:999px;
-  padding:6px 10px;
-  font-weight:900;
-  font-size:13px;
-  white-space:nowrap;
-}
-
-.booking-free-note{
-  color:#5f7289;
-  font-size:13px;
-  line-height:1.45;
-  margin:10px 0 12px;
-}
-
-.booking-mine-card{
-  background:#fff;
-  border:1px solid #d8e4ef;
-  border-radius:20px;
-  padding:14px;
-  box-shadow:0 6px 16px rgba(18,38,63,.06);
-}
-
-.booking-mine-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:flex-start;
-}
-
-.booking-mine-date{
-  font-size:17px;
-  font-weight:900;
-  color:#17324d;
-}
-
-.booking-mine-code{
-  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  font-weight:900;
-  color:#1d4ed8;
-  font-size:15px;
-}
-
-.booking-mine-pill{
-  background:#eef4ff;
-  border:1px solid #cfe0ff;
-  color:#1d4ed8;
-  border-radius:999px;
-  padding:6px 10px;
-  font-size:12px;
-  font-weight:900;
-  white-space:nowrap;
-}
-
-.booking-mine-detail{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin:10px 0 12px;
-}
-
-.booking-mine-detail-item{
-  background:#f8fbff;
-  border:1px solid #e1ebf5;
-  border-radius:14px;
-  padding:9px 10px;
-}
-
-.booking-mine-label{
-  font-size:11px;
-  font-weight:800;
-  color:#6b7a90;
-  margin-bottom:2px;
-}
-
-.booking-mine-value{
-  font-weight:900;
-  color:#17324d;
-}
-      
+    .status{margin-top:12px;min-height:24px;font-size:14px;line-height:1.55;font-weight:600}
+    .status.info{color:var(--primary-dark)}.status.success{color:var(--success)}.status.warn{color:var(--warning)}.status.error{color:var(--danger)}
+    .topbar{padding:18px 18px 0;color:#fff}.top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .page-title{margin:14px 0 0;font-size:28px;line-height:1.16;font-weight:800;letter-spacing:-.2px}
+    .page-sub{margin:4px 0 0;color:rgba(255,255,255,.88);font-size:14px;font-weight:600;line-height:1.5}
+    .icon-btn{width:46px;height:46px;border-radius:17px;background:rgba(255,255,255,.16);color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;backdrop-filter:blur(12px)}
+    .content{padding:20px 16px 0}.card{background:var(--card);border:1px solid rgba(255,255,255,.7);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}.home-card{padding:18px;border-radius:28px}
+    .action-card{width:100%;background:#fff;border:1px solid #e6edf5;border-radius:24px;padding:16px;text-align:left;box-shadow:0 6px 18px rgba(15,23,42,.04);margin-top:12px}.action-inner{display:flex;gap:14px;align-items:center}.action-icon{width:58px;height:58px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:28px;flex:0 0 auto}.action-blue{background:#eff6ff;color:#1d4ed8}.action-green{background:#effcf3;color:#0f9d58}.action-title{font-size:18px;font-weight:800;color:var(--text)}.action-text{font-size:13px;color:var(--muted);line-height:1.55;margin-top:3px;font-weight:600}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.search-box{height:54px;border-radius:18px;border:1px solid #cbd8e6;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px}.search-box input{height:100%;border:0;background:transparent;outline:none;min-width:0;flex:1;font-weight:650;font-size:16px;color:var(--text)}.search-icon{color:#8192a7;font-size:18px}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.stats-grid.three{grid-template-columns:repeat(3,1fr)}.stat-card{background:#fff;border:1px solid #edf2f7;border-radius:18px;padding:10px 6px;text-align:center;box-shadow:0 5px 14px rgba(15,23,42,.04)}.stat-value{font-size:20px;font-weight:800;color:#17324d}.stat-label{font-size:11px;font-weight:800;color:var(--muted);margin-top:1px;white-space:nowrap}
+    .list{display:grid;gap:12px;margin-top:14px}.empty{padding:28px 16px;text-align:center;color:var(--muted);font-size:14px;font-weight:600;line-height:1.7}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:800;color:#1d4ed8}.row-between{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.student-main{font-size:18px;font-weight:800;line-height:1.35;margin-top:3px}.student-sub{font-size:13px;color:var(--muted);font-weight:700;margin-top:2px}.badge{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:4px 10px;border-radius:999px;border:1px solid transparent;font-size:12px;font-weight:800;white-space:nowrap}.badge-none{background:#f1f5f9;color:#475569;border-color:#e2e8f0}.badge-pending{background:#fff7ea;color:#b26a00;border-color:#ffe0aa}.badge-approved,.badge-normal{background:#e9f8ef;color:#0f9d58;border-color:#bfe6cb}.badge-rejected,.badge-risk{background:#fff0ef;color:#d92d20;border-color:#ffd2cf}
+    .subject-box{margin-top:12px;background:#f8fbff;border:1px solid #edf2f7;border-radius:20px;padding:13px}.subject-name{font-size:16px;font-weight:800;line-height:1.45;margin-top:2px}.grade-pill{display:inline-flex;align-items:center;justify-content:center;min-width:54px;min-height:36px;border-radius:999px;padding:4px 12px;font-size:17px;font-weight:800;background:#fff1f1;color:#c81e1e;border:1px solid #f4b4b4}.grade-pill.pass{background:#e9f8ef;color:#0f9d58;border-color:#bfe6cb}.grade-pill.neutral{background:#f8fafc;color:#334155;border-color:#dbe7f3}.retest-actions{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:12px}.term-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.term-btn{min-height:48px;border-radius:18px;padding:6px 10px;font-size:13px;font-weight:800;line-height:1.25;border:1px solid #bfe6cb;color:#0f9d58;background:#e9f8ef}.term-btn.risk{border-color:#ffd2cf;color:#d92d20;background:#fff0ef}
+    .bottom-nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:430px;z-index:50;background:rgba(255,255,255,.92);border-top:1px solid rgba(216,228,239,.9);backdrop-filter:blur(16px);padding:8px 12px calc(10px + env(safe-area-inset-bottom))}.nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.nav-btn{height:56px;border-radius:20px;background:transparent;color:#64748b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;font-weight:800}.nav-btn.active{background:var(--primary);color:#fff;box-shadow:0 10px 22px rgba(37,99,235,.22)}.nav-icon{font-size:20px}
+    .detail-view{position:fixed;inset:0;z-index:80;background:var(--bg);display:none;overflow:auto}.detail-view.show{display:block}.detail-shell{width:100%;max-width:430px;min-height:100dvh;margin:0 auto;position:relative;background:var(--bg)}.detail-hero{position:absolute;inset:0 0 auto 0;height:240px;background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 58%,#22b8cf 100%);border-bottom-left-radius:34px;border-bottom-right-radius:34px}.detail-content{position:relative;z-index:1;padding:18px 16px 28px}.back-btn{height:44px;border-radius:16px;background:rgba(255,255,255,.16);color:#fff;padding:0 14px;display:inline-flex;align-items:center;gap:6px;font-weight:800;backdrop-filter:blur(12px)}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.summary-mini{border-radius:18px;padding:12px 6px;text-align:center}.summary-blue{background:#eff6ff;color:#1d4ed8}.summary-gray{background:#f8fafc;color:#334155}.summary-green{background:#effcf3;color:#0f9d58}.summary-mini-label{font-size:11px;font-weight:800}.summary-mini-value{font-size:23px;font-weight:800;margin-top:2px}.grade-card{background:#fff;border:1px solid #edf2f7;border-radius:22px;padding:14px;box-shadow:0 8px 22px rgba(15,23,42,.06)}.grade-badge{min-width:56px;height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;padding:0 10px}.grade-good{background:#e9f8ef;color:#0f9d58}.grade-bad{background:#fff0ef;color:#d92d20}
+    .booking-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.booking-tab{min-height:46px;border-radius:16px;background:#eef3f8;color:#41536c;font-weight:800;font-size:14px}.booking-tab.active{background:var(--primary);color:#fff;box-shadow:0 10px 22px rgba(37,99,235,.22)}.booking-panel{margin-top:14px}.booking-free-card{border-radius:20px;padding:14px;border:1px solid #bfe6cb;background:#e9f8ef;box-shadow:0 6px 16px rgba(18,38,63,.06)}.booking-free-card.day-mon{background:#fff9e8;border-color:#f3df9b}.booking-free-card.day-tue{background:#fff0f5;border-color:#f2bfd1}.booking-free-card.day-wed{background:#edf9ef;border-color:#bfe6cb}.booking-free-card.day-thu{background:#fff3e8;border-color:#f3caa0}.booking-free-card.day-fri{background:#eef7ff;border-color:#bfdcff}.booking-free-top,.booking-mine-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.booking-free-code,.booking-mine-code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:900;color:#1d4ed8;font-size:17px}.booking-free-room{font-weight:900;color:#17324d;font-size:17px;margin-top:2px}.booking-free-period,.booking-mine-pill{background:#fff;border:1px solid rgba(15,23,42,.08);color:#0f5132;border-radius:999px;padding:6px 10px;font-weight:900;font-size:13px;white-space:nowrap}.booking-free-note{color:#5f7289;font-size:13px;line-height:1.45;margin:10px 0 12px}.booking-mine-card{background:#fff;border:1px solid #d8e4ef;border-radius:20px;padding:14px;box-shadow:0 6px 16px rgba(18,38,63,.06)}.booking-mine-date{font-size:17px;font-weight:900;color:#17324d}.booking-mine-detail{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 12px}.booking-mine-detail-item{background:#f8fbff;border:1px solid #e1ebf5;border-radius:14px;padding:9px 10px}.booking-mine-label{font-size:11px;font-weight:800;color:#6b7a90;margin-bottom:2px}.booking-mine-value{font-weight:900;color:#17324d}
+    .modal{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:120;display:none;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}.modal-card{width:min(398px,100%);background:#fff;border-radius:28px;padding:18px;box-shadow:0 24px 60px rgba(15,23,42,.28)}.modal-title{font-size:22px;font-weight:900;margin:0 0 4px}.modal-sub{margin:0;color:#6b7a90;font-size:13px;font-weight:700;line-height:1.55}.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+    .toast-wrap{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:100;width:min(398px, calc(100% - 28px));display:grid;gap:10px}.toast{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:0 20px 44px rgba(15,23,42,.18);padding:14px;animation:toastIn .22s ease}.toast-title{font-size:16px;font-weight:800;margin-bottom:2px}.toast-text{font-size:13px;color:var(--muted);line-height:1.55;font-weight:600}.toast.success{border-left:6px solid var(--success)}.toast.error{border-left:6px solid var(--danger)}.toast.warn{border-left:6px solid var(--warning)}@keyframes toastIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+    .loading-cover{position:fixed;inset:0;z-index:200;background:rgba(15,23,42,.36);display:none;align-items:center;justify-content:center;padding:16px}.loading-cover.show{display:flex}.loading-card{width:min(320px,100%);background:#fff;border-radius:26px;padding:22px;text-align:center;box-shadow:0 24px 60px rgba(15,23,42,.28)}.spinner{width:42px;height:42px;border-radius:50%;border:4px solid #dbeafe;border-top-color:var(--primary);margin:0 auto 12px;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    @media (min-width:431px){body{padding:0;background:linear-gradient(90deg,#dbeafe,#f5f3ff)}}
   </style>
 </head>
-
 <body>
   <div id="loginView" class="login-view">
     <div class="login-logo">🏫</div>
     <div class="school-pill">โรงเรียนท่าใหม่ “พูลสวัสดิ์ราษฎร์นุกูล”</div>
     <h1 class="login-title">ครูผู้สอน<br>Mobile</h1>
-    <p class="login-sub">ส่งผลสอบแก้ตัว • ดูเกรดนักเรียน</p>
-
+    <p class="login-sub">ส่งผลสอบแก้ตัว • ดูเกรดนักเรียน • จองคาบว่าง</p>
     <section class="login-card">
-      <div class="card-head">
-        <div class="card-icon">👤</div>
-        <div>
-          <div class="kicker">LOGIN</div>
-          <div class="head-title">เข้าสู่ระบบครูผู้สอน</div>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="label" for="loginTeacherCode">รหัสครู</label>
-        <input id="loginTeacherCode" class="input" type="text" placeholder="เช่น T210" autocomplete="username">
-      </div>
-
-      <div class="field">
-        <label class="label" for="loginPassword">รหัสผ่าน</label>
-        <input id="loginPassword" class="input" type="password" placeholder="กรอกรหัสผ่าน" autocomplete="current-password">
-      </div>
-
+      <div class="card-head"><div class="card-icon">👤</div><div><div class="kicker">LOGIN</div><div class="head-title">เข้าสู่ระบบครูผู้สอน</div></div></div>
+      <div class="field"><label class="label" for="loginTeacherCode">รหัสครู</label><input id="loginTeacherCode" class="input" type="text" placeholder="เช่น T210" autocomplete="username"></div>
+      <div class="field"><label class="label" for="loginPassword">รหัสผ่าน</label><input id="loginPassword" class="input" type="password" placeholder="กรอกรหัสผ่าน" autocomplete="current-password"></div>
       <button id="loginBtn" class="btn btn-primary btn-block" style="margin-top:16px;">เข้าสู่ระบบ</button>
       <div id="loginStatus" class="status info">กรุณาเข้าสู่ระบบก่อนใช้งาน</div>
     </section>
@@ -656,1756 +111,249 @@
 
   <div id="appView" class="app-shell hidden">
     <div class="bg-hero"></div>
-
     <main id="homeView" class="view">
-      <header class="topbar">
-        <div class="top-row">
-          <div>
-            <div class="school-pill">🏫 โรงเรียนท่าใหม่ฯ</div>
-            <h1 class="page-title">สวัสดีครับ</h1>
-            <p id="homeUserName" class="page-sub">คุณครู -</p>
-          </div>
-          <button id="logoutBtn" class="icon-btn" title="ออกจากระบบ">⎋</button>
-        </div>
-      </header>
-
+      <header class="topbar"><div class="top-row"><div><div class="school-pill">🏫 โรงเรียนท่าใหม่ฯ</div><h1 class="page-title">สวัสดีครับ</h1><p id="homeUserName" class="page-sub">คุณครู -</p></div><button id="logoutBtn" class="icon-btn" title="ออกจากระบบ">⎋</button></div></header>
       <section class="content">
         <div class="card home-card">
-          <div class="kicker">TEACHER MOBILE</div>
-          <div class="head-title" style="margin-top:4px;">วันนี้ต้องการทำอะไร</div>
-
-          <button id="goRetestBtn" class="action-card" type="button">
-            <div class="action-inner">
-              <div class="action-icon action-blue">📝</div>
-              <div>
-                <div class="action-title">ส่งผลสอบแก้ตัว</div>
-                <div class="action-text">บันทึกผลแก้ตัวของนักเรียนที่ติด 0, ร, มส, มผ</div>
-              </div>
-            </div>
-          </button>
-
-          <button id="goAdviserBtn" class="action-card" type="button">
-            <div class="action-inner">
-              <div class="action-icon action-green">🎓</div>
-              <div>
-                <div class="action-title">ดูเกรดนักเรียน</div>
-                <div class="action-text">ตรวจผลการเรียนและสถานะความเสี่ยงของนักเรียนในที่ปรึกษา</div>
-              </div>
-            </div>
-          </button>
-          <button id="goBookingBtn" class="action-card" type="button">
-  <div class="action-inner">
-    <div class="action-icon action-blue">🗓️</div>
-    <div>
-      <div class="action-title">จองคาบว่าง</div>
-      <div class="action-text">ค้นหาและจองคาบว่างของนักเรียน พร้อมดูรายการจองของฉัน</div>
-    </div>
-  </div>
-</button>  
+          <div class="kicker">TEACHER MOBILE</div><div class="head-title" style="margin-top:4px;">วันนี้ต้องการทำอะไร</div>
+          <button id="goRetestBtn" class="action-card" type="button"><div class="action-inner"><div class="action-icon action-blue">📝</div><div><div class="action-title">ส่งผลสอบแก้ตัว</div><div class="action-text">บันทึกผลแก้ตัวของนักเรียนที่ติด 0, ร, มส, มผ</div></div></div></button>
+          <button id="goAdviserBtn" class="action-card" type="button"><div class="action-inner"><div class="action-icon action-green">🎓</div><div><div class="action-title">ดูเกรดนักเรียน</div><div class="action-text">ตรวจผลการเรียนและสถานะความเสี่ยงของนักเรียนในที่ปรึกษา</div></div></div></button>
+          <button id="goBookingBtn" class="action-card" type="button"><div class="action-inner"><div class="action-icon action-blue">🗓️</div><div><div class="action-title">จองคาบว่าง</div><div class="action-text">ค้นหาและจองคาบว่าง พร้อมดูรายการจองของฉัน</div></div></div></button>
         </div>
-
-        <div class="card" style="margin-top:14px;background:#eff6ff;border-color:#dbeafe;">
-          <div class="row-between">
-            <div>
-              <div style="font-weight:800;color:#1d4ed8;">เวอร์ชันมือถือ</div>
-              <div class="student-sub" style="line-height:1.65;color:#1e40af;">ออกแบบสำหรับ iPhone และมือถือแนวตั้ง ใช้งานแบบ Card ไม่มีตารางใหญ่</div>
-            </div>
-            <div style="font-size:28px;">📱</div>
-          </div>
-        </div>
+        <div class="card" style="margin-top:14px;background:#eff6ff;border-color:#dbeafe;"><div class="row-between"><div><div style="font-weight:800;color:#1d4ed8;">เวอร์ชันมือถือ</div><div class="student-sub" style="line-height:1.65;color:#1e40af;">ตัดเมนูนำเข้าผลการเรียนและการจองทั้งหมดของโรงเรียนออก เหลือเฉพาะงานที่เหมาะกับมือถือ</div></div><div style="font-size:28px;">📱</div></div></div>
       </section>
     </main>
 
     <main id="retestView" class="view hidden">
-      <header class="topbar">
-        <div class="top-row">
-          <div>
-            <div class="school-pill">📝 Retest</div>
-            <h1 class="page-title">ส่งผลสอบแก้ตัว</h1>
-            <p class="page-sub">เลือกผลแก้ตัวและส่งให้งานทะเบียนอนุมัติ</p>
-          </div>
-        </div>
-      </header>
-
+      <header class="topbar"><div class="top-row"><div><div class="school-pill">📝 Retest</div><h1 class="page-title">ส่งผลสอบแก้ตัว</h1><p class="page-sub">เลือกผลแก้ตัวและส่งให้งานทะเบียนอนุมัติ</p></div></div></header>
       <section class="content">
         <div class="card">
-          <div class="form-grid">
-            <div class="field" style="margin-top:0;">
-              <label class="label">ปีการศึกษา</label>
-              <select id="retestYear" class="select"><option value="">กำลังโหลด...</option></select>
-            </div>
-            <div class="field" style="margin-top:0;">
-              <label class="label">ภาคเรียน</label>
-              <select id="retestTerm" class="select"><option value="">กำลังโหลด...</option></select>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">ค้นหารหัสนักเรียน</label>
-            <div class="search-box">
-              <span class="search-icon">🔍</span>
-              <input id="retestStudentCodeKeyword" type="text" inputmode="numeric" placeholder="เช่น 25381">
-            </div>
-          </div>
-
-          <button id="loadRetestBtn" class="btn btn-primary btn-block" style="margin-top:14px;">แสดงรายการ</button>
-          <div id="retestStatus" class="status info">กรุณาเลือกปี/เทอม หรือค้นหารหัสนักเรียน</div>
+          <div class="form-grid"><div class="field" style="margin-top:0;"><label class="label">ปีการศึกษา</label><select id="retestYear" class="select"><option value="">กำลังโหลด...</option></select></div><div class="field" style="margin-top:0;"><label class="label">ภาคเรียน</label><select id="retestTerm" class="select"><option value="">กำลังโหลด...</option></select></div></div>
+          <div class="field"><label class="label">ค้นหารหัสนักเรียน</label><div class="search-box"><span class="search-icon">🔍</span><input id="retestStudentCodeKeyword" type="text" inputmode="numeric" placeholder="เช่น 25381"></div></div>
+          <button id="loadRetestBtn" class="btn btn-primary btn-block" style="margin-top:14px;">แสดงรายการ</button><div id="retestStatus" class="status info">กรุณาเลือกปี/เทอม หรือค้นหารหัสนักเรียน</div>
         </div>
-
-        <div class="stats-grid">
-          <div class="stat-card"><div id="retestTotalCount" class="stat-value">0</div><div class="stat-label">ทั้งหมด</div></div>
-          <div class="stat-card"><div id="retestNotSubmittedCount" class="stat-value">0</div><div class="stat-label">รอส่ง</div></div>
-          <div class="stat-card"><div id="retestPendingCount" class="stat-value">0</div><div class="stat-label">รออนุมัติ</div></div>
-          <div class="stat-card"><div id="retestApprovedCount" class="stat-value">0</div><div class="stat-label">อนุมัติ</div></div>
-        </div>
-
-        <div id="retestList" class="list">
-          <div class="card empty">ยังไม่มีรายการสอบแก้ตัว</div>
-        </div>
+        <div class="stats-grid"><div class="stat-card"><div id="retestTotalCount" class="stat-value">0</div><div class="stat-label">ทั้งหมด</div></div><div class="stat-card"><div id="retestNotSubmittedCount" class="stat-value">0</div><div class="stat-label">รอส่ง</div></div><div class="stat-card"><div id="retestPendingCount" class="stat-value">0</div><div class="stat-label">รออนุมัติ</div></div><div class="stat-card"><div id="retestApprovedCount" class="stat-value">0</div><div class="stat-label">อนุมัติ</div></div></div>
+        <div id="retestList" class="list"><div class="card empty">ยังไม่มีรายการสอบแก้ตัว</div></div>
       </section>
     </main>
 
     <main id="adviserView" class="view hidden">
-      <header class="topbar">
-        <div class="top-row">
-          <div>
-            <div class="school-pill">🎓 Adviser</div>
-            <h1 class="page-title">นักเรียนในที่ปรึกษา</h1>
-            <p class="page-sub">ดูเกรดและติดตามนักเรียนกลุ่มเสี่ยง</p>
-          </div>
-        </div>
-      </header>
-
+      <header class="topbar"><div class="top-row"><div><div class="school-pill">🎓 Adviser</div><h1 class="page-title">นักเรียนในที่ปรึกษา</h1><p class="page-sub">ดูเกรดและติดตามนักเรียนกลุ่มเสี่ยง</p></div></div></header>
       <section class="content">
         <div class="card">
-          <div class="form-grid">
-            <div class="field" style="margin-top:0;">
-              <label class="label">ปีการศึกษา</label>
-              <select id="adviserYear" class="select"></select>
-            </div>
-            <div class="field" style="margin-top:0;">
-              <label class="label">ภาคเรียน</label>
-              <select id="adviserTerm" class="select">
-                <option value="1">1</option>
-                <option value="2">2</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">ห้องที่ปรึกษา</label>
-            <select id="adviserRoomSelect" class="select">
-              <option value="">โปรดเลือกห้อง</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label class="label">ค้นหา</label>
-            <div class="search-box">
-              <span class="search-icon">🔍</span>
-              <input id="adviserKeyword" type="text" placeholder="เลขประจำตัว / ชื่อ-สกุล">
-            </div>
-          </div>
-
-          <button id="loadAdviserStudentsBtn" class="btn btn-primary btn-block" style="margin-top:14px;">โหลดรายชื่อนักเรียน</button>
-          <div id="adviserStatus" class="status info">กรุณาเลือกห้องที่ปรึกษา</div>
+          <div class="form-grid"><div class="field" style="margin-top:0;"><label class="label">ปีการศึกษา</label><select id="adviserYear" class="select"><option value="">กำลังโหลด...</option></select></div><div class="field" style="margin-top:0;"><label class="label">ภาคเรียน</label><select id="adviserTerm" class="select"><option value="">กำลังโหลด...</option></select></div></div>
+          <div class="field"><label class="label">ห้องที่ปรึกษา</label><select id="adviserRoomSelect" class="select"><option value="">โปรดเลือกห้อง</option></select></div>
+          <div class="field"><label class="label">ค้นหา</label><div class="search-box"><span class="search-icon">🔍</span><input id="adviserKeyword" type="text" placeholder="เลขประจำตัว / ชื่อ-สกุล"></div></div>
+          <button id="loadAdviserStudentsBtn" class="btn btn-primary btn-block" style="margin-top:14px;">โหลดรายชื่อนักเรียน</button><div id="adviserStatus" class="status info">กรุณาเลือกห้องที่ปรึกษา</div>
         </div>
-
-        <div class="stats-grid three">
-          <div class="stat-card"><div id="adviserTotalStudents" class="stat-value">0</div><div class="stat-label">นักเรียน</div></div>
-          <div class="stat-card"><div id="adviserGradedStudents" class="stat-value">0</div><div class="stat-label">มีผลแล้ว</div></div>
-          <div class="stat-card"><div id="adviserRiskStudents" class="stat-value">0</div><div class="stat-label">เสี่ยง</div></div>
-        </div>
-
-        <div id="adviserStudentList" class="list">
-          <div class="card empty">ยังไม่มีข้อมูลนักเรียนในที่ปรึกษา</div>
-        </div>
+        <div class="stats-grid three"><div class="stat-card"><div id="adviserTotalStudents" class="stat-value">0</div><div class="stat-label">นักเรียน</div></div><div class="stat-card"><div id="adviserGradedStudents" class="stat-value">0</div><div class="stat-label">มีผลแล้ว</div></div><div class="stat-card"><div id="adviserRiskStudents" class="stat-value">0</div><div class="stat-label">เสี่ยง</div></div></div>
+        <div id="adviserStudentList" class="list"><div class="card empty">ยังไม่มีข้อมูลนักเรียนในที่ปรึกษา</div></div>
       </section>
     </main>
 
-      <main id="bookingView" class="view hidden">
-  <header class="topbar">
-    <div class="top-row">
-      <div>
-        <div class="school-pill">🗓️ Booking</div>
-        <h1 class="page-title">จองคาบว่าง</h1>
-        <p class="page-sub">ค้นหาคาบว่างของห้องเรียน และดูรายการจองของฉัน</p>
-      </div>
-    </div>
-  </header>
-
-  <section class="content">
-    <div class="card">
-      <div class="booking-tabs">
-        <button id="bookingSearchTabBtn" class="booking-tab active" type="button">ค้นหา</button>
-        <button id="bookingMineTabBtn" class="booking-tab" type="button">ของฉัน</button>
-      </div>
-    </div>
-
-    <section id="bookingSearchPanel" class="booking-panel">
-      <div class="card">
-        <div class="head-title">ค้นหาและจองคาบว่าง</div>
-        <div class="student-sub" style="line-height:1.65;margin-top:4px;">
-          เลือกปีการศึกษา ภาคเรียน ชั้น และห้อง เพื่อแสดงคาบว่างแบบรายการ Card
-        </div>
-
-        <div class="form-grid" style="margin-top:12px;">
-          <div class="field" style="margin-top:0;">
-            <label class="label">ปีการศึกษา</label>
-            <select id="bookingYear" class="select">
-              <option value="2569">2569</option>
-              <option value="2568">2568</option>
-              <option value="2567">2567</option>
-              <option value="2566">2566</option>
-            </select>
+    <main id="bookingView" class="view hidden">
+      <header class="topbar"><div class="top-row"><div><div class="school-pill">🗓️ Booking</div><h1 class="page-title">จองคาบว่าง</h1><p class="page-sub">ค้นหาคาบว่างของห้องเรียน และดูรายการจองของฉัน</p></div></div></header>
+      <section class="content">
+        <div class="card"><div class="booking-tabs"><button id="bookingSearchTabBtn" class="booking-tab active" type="button">ค้นหา</button><button id="bookingMineTabBtn" class="booking-tab" type="button">ของฉัน</button></div></div>
+        <section id="bookingSearchPanel" class="booking-panel">
+          <div class="card"><div class="head-title">ค้นหาและจองคาบว่าง</div><div class="student-sub" style="line-height:1.65;margin-top:4px;">เลือกปีการศึกษา ภาคเรียน ชั้น และห้อง เพื่อแสดงคาบว่างแบบรายการ Card</div>
+            <div class="form-grid" style="margin-top:12px;"><div class="field" style="margin-top:0;"><label class="label">ปีการศึกษา</label><select id="bookingYear" class="select"><option value="">กำลังโหลด...</option></select></div><div class="field" style="margin-top:0;"><label class="label">ภาคเรียน</label><select id="bookingTerm" class="select"><option value="">กำลังโหลด...</option></select></div></div>
+            <div class="form-grid"><div class="field"><label class="label">ชั้น</label><select id="bookingClassLevel" class="select"><option value="">เลือกชั้น</option><option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option><option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option></select></div><div class="field"><label class="label">ห้อง</label><select id="bookingRoom" class="select"><option value="">เลือกห้อง</option><option value="1">ห้อง 1</option><option value="2">ห้อง 2</option><option value="3">ห้อง 3</option><option value="4">ห้อง 4</option><option value="5">ห้อง 5</option><option value="6">ห้อง 6</option><option value="7">ห้อง 7</option><option value="8">ห้อง 8</option></select></div></div>
+            <button id="loadBookingSlotsBtn" class="btn btn-primary btn-block" style="margin-top:14px;">แสดงคาบว่าง</button><div id="bookingSlotStatus" class="status info">เลือกชั้น/ห้อง แล้วกดแสดงคาบว่าง</div>
           </div>
-
-          <div class="field" style="margin-top:0;">
-            <label class="label">ภาคเรียน</label>
-            <select id="bookingTerm" class="select">
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <div class="field">
-            <label class="label">ชั้น</label>
-            <select id="bookingClassLevel" class="select">
-              <option value="">เลือกชั้น</option>
-              <option value="1">ม.1</option>
-              <option value="2">ม.2</option>
-              <option value="3">ม.3</option>
-              <option value="4">ม.4</option>
-              <option value="5">ม.5</option>
-              <option value="6">ม.6</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label class="label">ห้อง</label>
-            <select id="bookingRoom" class="select">
-              <option value="">เลือกห้อง</option>
-              <option value="1">ห้อง 1</option>
-              <option value="2">ห้อง 2</option>
-              <option value="3">ห้อง 3</option>
-              <option value="4">ห้อง 4</option>
-              <option value="5">ห้อง 5</option>
-              <option value="6">ห้อง 6</option>
-              <option value="7">ห้อง 7</option>
-              <option value="8">ห้อง 8</option>
-            </select>
-          </div>
-        </div>
-
-        <button id="loadBookingSlotsBtn" class="btn btn-primary btn-block" style="margin-top:14px;">
-          แสดงคาบว่าง
-        </button>
-
-        <div id="bookingSlotStatus" class="status info">กรุณาเลือกชั้นและห้อง</div>
-      </div>
-
-      <div class="stats-grid three">
-        <div class="stat-card">
-          <div id="bookingSelectedRoomText" class="stat-value" style="font-size:16px;">-</div>
-          <div class="stat-label">ชั้น/ห้อง</div>
-        </div>
-        <div class="stat-card">
-          <div id="bookingSlotCount" class="stat-value">0</div>
-          <div class="stat-label">คาบว่าง</div>
-        </div>
-        <div class="stat-card">
-          <div id="bookingMyCount" class="stat-value">0</div>
-          <div class="stat-label">จองของฉัน</div>
-        </div>
-      </div>
-
-      <div id="bookingSlotList" class="list">
-        <div class="card empty">ยังไม่มีข้อมูลคาบว่าง</div>
-      </div>
-    </section>
-
-    <section id="bookingMinePanel" class="booking-panel hidden">
-      <div class="card">
-        <div class="head-title">รายการจองของฉัน</div>
-        <div class="student-sub" style="line-height:1.65;margin-top:4px;">
-          แสดงรายการจองคาบว่างของครูผู้เข้าสู่ระบบ
-        </div>
-
-        <button id="loadBookingMineBtn" class="btn btn-primary btn-block" style="margin-top:14px;">
-          โหลดรายการจองของฉัน
-        </button>
-
-        <div id="bookingMineStatus" class="status info">กดโหลดรายการจองของฉัน</div>
-      </div>
-
-      <div id="bookingMineList" class="list">
-        <div class="card empty">ยังไม่มีรายการจอง</div>
-      </div>
-    </section>
-  </section>
-</main>
-
-    <nav class="bottom-nav">
-      <div class="nav-grid">
-        <button id="navHomeBtn" class="nav-btn active" type="button"><span class="nav-icon">🏠</span><span>หน้าแรก</span></button>
-        <button id="navRetestBtn" class="nav-btn" type="button"><span class="nav-icon">📝</span><span>แก้ตัว</span></button>
-        <button id="navAdviserBtn" class="nav-btn" type="button"><span class="nav-icon">🎓</span><span>ดูเกรด</span></button>
-        <button id="navBookingBtn" class="nav-btn" type="button"><span class="nav-icon">🗓️</span><span>จองคาบ</span></button>
-      </div>
-    </nav>
-  </div>
-
-  <div id="gradeDetailView" class="detail-view">
-    <div class="detail-shell">
-      <div class="detail-hero"></div>
-      <div class="detail-content">
-        <button id="closeGradeDetailBtn" class="back-btn" type="button">‹ กลับ</button>
-        <div style="color:#fff;margin-top:14px;">
-          <h1 class="page-title" style="margin:0;">ผลการเรียน</h1>
-          <p id="detailTermLabel" class="page-sub">-</p>
-        </div>
-
-        <section class="card" style="margin-top:18px;">
-          <div class="mono" id="detailStudentCode">-</div>
-          <div id="detailStudentName" class="student-main">-</div>
-          <div id="detailStudentMeta" class="student-sub">-</div>
-
-          <div class="summary-grid">
-            <div class="summary-mini summary-blue">
-              <div class="summary-mini-label">GPA</div>
-              <div id="detailGpa" class="summary-mini-value">0.00</div>
-            </div>
-            <div class="summary-mini summary-gray">
-              <div class="summary-mini-label">เรียน</div>
-              <div id="detailTotalLearned" class="summary-mini-value">0.0</div>
-            </div>
-            <div class="summary-mini summary-green">
-              <div class="summary-mini-label">ได้</div>
-              <div id="detailTotalEarned" class="summary-mini-value">0.0</div>
-            </div>
-          </div>
+          <div class="stats-grid three"><div class="stat-card"><div id="bookingSummaryClassRoom" class="stat-value" style="font-size:15px;">-</div><div class="stat-label">ชั้น/ห้อง</div></div><div class="stat-card"><div id="bookingSummarySlotCount" class="stat-value">0</div><div class="stat-label">คาบว่าง</div></div><div class="stat-card"><div id="bookingSummaryMineCount" class="stat-value">0</div><div class="stat-label">ของฉัน</div></div></div>
+          <div id="bookingSlotList" class="list"><div class="card empty">ยังไม่มีข้อมูลคาบว่าง</div></div>
         </section>
+        <section id="bookingMinePanel" class="booking-panel hidden"><div class="card"><div class="head-title">รายการจองคาบว่างของฉัน</div><div class="student-sub" style="line-height:1.65;margin-top:4px;">แสดงเฉพาะรายการจองของครูผู้เข้าสู่ระบบ</div><button id="loadMyBookingBtn" class="btn btn-primary btn-block" style="margin-top:14px;">โหลดรายการของฉัน</button><div id="bookingMineStatus" class="status info">กดโหลดรายการของฉัน</div></div><div id="bookingMineList" class="list"><div class="card empty">ยังไม่มีรายการจอง</div></div></section>
+      </section>
+    </main>
 
-        <div id="studentRiskList" class="list"></div>
-        <div id="studentGradeList" class="list"></div>
-      </div>
-    </div>
+    <nav id="bottomNav" class="bottom-nav hidden"><div class="nav-grid"><button id="navHomeBtn" class="nav-btn active" type="button"><span class="nav-icon">🏠</span><span>หน้าแรก</span></button><button id="navRetestBtn" class="nav-btn" type="button"><span class="nav-icon">📝</span><span>แก้ตัว</span></button><button id="navAdviserBtn" class="nav-btn" type="button"><span class="nav-icon">🎓</span><span>ที่ปรึกษา</span></button><button id="navBookingBtn" class="nav-btn" type="button"><span class="nav-icon">🗓️</span><span>จองคาบ</span></button></div></nav>
   </div>
+
+  <div id="gradeDetailView" class="detail-view"><div class="detail-shell"><div class="detail-hero"></div><div class="detail-content"><button id="closeGradeDetailBtn" class="back-btn" type="button">← กลับ</button><div style="color:#fff;margin-top:16px;"><div class="school-pill">ผลการเรียน</div><h1 id="detailStudentName" class="page-title">-</h1><p id="detailStudentMeta" class="page-sub">-</p></div><div class="summary-grid"><div class="summary-mini summary-blue"><div class="summary-mini-label">หน่วยกิต</div><div id="detailTotalCredit" class="summary-mini-value">0.0</div></div><div class="summary-mini summary-green"><div class="summary-mini-label">ได้</div><div id="detailEarnedCredit" class="summary-mini-value">0.0</div></div><div class="summary-mini summary-gray"><div class="summary-mini-label">GPA</div><div id="detailGpa" class="summary-mini-value">0.00</div></div></div><div id="gradeDetailList" class="list" style="margin-top:14px;"><div class="card empty">กำลังโหลด...</div></div></div></div></div>
+
+  <div id="bookingReserveModal" class="modal"><div class="modal-card"><div class="modal-title">ยืนยันการจองคาบว่าง</div><p id="reserveModalSub" class="modal-sub">-</p><div class="field"><label class="label">วันที่ต้องการจอง</label><input id="reserveDateInput" class="input" type="date"></div><div id="reserveStatus" class="status info">เลือกวันที่ที่ตรงกับวันของคาบว่าง</div><div class="modal-actions"><button id="cancelReserveBtn" class="btn btn-secondary" type="button">ยกเลิก</button><button id="confirmReserveBtn" class="btn btn-primary" type="button">ยืนยัน</button></div></div></div>
 
   <div id="toastWrap" class="toast-wrap"></div>
-
-  <div id="loadingCover" class="loading-cover">
-    <div class="loading-card">
-      <div class="spinner"></div>
-      <div id="loadingText" style="font-weight:800;">กำลังโหลด...</div>
-    </div>
-  </div>
+  <div id="loadingCover" class="loading-cover"><div class="loading-card"><div class="spinner"></div><div id="loadingText" style="font-weight:800;">กำลังโหลด...</div></div></div>
 
   <script>
     const SUPABASE_URL = 'https://jiorecubzlmfhwalhrsz.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_bvvfwIdiPxyN2hYXVogVHQ_QxXE0I1_';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     const el = (id) => document.getElementById(id);
 
     const state = {
-      currentUser: null,
-      retestSettings: null,
-      retestRows: [],
-      retestEditingId: null,
-      adviserRooms: [],
-      adviserStudents: [],
-      selectedAdviserRoomKey: '',
-      currentTab: 'home'
+      currentUser:null,
+      retestSettings:null,
+      adviserSettings:null,
+      freePeriodSettings:null,
+      retestRows:[],
+      retestEditingId:null,
+      adviserRooms:[],
+      selectedAdviserRoomKey:'',
+      adviserStudents:[],
+      bookingSubTab:'search',
+      bookingSlots:[],
+      myReservations:[],
+      selectedSlot:null
     };
 
-    function escapeHtml(text){
-      return String(text ?? '')
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;')
-        .replaceAll('"','&quot;')
-        .replaceAll("'","&#039;");
+    function escapeHtml(text){return String(text ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');}
+    function safeText(value, fallback=''){const s=String(value ?? '').trim();return s || fallback;}
+    function safeNum(v){if(v===null||v===undefined||v==='') return null; const n=Number(v); return Number.isNaN(n)?null:n;}
+    function setStatus(id,text,type='info'){const n=el(id); if(!n)return; n.textContent=text; n.className=`status ${type}`;}
+    function showToast(title,text,type='success'){const wrap=el('toastWrap'); if(!wrap)return; const node=document.createElement('div'); node.className=`toast ${type}`; node.innerHTML=`<div class="toast-title">${escapeHtml(title)}</div><div class="toast-text">${escapeHtml(text)}</div>`; wrap.appendChild(node); setTimeout(()=>node.remove(),3200);}
+    function showLoading(text='กำลังโหลด...'){el('loadingText').textContent=text; el('loadingCover').classList.add('show');}
+    function hideLoading(){el('loadingCover').classList.remove('show');}
+
+    function normalizeTeacherCode(raw){const s=String(raw||'').trim().toUpperCase(); if(!s)return ''; if(s.startsWith('T')||s.startsWith('G')) return s; if(/^\d+$/.test(s)) return `T${s}`; return s;}
+    function isTeacherPageAllowed(code){return String(code||'').trim().toUpperCase().startsWith('T');}
+    async function loginWithTeacherRpc(teacherCodeRaw,passwordRaw){
+      const teacherCode=normalizeTeacherCode(teacherCodeRaw); const password=String(passwordRaw||'').trim();
+      if(!teacherCode) throw new Error('กรุณากรอกรหัสครู');
+      if(!isTeacherPageAllowed(teacherCode)) throw new Error('หน้านี้อนุญาตเฉพาะครูรหัส T เท่านั้น');
+      if(!password) throw new Error('กรุณากรอกรหัสผ่าน');
+      const {data,error}=await supabaseClient.rpc('login_teacher',{p_teacher_code:teacherCode,p_password:password});
+      if(error) throw error;
+      if(!data || data.ok!==true || !data.user) throw new Error(data?.message || 'รหัสผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+      const user=data.user || {}; const code=String(user.teacher_code||'').toUpperCase();
+      if(!isTeacherPageAllowed(code)) throw new Error('หน้านี้อนุญาตเฉพาะครูรหัส T เท่านั้น');
+      return {id:user.id||'',teacher_code:user.teacher_code||'',first_name:user.first_name||'',last_name:user.last_name||'',full_name:user.full_name || [user.first_name||'',user.last_name||''].join(' ').trim() || user.teacher_code,role_prefix:code.charAt(0),teacher_role:'teacher',is_active:user.is_active!==false};
     }
 
-    function safeText(value, fallback=''){
-      const s = String(value ?? '').trim();
-      return s || fallback;
+    function getCurrentAcademicYear(){return new Date().getFullYear()+543;}
+    function getCurrentTerm(){const month=new Date().getMonth()+1; return month>=5 && month<=10 ? 1 : 2;}
+    function buildDefaultOneSetting(){const y=getCurrentAcademicYear(); const t=getCurrentTerm(); return {academic_year:y,term:t,lock:false,year_options:[y+1,y,y-1],term_options:[1,2]};}
+    function normalizeSettingObject(raw,fallback){
+      if(!raw) return {...fallback}; let value=raw;
+      if(typeof raw==='string'){try{value=JSON.parse(raw);}catch(e){return {...fallback};}}
+      if(!value || typeof value!=='object') return {...fallback};
+      const academicYear=safeNum(value.academic_year) || fallback.academic_year; const term=safeNum(value.term) || fallback.term;
+      const yearOptions=Array.isArray(value.year_options)&&value.year_options.length ? value.year_options.map(v=>safeNum(v)||v) : fallback.year_options;
+      const termOptions=Array.isArray(value.term_options)&&value.term_options.length ? value.term_options.map(v=>safeNum(v)||v) : fallback.term_options;
+      return {academic_year:academicYear,term,lock:!!value.lock,year_options:[...new Set(yearOptions)],term_options:[...new Set(termOptions)]};
+    }
+    async function loadTeacherSettings(){
+      const base=buildDefaultOneSetting(); let map={};
+      try{
+        const {data,error}=await supabaseClient.from('app_settings').select('key,value').in('key',['teacher_retest_settings','teacher_adviser_settings','teacher_free_period_settings']);
+        if(error) throw error; (data||[]).forEach(r=>{map[r.key]=r.value;});
+      }catch(err){console.warn('load settings failed',err); showToast('โหลดค่าปี/เทอมไม่สำเร็จ','ระบบใช้ค่าตามวันที่ปัจจุบันแทนชั่วคราว','warn');}
+      state.retestSettings=normalizeSettingObject(map.teacher_retest_settings, base);
+      state.adviserSettings=normalizeSettingObject(map.teacher_adviser_settings || map.teacher_retest_settings, base);
+      state.freePeriodSettings=normalizeSettingObject(map.teacher_free_period_settings, base);
+      applyTeacherSettingsToPage();
+    }
+    async function loadMobileSettings(){return loadTeacherSettings();}
+    function renderYearTermControl(node,options,selectedValue,lock,allowAllText){
+      if(!node) return; const valueText=selectedValue==null?'':String(selectedValue); const tag=String(node.tagName||'').toUpperCase();
+      if(tag==='SELECT'){
+        const html=[]; if(!lock && allowAllText) html.push(`<option value="">${escapeHtml(allowAllText)}</option>`);
+        (options||[]).forEach(opt=>{const s=String(opt); html.push(`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`);});
+        node.innerHTML=html.join(''); node.value=valueText;
+      }else{node.value=valueText;}
+      node.disabled=!!lock;
+    }
+    function applySettingToControls(setting,yearId,termId,statusId,message,allowAllYear='ทั้งหมด',allowAllTerm='ทั้งหมด'){
+      if(!setting)return; const yOpts=Array.isArray(setting.year_options)&&setting.year_options.length?setting.year_options:[setting.academic_year]; const tOpts=Array.isArray(setting.term_options)&&setting.term_options.length?setting.term_options:[1,2];
+      renderYearTermControl(el(yearId),yOpts,setting.academic_year,setting.lock,allowAllYear);
+      renderYearTermControl(el(termId),tOpts,setting.term,setting.lock,allowAllTerm);
+      if(setting.lock && statusId) setStatus(statusId,message(setting),'info');
+    }
+    function applyTeacherSettingsToPage(){
+      applySettingToControls(state.retestSettings,'retestYear','retestTerm','retestStatus',s=>`ล็อคการส่งผลสอบแก้ตัว ปีการศึกษา ${s.academic_year} ภาคเรียนที่ ${s.term}`);
+      applySettingToControls(state.adviserSettings,'adviserYear','adviserTerm','adviserStatus',s=>`ล็อคข้อมูลนักเรียนในที่ปรึกษา ปีการศึกษา ${s.academic_year} ภาคเรียนที่ ${s.term}`,'','');
+      applySettingToControls(state.freePeriodSettings,'bookingYear','bookingTerm','bookingSlotStatus',s=>`ล็อคระบบจองคาบว่าง ปีการศึกษา ${s.academic_year} ภาคเรียนที่ ${s.term}`);
     }
 
-    function safeNum(v){
-      if(v === null || v === undefined || v === '') return null;
-      const n = Number(v);
-      return Number.isNaN(n) ? null : n;
-    }
-
-    function normalizeTeacherCode(raw){
-      const s = String(raw || '').trim().toUpperCase();
-      if(!s) return '';
-      if(s.startsWith('T')) return s;
-      if(/^\d+$/.test(s)) return `T${s}`;
-      return s;
-    }
-
-    function normalizeGradeValue(grade){
-      const g = String(grade || '').trim().toUpperCase();
-      if(!g) return '';
-      if(g === 'ร' || g === 'R') return 'ร';
-      if(g === 'มส') return 'มส';
-      if(g === 'ผ') return 'ผ';
-      if(g === 'มผ') return 'มผ';
-      const n = Number(g);
-      if(!Number.isNaN(n)) return Number.isInteger(n) ? String(n) : String(n);
-      return String(grade || '').trim();
-    }
-
-    function isPassingGrade(grade){
-      const g = normalizeGradeValue(grade);
-      return ['ผ','1','1.5','2','2.5','3','3.5','4'].includes(g);
-    }
-
-    function isRiskGrade(grade){
-      const g = normalizeGradeValue(grade);
-      return ['0','ร','มส','มผ'].includes(g);
-    }
-
-    function getEffectiveGrade(row){
-      return normalizeGradeValue(row.retest_grade_code || row.grade_code);
-    }
-
-    function formatDecimal(value, digits=1){
-      const n = Number(value);
-      if(!Number.isFinite(n)) return Number(0).toFixed(digits);
-      return n.toFixed(digits);
-    }
-
-    function formatDecimalFloor(value, digits=2){
-      const n = Number(value);
-      if(!Number.isFinite(n)) return Number(0).toFixed(digits);
-      const factor = Math.pow(10, digits);
-      return (Math.floor(n * factor) / factor).toFixed(digits);
-    }
-
-    function formatPlainNumber(value){
-      if(value === null || value === undefined || value === '') return '-';
-      const n = Number(value);
-      if(!Number.isFinite(n)) return String(value);
-      return Number.isInteger(n) ? String(n) : String(n);
-    }
-
-    function showLoading(text='กำลังโหลด...'){
-      el('loadingText').textContent = text;
-      el('loadingCover').classList.add('show');
-    }
-
-    function hideLoading(){
-      el('loadingCover').classList.remove('show');
-    }
-
-    function setStatus(id, text, type='info'){
-      const node = el(id);
-      if(!node) return;
-      node.textContent = text;
-      node.className = `status ${type}`;
-    }
-
-    function showToast(title, text, type='success'){
-      const wrap = el('toastWrap');
-      const node = document.createElement('div');
-      node.className = `toast ${type}`;
-      node.innerHTML = `
-        <div class="toast-title">${escapeHtml(title)}</div>
-        <div class="toast-text">${escapeHtml(text)}</div>
-      `;
-      wrap.appendChild(node);
-      setTimeout(() => node.remove(), 3200);
-    }
-
-    function getCurrentAcademicYear(){
-      return new Date().getFullYear() + 543;
-    }
-
-    function getCurrentTerm(){
-      const month = new Date().getMonth() + 1;
-      return month >= 5 && month <= 10 ? 1 : 2;
-    }
-
-    /*
-      หมายเหตุสำหรับ Cloudflare Pages:
-      ตอนนี้ loginSystem และ getTeacherImportSettings ยังเรียกผ่าน google.script.run อยู่
-      จึงเปิดหน้าเว็บ/ทดสอบ PWA ได้ก่อน แต่การ Login จะยังใช้ไม่ได้บน Cloudflare
-      จนกว่าเราจะเปลี่ยนส่วนนี้ให้เป็น fetch() หรือ Supabase RPC ในขั้นถัดไป
-    */
-    function runGas(functionName, ...args){
-      return new Promise((resolve, reject) => {
-        if(!window.google || !google.script || !google.script.run){
-          reject(new Error('หน้านี้ยังต้องเชื่อม API สำหรับ Cloudflare ก่อน จึงจะเข้าสู่ระบบได้'));
-          return;
-        }
-        google.script.run
-          .withSuccessHandler(resolve)
-          .withFailureHandler(reject)[functionName](...args);
-      });
-    }
-
-    function getRetestOptionsByOriginalGrade(originalGrade){
-      const g = normalizeGradeValue(originalGrade);
-      if(g === '0' || g === 'มส') return ['1'];
-      if(g === 'ร') return ['1','1.5','2','2.5','3','3.5','4'];
-      if(g === 'มผ') return ['ผ'];
-      return [];
-    }
-
-    function getRetestStatusText(status){
-      const s = safeText(status, '');
-      if(s === 'pending_approval') return 'รออนุมัติ';
-      if(s === 'approved') return 'อนุมัติแล้ว';
-      if(s === 'rejected') return 'ไม่อนุมัติ';
-      return 'ยังไม่ส่งผล';
-    }
-
-    function getRetestStatusClass(status){
-      const s = safeText(status, '');
-      if(s === 'pending_approval') return 'pending';
-      if(s === 'approved') return 'approved';
-      if(s === 'rejected') return 'rejected';
-      return 'none';
-    }
-
-    function renderStatusBadge(status){
-      const cls = getRetestStatusClass(status);
-      const className = cls === 'pending' ? 'badge-pending' :
-        cls === 'approved' ? 'badge-approved' :
-        cls === 'rejected' ? 'badge-rejected' : 'badge-none';
-
-      return `<span class="badge ${className}">${escapeHtml(getRetestStatusText(status))}</span>`;
-    }
-
-    function isRetestEditableStatus(status){
-      const s = safeText(status, '');
-      return !s || s === 'pending_approval' || s === 'rejected';
-    }
-
-    function getRetestRowKey(row){
-      return String(row.grade_result_id || row.id || '');
-    }
-
-    function isValidRetestGradeByOriginalGrade(originalGrade, retestGrade){
-      return getRetestOptionsByOriginalGrade(originalGrade).includes(normalizeGradeValue(retestGrade));
-    }
-
-    async function fetchAllPages(buildQuery, pageSize=1000){
-      let from = 0;
-      let rows = [];
-      while(true){
-        const query = buildQuery().range(from, from + pageSize - 1);
-        const { data, error } = await query;
-        if(error) throw error;
-        const batch = data || [];
-        rows = rows.concat(batch);
-        if(batch.length < pageSize) break;
-        from += pageSize;
-      }
-      return rows;
-    }
-
-    function saveSession(){
-      if(!state.currentUser) return;
-      sessionStorage.setItem('teacherMobileUser', JSON.stringify(state.currentUser));
-    }
-
-function restoreSession(){
-  try{
-    const raw = sessionStorage.getItem('teacherMobileUser');
-    if(!raw) return false;
-
-    state.currentUser = JSON.parse(raw);
-
-    if(!isAllowedTeacherCode(state.currentUser.teacher_code)){
-      return false;
-    }
-
-    el('loginView').classList.add('hidden');
-    el('appView').classList.remove('hidden');
-    el('homeUserName').textContent =
-      `คุณครู ${state.currentUser.full_name || '-'}`;
-
-    return true;
-  }catch(e){
-    return false;
-  }
-}
-
-async function login(){
-  try{
-    setStatus('loginStatus','กำลังตรวจสอบสิทธิ์...','info');
-    showLoading('กำลังเข้าสู่ระบบ...');
-
-    const user = await loginWithTeacherRpc(
-      el('loginTeacherCode').value,
-      el('loginPassword').value
-    );
-
-    state.currentUser = user;
-    saveSession();
-
-    el('loginView').classList.add('hidden');
-    el('appView').classList.remove('hidden');
-    el('homeUserName').textContent =
-      `คุณครู ${state.currentUser.full_name || '-'}`;
-
-    await loadMobileSettings();
-    await loadAdviserRooms();
-
-    setActiveTab('home');
-
-    showToast(
-      'เข้าสู่ระบบสำเร็จ',
-      `ยินดีต้อนรับ ${state.currentUser.full_name || ''}`,
-      'success'
-    );
-
-  }catch(err){
-    setStatus('loginStatus', err.message || 'เข้าสู่ระบบไม่สำเร็จ', 'error');
-    showToast('เข้าสู่ระบบไม่สำเร็จ', err.message || 'เกิดข้อผิดพลาด', 'error');
-  }finally{
-    hideLoading();
-  }
-}
-
-      function normalizeTeacherCode(raw){
-  const s = String(raw || '').trim().toUpperCase();
-  if(!s) return '';
-  if(s.startsWith('T') || s.startsWith('G')) return s;
-  if(/^\d+$/.test(s)) return `T${s}`;
-  return s;
-}
-
-function isAllowedTeacherCode(code){
-  const c = String(code || '').trim().toUpperCase();
-  return c.startsWith('T') || c.startsWith('G');
-}
-
-async function loginWithTeacherRpc(teacherCodeRaw, passwordRaw){
-  const teacherCode = normalizeTeacherCode(teacherCodeRaw);
-  const password = String(passwordRaw || '').trim();
-
-  if(!teacherCode){
-    throw new Error('กรุณากรอกรหัสครู');
-  }
-
-  if(!isAllowedTeacherCode(teacherCode)){
-    throw new Error('อนุญาตเฉพาะครูรหัส T หรือ G เท่านั้น');
-  }
-
-  if(!password){
-    throw new Error('กรุณากรอกรหัสผ่าน');
-  }
-
-  const { data, error } = await supabaseClient.rpc('login_teacher', {
-    p_teacher_code: teacherCode,
-    p_password: password
-  });
-
-  if(error) throw error;
-
-  if(!data || data.ok !== true || !data.user){
-    throw new Error(data?.message || 'รหัสผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
-  }
-
-  const user = data.user;
-  const code = String(user.teacher_code || '').toUpperCase();
-
-  if(!isAllowedTeacherCode(code)){
-    throw new Error('บัญชีนี้ยังไม่ได้รับสิทธิ์ใช้งานระบบ');
-  }
-
-  return {
-    id: user.id || '',
-    teacher_code: user.teacher_code || '',
-    first_name: user.first_name || '',
-    last_name: user.last_name || '',
-    full_name: user.full_name || [user.first_name || '', user.last_name || ''].join(' ').trim() || user.teacher_code,
-    role_prefix: user.role_prefix || code.charAt(0),
-    teacher_role: code.startsWith('G') ? 'admin' : 'teacher',
-    is_active: user.is_active !== false
-  };
-}
-
-
-
-    function logout(){
-      sessionStorage.removeItem('teacherMobileUser');
-      state.currentUser = null;
-      state.retestRows = [];
-      state.adviserRooms = [];
-      state.adviserStudents = [];
-
-      el('appView').classList.add('hidden');
-      el('loginView').classList.remove('hidden');
-      el('loginPassword').value = '';
-      setStatus('loginStatus','ออกจากระบบแล้ว','info');
-      closeGradeDetail();
-    }
-
-async function loadMobileSettings(){
-  const fallback = {
-    academic_year: 2569,
-    term: 1,
-    lock: false,
-    year_options: [2566,2567,2568, 2569],
-    term_options: [1, 2]
-  };
-
-  state.retestSettings = fallback;
-
-  applyYearTermOptions('retestYear','retestTerm', fallback);
-  applyYearTermOptions('adviserYear','adviserTerm', fallback, false);
-}
-
-    function applyYearTermOptions(yearId, termId, settings, respectLock=true){
-      const yearSelect = el(yearId);
-      const termSelect = el(termId);
-      if(!yearSelect || !termSelect) return;
-
-      const yearOptions = Array.isArray(settings.year_options) && settings.year_options.length
-        ? settings.year_options : [settings.academic_year];
-
-      const termOptions = Array.isArray(settings.term_options) && settings.term_options.length
-        ? settings.term_options : [1,2];
-
-      yearSelect.innerHTML = `${settings.lock && respectLock ? '' : '<option value="">ทั้งหมด</option>'}
-        ${yearOptions.map(y => `<option value="${escapeHtml(String(y))}">${escapeHtml(String(y))}</option>`).join('')}`;
-
-      termSelect.innerHTML = `${settings.lock && respectLock ? '' : '<option value="">ทั้งหมด</option>'}
-        ${termOptions.map(t => `<option value="${escapeHtml(String(t))}">${escapeHtml(String(t))}</option>`).join('')}`;
-
-      yearSelect.value = String(settings.academic_year || '');
-      termSelect.value = String(settings.term || '');
-
-      yearSelect.disabled = !!settings.lock && respectLock;
-      termSelect.disabled = !!settings.lock && respectLock;
-    }
+    function saveSession(){if(state.currentUser) sessionStorage.setItem('teacherMobileUser',JSON.stringify(state.currentUser));}
+    function restoreSession(){try{const raw=sessionStorage.getItem('teacherMobileUser'); if(!raw)return false; state.currentUser=JSON.parse(raw); if(!isTeacherPageAllowed(state.currentUser.teacher_code)){sessionStorage.removeItem('teacherMobileUser'); return false;} showApp(); return true;}catch(e){sessionStorage.removeItem('teacherMobileUser'); return false;}}
+    function showApp(){el('loginView').classList.add('hidden'); el('appView').classList.remove('hidden'); el('bottomNav').classList.remove('hidden'); el('homeUserName').textContent=`คุณครู ${state.currentUser?.full_name || '-'}`;}
+    async function login(){try{setStatus('loginStatus','กำลังตรวจสอบสิทธิ์...','info'); showLoading('กำลังเข้าสู่ระบบ...'); const user=await loginWithTeacherRpc(el('loginTeacherCode').value,el('loginPassword').value); state.currentUser=user; saveSession(); showApp(); await loadMobileSettings(); await loadAdviserRooms(); setActiveTab('home'); showToast('เข้าสู่ระบบสำเร็จ',`ยินดีต้อนรับ ${user.full_name}`,'success');}catch(err){setStatus('loginStatus',err.message||'เข้าสู่ระบบไม่สำเร็จ','error'); showToast('เข้าสู่ระบบไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error');}finally{hideLoading();}}
+    function logout(){state.currentUser=null; sessionStorage.removeItem('teacherMobileUser'); el('appView').classList.add('hidden'); el('bottomNav').classList.add('hidden'); el('loginView').classList.remove('hidden'); el('loginPassword').value=''; setStatus('loginStatus','ออกจากระบบแล้ว','info');}
 
     function setActiveTab(tab){
-      state.currentTab = tab;
-el('homeView').classList.toggle('hidden', tab !== 'home');
-el('retestView').classList.toggle('hidden', tab !== 'retest');
-el('adviserView').classList.toggle('hidden', tab !== 'adviser');
-el('bookingView').classList.toggle('hidden', tab !== 'booking');
-
-el('navHomeBtn').classList.toggle('active', tab === 'home');
-el('navRetestBtn').classList.toggle('active', tab === 'retest');
-el('navAdviserBtn').classList.toggle('active', tab === 'adviser');
-el('navBookingBtn').classList.toggle('active', tab === 'booking');
+      ['home','retest','adviser','booking'].forEach(name=>{el(`${name}View`).classList.toggle('hidden',name!==tab); const nav=el(`nav${name.charAt(0).toUpperCase()+name.slice(1)}Btn`); if(nav) nav.classList.toggle('active',name===tab);});
+      if(tab==='booking') loadMyReservations(false);
     }
+    function setBookingSubTab(tab){state.bookingSubTab=tab; el('bookingSearchPanel').classList.toggle('hidden',tab!=='search'); el('bookingMinePanel').classList.toggle('hidden',tab!=='mine'); el('bookingSearchTabBtn').classList.toggle('active',tab==='search'); el('bookingMineTabBtn').classList.toggle('active',tab==='mine'); if(tab==='mine') loadMyReservations(true);}
 
-    function hasRetestSearchCriteria(){
-      const year = safeText(el('retestYear')?.value, '');
-      const term = safeText(el('retestTerm')?.value, '');
-      const studentCode = safeText(el('retestStudentCodeKeyword')?.value, '');
-      return !!(year || term || studentCode);
+    function normalizeGradeValue(grade){const g=String(grade||'').trim().toUpperCase(); if(!g)return ''; if(g==='ร'||g==='R')return 'ร'; if(g==='มส')return 'มส'; if(g==='ผ')return 'ผ'; if(g==='มผ')return 'มผ'; const n=Number(g); if(!Number.isNaN(n))return Number.isInteger(n)?String(n):String(n); return String(grade||'').trim();}
+    function isRiskGrade(grade){return ['0','ร','มส','มผ'].includes(normalizeGradeValue(grade));}
+    function isPassingGrade(grade){return ['ผ','1','1.5','2','2.5','3','3.5','4'].includes(normalizeGradeValue(grade));}
+    function getGradeClass(grade){const g=normalizeGradeValue(grade); if(['0','ร','มส','มผ'].includes(g))return ''; if(isPassingGrade(g))return 'pass'; return 'neutral';}
+    function gradePill(grade){const g=normalizeGradeValue(grade)||'-'; return `<span class="grade-pill ${getGradeClass(g)}">${escapeHtml(g)}</span>`;}
+    function getRetestOptionsByOriginalGrade(originalGrade){const g=normalizeGradeValue(originalGrade); if(g==='0'||g==='มส')return ['1']; if(g==='ร')return ['1','1.5','2','2.5','3','3.5','4']; if(g==='มผ')return ['ผ']; return [];}
+    function getRetestStatusText(status){const s=safeText(status,''); if(s==='pending_approval')return 'รออนุมัติ'; if(s==='approved')return 'อนุมัติแล้ว'; if(s==='rejected')return 'ไม่อนุมัติ'; return 'ยังไม่ส่งผล';}
+    function getRetestStatusClass(status){const s=safeText(status,''); if(s==='pending_approval')return 'pending'; if(s==='approved')return 'approved'; if(s==='rejected')return 'rejected'; return 'none';}
+    function retestStatusBadge(status){return `<span class="badge badge-${getRetestStatusClass(status)}">${escapeHtml(getRetestStatusText(status))}</span>`;}
+    function getRetestRowKey(row){return String(row.grade_result_id || row.id || '');}
+    function updateRetestSummary(rows){el('retestTotalCount').textContent=rows.length; el('retestPendingCount').textContent=rows.filter(r=>r.retest_request_status==='pending_approval').length; el('retestApprovedCount').textContent=rows.filter(r=>r.retest_request_status==='approved').length; el('retestNotSubmittedCount').textContent=rows.filter(r=>!r.retest_request_status||r.retest_request_status==='rejected').length;}
+    async function fetchRetestRowsBase(year,term,studentCode){
+      let query=supabaseClient.from('grade_results').select('id,student_id,student_code,student_name,student_no,academic_year,term,class_level,room,grade_code,retest_grade_code,subject_offering_id,subject_id,teacher_id,subject_code,subject_name,is_active').eq('teacher_id',state.currentUser.id).eq('is_active',true).in('grade_code',['0','ร','มส','มผ']).order('class_level',{ascending:true}).order('room',{ascending:true}).order('student_no',{ascending:true}).order('student_code',{ascending:true});
+      if(year!==null&&year!==undefined) query=query.eq('academic_year',year); if(term!==null&&term!==undefined) query=query.eq('term',term); if(studentCode) query=query.ilike('student_code',`%${studentCode}%`);
+      const {data,error}=await query; if(error)throw error; return data||[];
     }
-
-    async function fetchRetestBaseRows(academicYear, term, studentCodeKeyword){
-      let query = supabaseClient
-        .from('grade_results')
-        .select(`
-          id,
-          student_id,
-          student_code,
-          student_name,
-          student_no,
-          academic_year,
-          term,
-          class_level,
-          room,
-          grade_code,
-          retest_grade_code,
-          grading_status,
-          is_active,
-          subject_offering_id,
-          subject_id,
-          teacher_id,
-          subject_code,
-          subject_name
-        `)
-        .eq('teacher_id', state.currentUser.id)
-        .eq('is_active', true)
-        .in('grade_code', ['0','ร','มส','มผ'])
-        .order('class_level', { ascending:true })
-        .order('room', { ascending:true })
-        .order('student_no', { ascending:true })
-        .order('student_code', { ascending:true });
-
-      if(academicYear !== null && academicYear !== undefined) query = query.eq('academic_year', academicYear);
-      if(term !== null && term !== undefined) query = query.eq('term', term);
-      if(studentCodeKeyword) query = query.ilike('student_code', `%${studentCodeKeyword}%`);
-
-      const { data, error } = await query;
-      if(error) throw error;
-      return data || [];
-    }
-
-    async function fetchRetestRequestsByGradeResultIds(gradeResultIds){
-      const ids = (gradeResultIds || []).filter(Boolean);
-      if(!ids.length) return new Map();
-
-      const { data, error } = await supabaseClient
-        .from('grade_retest_requests')
-        .select('id, grade_result_id, requested_retest_grade_code, status, submitted_at, updated_at, approved_at, rejected_at, rejected_reason, is_active')
-        .in('grade_result_id', ids)
-        .eq('is_active', true);
-
-      if(error) throw error;
-
-      const map = new Map();
-      (data || []).forEach(req => {
-        const key = String(req.grade_result_id || '');
-        if(!key) return;
-        const old = map.get(key);
-        if(!old){
-          map.set(key, req);
-          return;
-        }
-        const oldTime = new Date(old.updated_at || old.submitted_at || 0).getTime();
-        const newTime = new Date(req.updated_at || req.submitted_at || 0).getTime();
-        if(newTime >= oldTime) map.set(key, req);
-      });
-
-      return map;
-    }
-
-    function mergeRetestRowsWithRequests(baseRows, requestMap){
-      return (baseRows || []).map(row => {
-        const req = requestMap.get(String(row.id));
-        return {
-          ...row,
-          grade_result_id: row.id,
-          retest_request_id: req?.id || null,
-          requested_retest_grade_code: req?.requested_retest_grade_code || '',
-          retest_request_status: req?.status || '',
-          retest_submitted_at: req?.submitted_at || null,
-          retest_updated_at: req?.updated_at || null,
-          retest_approved_at: req?.approved_at || null,
-          retest_rejected_at: req?.rejected_at || null,
-          retest_rejected_reason: req?.rejected_reason || ''
-        };
-      });
-    }
-
-    async function loadRetestRows(){
-      try{
-        if(!state.currentUser?.id) throw new Error('ไม่พบข้อมูลครูผู้เข้าสู่ระบบ');
-
-        if(!hasRetestSearchCriteria()){
-          state.retestRows = [];
-          renderRetestRows([]);
-          setStatus('retestStatus','กรุณาเลือกปี/เทอม หรือค้นหารหัสนักเรียน','warn');
-          return;
-        }
-
-        const yearText = safeText(el('retestYear').value, '');
-        const termText = safeText(el('retestTerm').value, '');
-        const studentCodeKeyword = safeText(el('retestStudentCodeKeyword').value, '');
-
-        const academicYear = yearText ? safeNum(yearText) : null;
-        const term = termText ? safeNum(termText) : null;
-
-        setStatus('retestStatus','กำลังโหลดรายการสอบแก้ตัว...','info');
-        showLoading('กำลังโหลดรายการสอบแก้ตัว...');
-
-        const baseRows = await fetchRetestBaseRows(academicYear, term, studentCodeKeyword);
-        const gradeResultIds = baseRows.map(r => r.id).filter(Boolean);
-        const requestMap = await fetchRetestRequestsByGradeResultIds(gradeResultIds);
-
-        state.retestRows = mergeRetestRowsWithRequests(baseRows, requestMap);
-        renderRetestRows(state.retestRows);
-
-        setStatus(
-          'retestStatus',
-          state.retestRows.length ? `พบรายการสอบแก้ตัว ${state.retestRows.length} รายการ` : 'ไม่พบรายการนักเรียนที่ต้องสอบแก้ตัว',
-          state.retestRows.length ? 'success' : 'warn'
-        );
-      }catch(err){
-        state.retestRows = [];
-        renderRetestRows([]);
-        setStatus('retestStatus', err.message || 'โหลดรายการไม่สำเร็จ', 'error');
-        showToast('โหลดรายการไม่สำเร็จ', err.message || 'เกิดข้อผิดพลาด', 'error');
-      }finally{
-        hideLoading();
-      }
-    }
-
-    function updateRetestSummary(rows){
-      const total = rows.length;
-      const pending = rows.filter(r => r.retest_request_status === 'pending_approval').length;
-      const approved = rows.filter(r => r.retest_request_status === 'approved').length;
-      const notSubmitted = rows.filter(r => !r.retest_request_status || r.retest_request_status === 'rejected').length;
-
-      el('retestTotalCount').textContent = String(total);
-      el('retestNotSubmittedCount').textContent = String(notSubmitted);
-      el('retestPendingCount').textContent = String(pending);
-      el('retestApprovedCount').textContent = String(approved);
-    }
-
-    function renderRetestRows(rows){
-      const list = el('retestList');
-      updateRetestSummary(rows || []);
-
-      if(!rows || !rows.length){
-        list.innerHTML = `<div class="card empty">ไม่พบรายการนักเรียนที่ต้องสอบแก้ตัวตามเงื่อนไขที่เลือก</div>`;
-        return;
-      }
-
-      list.innerHTML = rows.map(row => {
-        const rowKey = getRetestRowKey(row);
-        const originalGrade = normalizeGradeValue(row.grade_code);
-        const requestStatus = safeText(row.retest_request_status, '');
-        const requestedGrade = normalizeGradeValue(row.requested_retest_grade_code);
-        const options = getRetestOptionsByOriginalGrade(originalGrade);
-        const canEdit = isRetestEditableStatus(requestStatus);
-        const defaultSelected = requestedGrade || (options.length === 1 ? options[0] : '');
-
-        return `
-          <section class="card">
-            <div class="row-between">
-              <div>
-                <div class="mono">${escapeHtml(safeText(row.student_code,'-'))}</div>
-                <div class="student-main">${escapeHtml(safeText(row.student_name,'-'))}</div>
-                <div class="student-sub">${escapeHtml(safeText(row.class_level,'-'))}/${escapeHtml(safeText(row.room,'-'))}</div>
-              </div>
-              ${renderStatusBadge(requestStatus)}
-            </div>
-
-            <div class="subject-box">
-              <div class="mono" style="color:#64748b;">${escapeHtml(safeText(row.subject_code,'-'))}</div>
-              <div class="subject-name">${escapeHtml(safeText(row.subject_name,'-'))}</div>
-              <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
-                <span class="student-sub" style="margin:0;">เกรดเดิม</span>
-                <span class="grade-pill">${escapeHtml(originalGrade || '-')}</span>
-              </div>
-            </div>
-
-            <div class="retest-actions">
-              <select class="select" data-retest-select="${escapeHtml(rowKey)}" ${requestStatus === 'approved' ? 'disabled' : ''}>
-                ${options.map(opt => `
-                  <option value="${escapeHtml(opt)}" ${defaultSelected === opt ? 'selected' : ''}>${escapeHtml(opt)}</option>
-                `).join('')}
-              </select>
-              <button class="btn btn-primary" data-retest-save="${escapeHtml(rowKey)}" ${(!canEdit || requestStatus === 'approved') ? 'disabled' : ''}>
-                ส่งผล
-              </button>
-            </div>
-          </section>
-        `;
-      }).join('');
-
-      list.querySelectorAll('[data-retest-save]').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          await saveRetestRequest(btn.dataset.retestSave);
-        });
-      });
-    }
-
-    function findRetestRowByKey(rowKey){
-      return state.retestRows.find(row => getRetestRowKey(row) === String(rowKey)) || null;
-    }
-
-    function getRetestSelectedValue(rowKey){
-      const select = document.querySelector(`[data-retest-select="${CSS.escape(rowKey)}"]`);
-      return normalizeGradeValue(select?.value || '');
-    }
-
-    function buildRetestRequestPayload(row, requestedGrade){
-      const originalGrade = normalizeGradeValue(row.grade_code);
-      const retestGrade = normalizeGradeValue(requestedGrade);
-
-      if(!row.grade_result_id) throw new Error('ไม่พบ grade_result_id ของรายการนี้');
-      if(!row.student_id) throw new Error('ไม่พบ student_id ของรายการนี้');
-      if(!row.teacher_id) throw new Error('ไม่พบ teacher_id ของรายการนี้');
-      if(!originalGrade) throw new Error('ไม่พบผลการเรียนเดิม');
-      if(!retestGrade) throw new Error('กรุณาเลือกผลการเรียนแก้ตัว');
-
-      if(!isValidRetestGradeByOriginalGrade(originalGrade, retestGrade)){
-        throw new Error(`ผลแก้ตัวไม่ถูกต้อง: เกรดเดิม ${originalGrade} ไม่สามารถแก้เป็น ${retestGrade}`);
-      }
-
-      return {
-        grade_result_id: row.grade_result_id,
-        student_id: row.student_id,
-        student_code: safeText(row.student_code, ''),
-        student_name: safeText(row.student_name, ''),
-        subject_offering_id: row.subject_offering_id || null,
-        subject_id: row.subject_id || null,
-        subject_code: safeText(row.subject_code, ''),
-        subject_name: safeText(row.subject_name, ''),
-        teacher_id: row.teacher_id,
-        teacher_code: safeText(state.currentUser?.teacher_code, ''),
-        academic_year: safeNum(row.academic_year),
-        term: safeNum(row.term),
-        class_level: safeText(row.class_level, ''),
-        room: safeText(row.room, ''),
-        original_grade_code: originalGrade,
-        requested_retest_grade_code: retestGrade,
-        status: 'pending_approval',
-        submitted_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        approved_at: null,
-        approved_by: null,
-        rejected_at: null,
-        rejected_by: null,
-        rejected_reason: null,
-        is_active: true
-      };
-    }
-
-    async function saveRetestRequest(rowKey){
-      try{
-        const row = findRetestRowByKey(rowKey);
-        if(!row) throw new Error('ไม่พบรายการที่ต้องการส่งผลสอบแก้ตัว');
-        if(row.retest_request_status === 'approved') throw new Error('รายการนี้อนุมัติแล้ว ไม่สามารถแก้ไขได้');
-
-        const selectedGrade = getRetestSelectedValue(rowKey);
-        const payload = buildRetestRequestPayload(row, selectedGrade);
-
-        showLoading('กำลังส่งผลสอบแก้ตัว...');
-
-        let error = null;
-
-        if(row.retest_request_id){
-          const result = await supabaseClient
-            .from('grade_retest_requests')
-            .update({
-              requested_retest_grade_code: payload.requested_retest_grade_code,
-              status: 'pending_approval',
-              updated_at: payload.updated_at,
-              rejected_at: null,
-              rejected_by: null,
-              rejected_reason: null,
-              is_active: true
-            })
-            .eq('id', row.retest_request_id)
-            .eq('is_active', true);
-          error = result.error;
-        }else{
-          const result = await supabaseClient
-            .from('grade_retest_requests')
-            .insert(payload);
-          error = result.error;
-        }
-
-        if(error) throw error;
-
-        showToast('ส่งผลสอบแก้ตัวแล้ว', 'บันทึกเป็นสถานะรออนุมัติเรียบร้อยแล้ว', 'success');
-        await loadRetestRows();
-      }catch(err){
-        showToast('ส่งผลไม่สำเร็จ', err.message || 'เกิดข้อผิดพลาด', 'error');
-      }finally{
-        hideLoading();
-      }
-    }
-
-    function getAdviserRoomKey(row){
-      return [
-        safeText(row.academic_year,''),
-        safeText(row.term,''),
-        safeText(row.class_level,''),
-        safeText(row.room,'')
-      ].join('|');
-    }
-
-    function getSelectedAdviserRoom(){
-      return state.adviserRooms.find(r => getAdviserRoomKey(r) === state.selectedAdviserRoomKey) || null;
-    }
-
-    function compareStudentNo(a, b){
-      const aa = safeNum(a);
-      const bb = safeNum(b);
-      if(aa === null && bb === null) return 0;
-      if(aa === null) return 1;
-      if(bb === null) return -1;
-      return aa - bb;
-    }
-
-    const LOWER_TERM_LABELS = [
-      { class_level:'ม.1', term:1, label:'ม.1 เทอม 1' },
-      { class_level:'ม.1', term:2, label:'ม.1 เทอม 2' },
-      { class_level:'ม.2', term:1, label:'ม.2 เทอม 1' },
-      { class_level:'ม.2', term:2, label:'ม.2 เทอม 2' },
-      { class_level:'ม.3', term:1, label:'ม.3 เทอม 1' },
-      { class_level:'ม.3', term:2, label:'ม.3 เทอม 2' }
-    ];
-
-    const UPPER_TERM_LABELS = [
-      { class_level:'ม.4', term:1, label:'ม.4 เทอม 1' },
-      { class_level:'ม.4', term:2, label:'ม.4 เทอม 2' },
-      { class_level:'ม.5', term:1, label:'ม.5 เทอม 1' },
-      { class_level:'ม.5', term:2, label:'ม.5 เทอม 2' },
-      { class_level:'ม.6', term:1, label:'ม.6 เทอม 1' },
-      { class_level:'ม.6', term:2, label:'ม.6 เทอม 2' }
-    ];
-
-    function getClassGroupByClassLevel(classLevel){
-      const c = safeText(classLevel, '');
-      if(['ม.1','ม.2','ม.3'].includes(c)){
-        return { entry_level:'ม.1', labels:LOWER_TERM_LABELS, class_levels:['ม.1','ม.2','ม.3'] };
-      }
-      if(['ม.4','ม.5','ม.6'].includes(c)){
-        return { entry_level:'ม.4', labels:UPPER_TERM_LABELS, class_levels:['ม.4','ม.5','ม.6'] };
-      }
-      return { entry_level:'', labels:[], class_levels:[] };
-    }
-
-    function getBaseAcademicYearByStudentAndRoom(student, selectedRoom){
-      const entryYear = safeNum(student.entry_academic_year);
-      const entryLevel = safeText(student.entry_level, '');
-      if(entryYear && (entryLevel === 'ม.1' || entryLevel === 'ม.4')) return entryYear;
-
-      const roomYear = safeNum(selectedRoom?.academic_year);
-      const roomClass = safeText(selectedRoom?.class_level, '');
-      if(!roomYear) return null;
-      if(roomClass === 'ม.1' || roomClass === 'ม.4') return roomYear;
-      if(roomClass === 'ม.2' || roomClass === 'ม.5') return roomYear - 1;
-      if(roomClass === 'ม.3' || roomClass === 'ม.6') return roomYear - 2;
-      return null;
-    }
-
-    function getTermPlansForStudent(student, selectedRoom){
-      const roomClass = safeText(selectedRoom?.class_level || student.computed_class_level, '');
-      const group = getClassGroupByClassLevel(roomClass);
-      const baseYear = getBaseAcademicYearByStudentAndRoom(student, selectedRoom);
-      if(!baseYear || !group.labels.length) return [];
-
-      return group.labels.map(item => {
-        let offset = 0;
-        if(item.class_level === 'ม.2' || item.class_level === 'ม.5') offset = 1;
-        if(item.class_level === 'ม.3' || item.class_level === 'ม.6') offset = 2;
-        return { ...item, academic_year: baseYear + offset, key: `${baseYear + offset}|${item.term}` };
-      });
-    }
-
-    async function loadAdviserRooms(){
-      try{
-        if(!state.currentUser?.id) return;
-
-        const year = safeNum(el('adviserYear').value) ?? getCurrentAcademicYear();
-        const term = safeNum(el('adviserTerm').value) ?? getCurrentTerm();
-
-        const { data, error } = await supabaseClient
-          .from('teacher_advisers')
-          .select('id, teacher_id, academic_year, term, class_level, room, adviser_role')
-          .eq('teacher_id', state.currentUser.id)
-          .eq('academic_year', year)
-          .eq('term', term)
-          .order('class_level', { ascending:true })
-          .order('room', { ascending:true });
-
-        if(error) throw error;
-
-        state.adviserRooms = Array.isArray(data) ? data : [];
-        renderAdviserRoomOptions(state.adviserRooms);
-
-        setStatus(
-          'adviserStatus',
-          state.adviserRooms.length ? `พบห้องที่ปรึกษา ${state.adviserRooms.length} ห้อง` : 'ไม่พบข้อมูลห้องที่ปรึกษาในปี/เทอมที่เลือก',
-          state.adviserRooms.length ? 'success' : 'warn'
-        );
-      }catch(err){
-        state.adviserRooms = [];
-        renderAdviserRoomOptions([]);
-        setStatus('adviserStatus', err.message || 'โหลดห้องที่ปรึกษาไม่สำเร็จ', 'error');
-      }
-    }
-
-    function renderAdviserRoomOptions(rows){
-      const select = el('adviserRoomSelect');
-
-      if(!rows.length){
-        select.innerHTML = `<option value="">โปรดเลือกห้อง</option>`;
-        state.selectedAdviserRoomKey = '';
-        return;
-      }
-
-      select.innerHTML = `
-        <option value="">โปรดเลือกห้อง</option>
-        ${rows.map(row => {
-          const key = getAdviserRoomKey(row);
-          const roleText = safeText(row.adviser_role, '');
-          const label = `${safeText(row.class_level,'-')}/${safeText(row.room,'-')}${roleText ? ` (${roleText})` : ''}`;
-          return `<option value="${escapeHtml(key)}">${escapeHtml(label)}</option>`;
-        }).join('')}
-      `;
-
-      if(rows.length === 1){
-        state.selectedAdviserRoomKey = getAdviserRoomKey(rows[0]);
-        select.value = state.selectedAdviserRoomKey;
-      }
-    }
-
-    async function fetchStudentGradeFlags(studentIds, academicYear=null, term=null){
-      const ids = [...new Set((studentIds || []).filter(Boolean).map(String))];
-      const map = new Map();
-      if(!ids.length) return map;
-
-      const chunkSize = 80;
-      for(let i=0; i<ids.length; i+=chunkSize){
-        const idChunk = ids.slice(i, i + chunkSize);
-
-        const rows = await fetchAllPages(() => {
-          let query = supabaseClient
-            .from('grade_results')
-            .select('student_id, academic_year, term, grade_code, retest_grade_code')
-            .in('student_id', idChunk)
-            .eq('is_active', true)
-            .order('academic_year', { ascending:true })
-            .order('term', { ascending:true });
-
-          if(academicYear !== null && academicYear !== undefined) query = query.eq('academic_year', academicYear);
-          if(term !== null && term !== undefined) query = query.eq('term', term);
-          return query;
-        });
-
-        rows.forEach(row => {
-          const sid = String(row.student_id);
-          const termKey = `${row.academic_year}|${row.term}`;
-          const effectiveGrade = normalizeGradeValue(row.retest_grade_code || row.grade_code);
-
-          if(!map.has(sid)){
-            map.set(sid, { has_grade_result:false, has_risk_grade:false, grade_count:0, term_flags:{} });
-          }
-
-          const item = map.get(sid);
-          item.has_grade_result = true;
-          item.grade_count += 1;
-
-          if(!item.term_flags[termKey]){
-            item.term_flags[termKey] = { has_grade_result:false, has_risk_grade:false, grade_count:0 };
-          }
-
-          item.term_flags[termKey].has_grade_result = true;
-          item.term_flags[termKey].grade_count += 1;
-
-          if(isRiskGrade(effectiveGrade)){
-            item.has_risk_grade = true;
-            item.term_flags[termKey].has_risk_grade = true;
-          }
-        });
-      }
-
-      return map;
-    }
-
-    async function loadAdviserStudents(){
-      try{
-        const selectedKey = safeText(el('adviserRoomSelect').value, '');
-        state.selectedAdviserRoomKey = selectedKey;
-
-        if(!selectedKey){
-          state.adviserStudents = [];
-          renderAdviserStudents([]);
-          resetAdviserSummary();
-          setStatus('adviserStatus','กรุณาเลือกห้องที่ปรึกษา','warn');
-          return;
-        }
-
-        const selectedRoom = getSelectedAdviserRoom();
-        if(!selectedRoom) throw new Error('ไม่พบข้อมูลห้องที่เลือก');
-
-        setStatus('adviserStatus','กำลังโหลดรายชื่อนักเรียน...','info');
-        showLoading('กำลังโหลดรายชื่อนักเรียน...');
-
-        const keyword = safeText(el('adviserKeyword').value, '').toLowerCase();
-        const targetYear = safeNum(selectedRoom.academic_year);
-        const targetClass = safeText(selectedRoom.class_level, '');
-        const targetRoom = safeText(selectedRoom.room, '');
-
-        let query = supabaseClient
-          .from('students')
-          .select('id, sid, raw_full_name, current_room, current_no, entry_academic_year, entry_level, is_active')
-          .eq('is_active', true)
-          .eq('current_room', targetRoom)
-          .order('current_no', { ascending:true })
-          .order('raw_full_name', { ascending:true });
-
-        if(targetClass === 'ม.1') query = query.eq('entry_academic_year', targetYear).eq('entry_level', 'ม.1');
-        else if(targetClass === 'ม.2') query = query.eq('entry_academic_year', targetYear - 1).eq('entry_level', 'ม.1');
-        else if(targetClass === 'ม.3') query = query.eq('entry_academic_year', targetYear - 2).eq('entry_level', 'ม.1');
-        else if(targetClass === 'ม.4') query = query.eq('entry_academic_year', targetYear).eq('entry_level', 'ม.4');
-        else if(targetClass === 'ม.5') query = query.eq('entry_academic_year', targetYear - 1).eq('entry_level', 'ม.4');
-        else if(targetClass === 'ม.6') query = query.eq('entry_academic_year', targetYear - 2).eq('entry_level', 'ม.4');
-
-        const { data, error } = await query;
-        if(error) throw error;
-
-        let students = Array.isArray(data) ? data : [];
-
-        if(keyword){
-          students = students.filter(student => {
-            const sid = safeText(student.sid, '').toLowerCase();
-            const name = safeText(student.raw_full_name, '').toLowerCase();
-            return sid.includes(keyword) || name.includes(keyword);
-          });
-        }
-
-        const studentIds = students.map(s => s.id).filter(Boolean);
-        const gradeFlagsMap = await fetchStudentGradeFlags(studentIds, null, null);
-
-        state.adviserStudents = students.map(student => {
-          const flag = gradeFlagsMap.get(String(student.id)) || {
-            has_grade_result:false,
-            has_risk_grade:false,
-            grade_count:0,
-            term_flags:{}
-          };
-
-          const termPlans = getTermPlansForStudent(student, selectedRoom);
-
-          const riskTerms = termPlans
-            .filter(plan => flag.term_flags?.[plan.key]?.has_risk_grade)
-            .map(plan => plan.label);
-
-          return {
-            ...student,
-            computed_class_level: targetClass,
-            ...flag,
-            term_plans: termPlans,
-            risk_terms: riskTerms,
-            has_risk_grade: riskTerms.length > 0
-          };
-        }).sort((a,b) => {
-          const byNo = compareStudentNo(a.current_no, b.current_no);
-          if(byNo !== 0) return byNo;
-          return safeText(a.raw_full_name, '').localeCompare(safeText(b.raw_full_name, ''), 'th');
-        });
-
-        renderAdviserStudents(state.adviserStudents);
-        updateAdviserSummary(state.adviserStudents);
-
-        setStatus(
-          'adviserStatus',
-          `พบรายชื่อนักเรียน ${state.adviserStudents.length} คน ในห้อง ${targetClass}/${targetRoom}`,
-          state.adviserStudents.length ? 'success' : 'warn'
-        );
-      }catch(err){
-        state.adviserStudents = [];
-        renderAdviserStudents([]);
-        resetAdviserSummary();
-        setStatus('adviserStatus', err.message || 'โหลดรายชื่อนักเรียนไม่สำเร็จ', 'error');
-        showToast('โหลดรายชื่อไม่สำเร็จ', err.message || 'เกิดข้อผิดพลาด', 'error');
-      }finally{
-        hideLoading();
-      }
-    }
-
-    function updateAdviserSummary(rows){
-      el('adviserTotalStudents').textContent = String(rows.length);
-      el('adviserGradedStudents').textContent = String(rows.filter(r => r.has_grade_result).length);
-      el('adviserRiskStudents').textContent = String(rows.filter(r => r.has_risk_grade).length);
-    }
-
-    function resetAdviserSummary(){
-      el('adviserTotalStudents').textContent = '0';
-      el('adviserGradedStudents').textContent = '0';
-      el('adviserRiskStudents').textContent = '0';
-    }
-
-    function renderAdviserStudents(rows){
-      const list = el('adviserStudentList');
-
-      if(!rows.length){
-        list.innerHTML = `<div class="card empty">ยังไม่มีข้อมูลนักเรียนในที่ปรึกษา</div>`;
-        return;
-      }
-
-      list.innerHTML = rows.map(student => {
-        const riskTerms = student.risk_terms || [];
-        const statusBadge = riskTerms.length
-          ? `<span class="badge badge-risk">เสี่ยง</span>`
-          : student.has_grade_result
-            ? `<span class="badge badge-normal">ปกติ</span>`
-            : `<span class="badge badge-none">ยังไม่พบผล</span>`;
-
-        const statusText = riskTerms.length ? `เสี่ยง: ${riskTerms.join(', ')}` : (student.has_grade_result ? 'ปกติ' : 'ยังไม่พบผลการเรียน');
-
-        const termPlans = (student.term_plans || []).filter(plan => {
-          const flag = student.term_flags?.[plan.key] || {};
-          return !!flag.has_grade_result;
-        });
-
-        return `
-          <section class="card">
-            <div class="row-between">
-              <div>
-                <div class="student-sub">เลขที่ ${escapeHtml(formatPlainNumber(student.current_no))}</div>
-                <div class="mono">${escapeHtml(safeText(student.sid,'-'))}</div>
-                <div class="student-main">${escapeHtml(safeText(student.raw_full_name,'-'))}</div>
-              </div>
-              ${statusBadge}
-            </div>
-
-            <div class="subject-box" style="margin-top:12px;">
-              <div class="student-sub" style="margin:0;">${escapeHtml(statusText)}</div>
-            </div>
-
-            ${
-              termPlans.length
-                ? `<div class="term-grid">
-                    ${termPlans.map(plan => {
-                      const flag = student.term_flags?.[plan.key] || {};
-                      return `
-                        <button
-                          class="term-btn ${flag.has_risk_grade ? 'risk' : ''}"
-                          type="button"
-                          data-student-id="${escapeHtml(String(student.id))}"
-                          data-academic-year="${escapeHtml(String(plan.academic_year))}"
-                          data-term="${escapeHtml(String(plan.term))}"
-                          data-class-level="${escapeHtml(plan.class_level)}"
-                          data-term-label="${escapeHtml(plan.label)}"
-                        >
-                          ${escapeHtml(plan.label)}
-                        </button>
-                      `;
-                    }).join('')}
-                  </div>`
-                : `<div class="empty" style="padding:16px 0 0;">ยังไม่มีผลการเรียนให้เปิดดู</div>`
-            }
-          </section>
-        `;
-      }).join('');
-
-      list.querySelectorAll('[data-student-id]').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const student = state.adviserStudents.find(s => String(s.id) === String(btn.dataset.studentId));
-          if(!student) return;
-          await openStudentGradeDetail(student, {
-            academic_year: safeNum(btn.dataset.academicYear),
-            term: safeNum(btn.dataset.term),
-            class_level: safeText(btn.dataset.classLevel, ''),
-            label: safeText(btn.dataset.termLabel, '')
-          });
-        });
-      });
-    }
-
-    async function fetchStudentGrades(studentId, academicYear, term){
-      let query = supabaseClient
-        .from('grade_results')
-        .select(`
-          id,
-          student_id,
-          student_code,
-          student_name,
-          student_no,
-          academic_year,
-          term,
-          class_level,
-          room,
-          study_unit_score,
-          midterm_score,
-          final_score,
-          total_score,
-          grade_code,
-          retest_grade_code,
-          grading_status,
-          is_active,
-          subject_offering_id,
-          subject_id,
-          teacher_id,
-          subject_code,
-          subject_name,
-          subjects:subjects!fk_grade_results_subject (
-            subject_code,
-            subject_name,
-            credit,
-            learning_area,
-            subject_type
-          ),
-          teachers:teachers!fk_grade_results_teacher (
-            teacher_code,
-            full_name
-          )
-        `)
-        .eq('student_id', studentId)
-        .eq('is_active', true)
-        .order('academic_year', { ascending:false })
-        .order('term', { ascending:false });
-
-      if(academicYear !== null && academicYear !== undefined) query = query.eq('academic_year', academicYear);
-      if(term !== null && term !== undefined) query = query.eq('term', term);
-
-      const { data, error } = await query;
-      if(error) throw error;
-
-      return (data || []).map(row => ({
-        id: row.id,
-        student_id: row.student_id,
-        student_code: row.student_code,
-        student_name: row.student_name,
-        student_no: row.student_no,
-        academic_year: row.academic_year,
-        term: row.term,
-        class_level: row.class_level,
-        room: row.room,
-        study_unit_score: row.study_unit_score,
-        midterm_score: row.midterm_score,
-        final_score: row.final_score,
-        total_score: row.total_score,
-        grade_code: normalizeGradeValue(row.grade_code),
-        retest_grade_code: normalizeGradeValue(row.retest_grade_code),
-        grading_status: row.grading_status,
-        subject_code: safeText(row.subjects?.subject_code || row.subject_code, ''),
-        subject_name: safeText(row.subjects?.subject_name || row.subject_name, ''),
-        credit: safeNum(row.subjects?.credit) ?? 0,
-        learning_area: safeText(row.subjects?.learning_area, ''),
-        subject_type: safeText(row.subjects?.subject_type, ''),
-        teacher_code: safeText(row.teachers?.teacher_code, ''),
-        teacher_name: safeText(row.teachers?.full_name, '')
-      }));
-    }
-
-    function getNumericGradeForGpa(grade){
-      const g = normalizeGradeValue(grade);
-      const map = {'4':4,'3.5':3.5,'3':3,'2.5':2.5,'2':2,'1.5':1.5,'1':1,'0':0};
-      return Object.prototype.hasOwnProperty.call(map, g) ? map[g] : null;
-    }
-
-    function buildStudentSummary(rows){
-      const summary = { totalLearned:0, totalEarned:0, gpa:0 };
-      let totalGradePoint = 0;
-      let totalCreditForGpa = 0;
-
-      rows.forEach(row => {
-        const credit = safeNum(row.credit) ?? 0;
-        const effectiveGrade = getEffectiveGrade(row);
-        const earned = isPassingGrade(effectiveGrade) ? credit : 0;
-        const subjectType = safeText(row.subject_type, '');
-
-        if(subjectType === 'พื้นฐาน' || subjectType === 'เพิ่มเติม'){
-          summary.totalLearned += credit;
-          summary.totalEarned += earned;
-
-          const numericGrade = getNumericGradeForGpa(effectiveGrade);
-          if(numericGrade !== null){
-            totalGradePoint += numericGrade * credit;
-            totalCreditForGpa += credit;
-          }
-        }
-      });
-
-      summary.gpa = totalCreditForGpa > 0 ? totalGradePoint / totalCreditForGpa : 0;
-      return summary;
-    }
-
-    function compareSubjectRows(a,b){
-      const order = ['ท','ค','ว','ส','พ','ศ','ง','ข','จ','ญ','ต','อ','I','ก'];
-      const ca = String(a.subject_code || '').trim().toUpperCase();
-      const cb = String(b.subject_code || '').trim().toUpperCase();
-      const ia = order.indexOf(ca.charAt(0));
-      const ib = order.indexOf(cb.charAt(0));
-      const wa = ia === -1 ? 999 : ia;
-      const wb = ib === -1 ? 999 : ib;
-      if(wa !== wb) return wa - wb;
-      return ca.localeCompare(cb, 'th', { numeric:true });
-    }
-
-    async function openStudentGradeDetail(student, termContext){
-      try{
-        showLoading('กำลังโหลดผลการเรียน...');
-
-        const rows = await fetchStudentGrades(student.id, termContext.academic_year, termContext.term);
-        const summary = buildStudentSummary(rows);
-        const firstRow = rows[0] || {};
-
-        el('detailTermLabel').textContent = `${termContext.label || ''} / ปี ${termContext.academic_year || '-'}`;
-        el('detailStudentCode').textContent = safeText(student.sid, '-');
-        el('detailStudentName').textContent = safeText(student.raw_full_name, '-');
-
-        const classLevel = safeText(firstRow.class_level || termContext.class_level || student.computed_class_level, '-');
-        const room = safeText(firstRow.room || student.current_room, '-');
-        el('detailStudentMeta').textContent = `${classLevel}/${room} เลขที่ ${formatPlainNumber(student.current_no)}`;
-
-        el('detailGpa').textContent = formatDecimalFloor(summary.gpa, 2);
-        el('detailTotalLearned').textContent = formatDecimal(summary.totalLearned, 1);
-        el('detailTotalEarned').textContent = formatDecimal(summary.totalEarned, 1);
-
-        renderStudentRiskList(rows);
-        renderStudentGradeList(rows);
-
-        el('gradeDetailView').classList.add('show');
-      }catch(err){
-        showToast('โหลดผลการเรียนไม่สำเร็จ', err.message || 'เกิดข้อผิดพลาด', 'error');
-      }finally{
-        hideLoading();
-      }
-    }
-
-    function renderStudentRiskList(rows){
-      const wrap = el('studentRiskList');
-      const riskRows = rows.filter(row => {
-        const originalGrade = normalizeGradeValue(row.grade_code);
-        const effectiveGrade = getEffectiveGrade(row);
-        return isRiskGrade(originalGrade) || isRiskGrade(effectiveGrade) || !!normalizeGradeValue(row.retest_grade_code);
-      });
-
-      if(!riskRows.length){
-        wrap.innerHTML = '';
-        return;
-      }
-
-      wrap.innerHTML = `
-        <section class="card" style="margin-top:14px;border-color:#ffd2cf;background:#fff8f8;">
-          <div style="font-weight:800;color:#b91c1c;">วิชาที่ต้องติดตาม</div>
-          <div style="display:grid;gap:8px;margin-top:10px;">
-            ${riskRows.map(row => `
-              <div style="font-size:14px;font-weight:700;line-height:1.55;">
-                ${escapeHtml(row.subject_code || '-')} ${escapeHtml(row.subject_name || '-')}
-                <span style="color:#d92d20;">เกรด ${escapeHtml(row.grade_code || '-')}</span>
-                ${row.retest_grade_code ? `<span style="color:#0f9d58;"> แก้ตัว ${escapeHtml(row.retest_grade_code)}</span>` : ''}
-              </div>
-            `).join('')}
-          </div>
-        </section>
-      `;
-    }
-
-    function renderStudentGradeList(rows){
-      const list = el('studentGradeList');
-
-      if(!rows.length){
-        list.innerHTML = `<div class="card empty">ยังไม่พบข้อมูลผลการเรียนในระบบ</div>`;
-        return;
-      }
-
-      list.innerHTML = [...rows].sort(compareSubjectRows).map(row => {
-        const effective = getEffectiveGrade(row);
-        const risk = isRiskGrade(effective);
-        return `
-          <section class="grade-card">
-            <div class="row-between">
-              <div style="min-width:0;">
-                <div class="mono" style="color:#64748b;">${escapeHtml(row.subject_code || '-')}</div>
-                <div class="subject-name">${escapeHtml(row.subject_name || '-')}</div>
-                <div class="student-sub" style="line-height:1.6;">
-                  รวม ${escapeHtml(formatPlainNumber(row.total_score))}
-                  • หน่วยกิต ${escapeHtml(formatDecimal(row.credit, 1))}
-                  ${row.teacher_name ? `• ${escapeHtml(row.teacher_name)}` : ''}
-                </div>
-                ${row.retest_grade_code ? `<div class="student-sub" style="color:#0f9d58;">ผลแก้ตัว: ${escapeHtml(row.retest_grade_code)}</div>` : ''}
-              </div>
-              <div class="grade-badge ${risk ? 'grade-bad' : 'grade-good'}">${escapeHtml(effective || '-')}</div>
-            </div>
-          </section>
-        `;
-      }).join('');
-    }
-
-    function closeGradeDetail(){
-      el('gradeDetailView').classList.remove('show');
-    }
-
-      function setBookingSubTab(tab){
-  const isSearch = tab === 'search';
-
-  el('bookingSearchPanel').classList.toggle('hidden', !isSearch);
-  el('bookingMinePanel').classList.toggle('hidden', isSearch);
-
-  el('bookingSearchTabBtn').classList.toggle('active', isSearch);
-  el('bookingMineTabBtn').classList.toggle('active', !isSearch);
-}
+    async function fetchRetestRequests(ids){if(!ids.length)return new Map(); const {data,error}=await supabaseClient.from('grade_retest_requests').select('id,grade_result_id,requested_retest_grade_code,status,submitted_at,updated_at,is_active').in('grade_result_id',ids).eq('is_active',true); if(error)throw error; const map=new Map(); (data||[]).forEach(req=>{const key=String(req.grade_result_id||''); const old=map.get(key); if(!old || new Date(req.updated_at||req.submitted_at||0)>=new Date(old.updated_at||old.submitted_at||0)) map.set(key,req);}); return map;}
+    async function loadRetestRows(){try{const yearText=safeText(el('retestYear').value,''); const termText=safeText(el('retestTerm').value,''); const studentCode=safeText(el('retestStudentCodeKeyword').value,''); if(!yearText && !termText && !studentCode){renderRetestRows([]); setStatus('retestStatus','กรุณาเลือกปีการศึกษา/ภาคเรียน หรือค้นหารหัสนักเรียน','warn'); return;} showLoading('กำลังโหลดรายการสอบแก้ตัว...'); setStatus('retestStatus','กำลังโหลดรายการสอบแก้ตัว...','info'); const base=await fetchRetestRowsBase(yearText?safeNum(yearText):null,termText?safeNum(termText):null,studentCode); const map=await fetchRetestRequests(base.map(r=>r.id).filter(Boolean)); state.retestRows=base.map(r=>{const req=map.get(String(r.id)); return {...r,grade_result_id:r.id,retest_request_id:req?.id||null,requested_retest_grade_code:req?.requested_retest_grade_code||'',retest_request_status:req?.status||''};}); state.retestEditingId=null; renderRetestRows(state.retestRows); setStatus('retestStatus',state.retestRows.length?`พบรายการสอบแก้ตัว ${state.retestRows.length} รายการ`:'ไม่พบรายการตามเงื่อนไข',state.retestRows.length?'success':'warn');}catch(err){console.error(err); renderRetestRows([]); setStatus('retestStatus',err.message||'โหลดรายการไม่สำเร็จ','error'); showToast('โหลดรายการไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error');}finally{hideLoading();}}
+    function renderRetestRows(rows){const list=el('retestList'); updateRetestSummary(rows); if(!rows.length){list.innerHTML='<div class="card empty">ไม่พบรายการสอบแก้ตัวตามเงื่อนไขที่เลือก</div>'; return;} list.innerHTML=rows.map(row=>{const key=getRetestRowKey(row); const editing=state.retestEditingId===key; const original=normalizeGradeValue(row.grade_code); const options=getRetestOptionsByOriginalGrade(original); const requested=normalizeGradeValue(row.requested_retest_grade_code); const status=row.retest_request_status; const canEdit=status!=='approved'; let body=''; if(editing){const selected=requested || (options.length===1?options[0]:''); body=`<select class="select" data-retest-select="${escapeHtml(key)}"><option value="">เลือกผลแก้ตัว</option>${options.map(o=>`<option value="${escapeHtml(o)}" ${selected===o?'selected':''}>${escapeHtml(o)}</option>`).join('')}</select><div class="retest-actions"><button class="btn btn-success" data-retest-save="${escapeHtml(key)}">ส่งผล</button><button class="btn btn-secondary" data-retest-cancel="${escapeHtml(key)}">ยกเลิก</button></div>`;}else{body=`<div class="row-between"><div>${requested?gradePill(requested):'<span class="student-sub">ยังไม่เลือกผลแก้ตัว</span>'}</div>${retestStatusBadge(status)}</div>${canEdit?`<button class="btn btn-primary btn-block" style="margin-top:12px;" data-retest-edit="${escapeHtml(key)}">${status==='pending_approval'?'แก้ไขผล':'สอบแก้ตัว'}</button>`:''}`;} return `<div class="card"><div class="row-between"><div><div class="mono">${escapeHtml(row.student_code||'-')}</div><div class="student-main">${escapeHtml(row.student_name||'-')}</div><div class="student-sub">${escapeHtml(row.class_level||'-')}/${escapeHtml(row.room||'-')} • ปี ${escapeHtml(row.academic_year||'-')} เทอม ${escapeHtml(row.term||'-')}</div></div>${gradePill(original)}</div><div class="subject-box"><div class="mono">${escapeHtml(row.subject_code||'-')}</div><div class="subject-name">${escapeHtml(row.subject_name||'-')}</div></div><div style="margin-top:12px;">${body}</div></div>`;}).join(''); bindRetestButtons();}
+    function bindRetestButtons(){document.querySelectorAll('[data-retest-edit]').forEach(b=>b.addEventListener('click',()=>{state.retestEditingId=String(b.dataset.retestEdit||''); renderRetestRows(state.retestRows);})); document.querySelectorAll('[data-retest-cancel]').forEach(b=>b.addEventListener('click',()=>{state.retestEditingId=null; renderRetestRows(state.retestRows);})); document.querySelectorAll('[data-retest-save]').forEach(b=>b.addEventListener('click',()=>saveRetestRequest(String(b.dataset.retestSave||''))));}
+    function findRetestRow(key){return state.retestRows.find(r=>getRetestRowKey(r)===String(key));}
+    async function saveRetestRequest(key){try{const row=findRetestRow(key); if(!row)throw new Error('ไม่พบรายการที่ต้องการส่งผล'); if(row.retest_request_status==='approved')throw new Error('รายการนี้อนุมัติแล้ว ไม่สามารถแก้ไขได้'); const selected=normalizeGradeValue(document.querySelector(`[data-retest-select="${CSS.escape(key)}"]`)?.value||''); if(!selected)throw new Error('กรุณาเลือกผลการเรียนแก้ตัว'); if(!getRetestOptionsByOriginalGrade(row.grade_code).includes(selected))throw new Error(`เกรดเดิม ${normalizeGradeValue(row.grade_code)} ไม่สามารถแก้เป็น ${selected}`); showLoading('กำลังส่งผลสอบแก้ตัว...'); const payload={grade_result_id:row.grade_result_id,student_id:row.student_id,student_code:safeText(row.student_code,''),student_name:safeText(row.student_name,''),subject_offering_id:row.subject_offering_id||null,subject_id:row.subject_id||null,subject_code:safeText(row.subject_code,''),subject_name:safeText(row.subject_name,''),teacher_id:row.teacher_id,teacher_code:state.currentUser.teacher_code,academic_year:safeNum(row.academic_year),term:safeNum(row.term),class_level:safeText(row.class_level,''),room:safeText(row.room,''),original_grade_code:normalizeGradeValue(row.grade_code),requested_retest_grade_code:selected,status:'pending_approval',submitted_at:new Date().toISOString(),updated_at:new Date().toISOString(),is_active:true}; let error=null; if(row.retest_request_id){({error}=await supabaseClient.from('grade_retest_requests').update({requested_retest_grade_code:selected,status:'pending_approval',updated_at:payload.updated_at,is_active:true,rejected_at:null,rejected_by:null,rejected_reason:null}).eq('id',row.retest_request_id).eq('is_active',true));}else{({error}=await supabaseClient.from('grade_retest_requests').insert(payload));} if(error)throw error; state.retestEditingId=null; showToast('ส่งผลสอบแก้ตัวแล้ว','สถานะรออนุมัติจากงานทะเบียน','success'); await loadRetestRows();}catch(err){showToast('ส่งผลไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error'); setStatus('retestStatus',err.message||'ส่งผลไม่สำเร็จ','error');}finally{hideLoading();}}
+
+    function getAdviserRoomKey(row){return [row.academic_year,row.term,row.class_level,row.room].map(x=>safeText(x,'')).join('|');}
+    function getSelectedAdviserRoom(){return state.adviserRooms.find(r=>getAdviserRoomKey(r)===state.selectedAdviserRoomKey)||null;}
+    async function loadAdviserRooms(){try{if(!state.currentUser?.id)return; const year=safeNum(el('adviserYear')?.value)||state.adviserSettings?.academic_year||getCurrentAcademicYear(); const term=safeNum(el('adviserTerm')?.value)||state.adviserSettings?.term||getCurrentTerm(); const {data,error}=await supabaseClient.from('teacher_advisers').select('id,teacher_id,academic_year,term,class_level,room,adviser_role').eq('teacher_id',state.currentUser.id).eq('academic_year',year).eq('term',term).order('class_level',{ascending:true}).order('room',{ascending:true}); if(error)throw error; state.adviserRooms=data||[]; renderAdviserRoomOptions(state.adviserRooms); setStatus('adviserStatus',state.adviserRooms.length?`พบห้องที่ปรึกษา ${state.adviserRooms.length} ห้อง`:'ไม่พบข้อมูลห้องที่ปรึกษาในปี/เทอมที่เลือก',state.adviserRooms.length?'success':'warn');}catch(err){state.adviserRooms=[]; renderAdviserRoomOptions([]); setStatus('adviserStatus',err.message||'โหลดห้องที่ปรึกษาไม่สำเร็จ','error');}}
+    function renderAdviserRoomOptions(rows){const s=el('adviserRoomSelect'); s.innerHTML='<option value="">โปรดเลือกห้อง</option>'+(rows||[]).map(r=>{const key=getAdviserRoomKey(r); const label=`${safeText(r.class_level,'-')}/${safeText(r.room,'-')}${r.adviser_role?` (${r.adviser_role})`:''}`; return `<option value="${escapeHtml(key)}">${escapeHtml(label)}</option>`;}).join(''); if(rows.length===1){state.selectedAdviserRoomKey=getAdviserRoomKey(rows[0]); s.value=state.selectedAdviserRoomKey;}else{state.selectedAdviserRoomKey='';}}
+    function compareStudentNo(a,b){const aa=safeNum(a),bb=safeNum(b); if(aa===null&&bb===null)return 0; if(aa===null)return 1; if(bb===null)return -1; return aa-bb;}
+    async function fetchAllPages(buildQuery,pageSize=1000){let from=0,rows=[]; while(true){const {data,error}=await buildQuery().range(from,from+pageSize-1); if(error)throw error; const batch=data||[]; rows=rows.concat(batch); if(batch.length<pageSize)break; from+=pageSize;} return rows;}
+    async function fetchStudentGradeFlags(studentIds){const ids=[...new Set((studentIds||[]).filter(Boolean).map(String))]; const map=new Map(); if(!ids.length)return map; for(let i=0;i<ids.length;i+=80){const chunk=ids.slice(i,i+80); const rows=await fetchAllPages(()=>supabaseClient.from('grade_results').select('student_id,academic_year,term,grade_code,retest_grade_code').in('student_id',chunk).eq('is_active',true).order('academic_year',{ascending:true}).order('term',{ascending:true})); rows.forEach(row=>{const sid=String(row.student_id); const key=`${row.academic_year}|${row.term}`; const eff=normalizeGradeValue(row.retest_grade_code||row.grade_code); if(!map.has(sid))map.set(sid,{has_grade_result:false,has_risk_grade:false,grade_count:0,term_flags:{}}); const item=map.get(sid); item.has_grade_result=true; item.grade_count+=1; if(!item.term_flags[key])item.term_flags[key]={has_grade_result:false,has_risk_grade:false,grade_count:0}; item.term_flags[key].has_grade_result=true; item.term_flags[key].grade_count+=1; if(isRiskGrade(eff)){item.has_risk_grade=true; item.term_flags[key].has_risk_grade=true;}});} return map;}
+    const LOWER_TERM_LABELS=[{class_level:'ม.1',term:1,label:'ม.1 เทอม 1'},{class_level:'ม.1',term:2,label:'ม.1 เทอม 2'},{class_level:'ม.2',term:1,label:'ม.2 เทอม 1'},{class_level:'ม.2',term:2,label:'ม.2 เทอม 2'},{class_level:'ม.3',term:1,label:'ม.3 เทอม 1'},{class_level:'ม.3',term:2,label:'ม.3 เทอม 2'}];
+    const UPPER_TERM_LABELS=[{class_level:'ม.4',term:1,label:'ม.4 เทอม 1'},{class_level:'ม.4',term:2,label:'ม.4 เทอม 2'},{class_level:'ม.5',term:1,label:'ม.5 เทอม 1'},{class_level:'ม.5',term:2,label:'ม.5 เทอม 2'},{class_level:'ม.6',term:1,label:'ม.6 เทอม 1'},{class_level:'ม.6',term:2,label:'ม.6 เทอม 2'}];
+    function getClassGroupByClassLevel(c){if(['ม.1','ม.2','ม.3'].includes(c))return {entry_level:'ม.1',labels:LOWER_TERM_LABELS}; if(['ม.4','ม.5','ม.6'].includes(c))return {entry_level:'ม.4',labels:UPPER_TERM_LABELS}; return {entry_level:'',labels:[]};}
+    function getBaseAcademicYearByStudentAndRoom(student,room){const ey=safeNum(student.entry_academic_year); const elv=safeText(student.entry_level,''); if(ey&&(elv==='ม.1'||elv==='ม.4'))return ey; const ry=safeNum(room?.academic_year); const rc=safeText(room?.class_level,''); if(!ry)return null; if(rc==='ม.1'||rc==='ม.4')return ry; if(rc==='ม.2'||rc==='ม.5')return ry-1; if(rc==='ม.3'||rc==='ม.6')return ry-2; return null;}
+    function getTermPlansForStudent(student,room){const roomClass=safeText(room?.class_level||student.computed_class_level,''); const group=getClassGroupByClassLevel(roomClass); const base=getBaseAcademicYearByStudentAndRoom(student,room); if(!base||!group.labels.length)return []; return group.labels.map(item=>{let offset=0; if(item.class_level==='ม.2'||item.class_level==='ม.5')offset=1; if(item.class_level==='ม.3'||item.class_level==='ม.6')offset=2; return {...item,academic_year:base+offset,key:`${base+offset}|${item.term}`};});}
+    async function loadAdviserStudents(){try{const selectedKey=safeText(el('adviserRoomSelect').value,''); state.selectedAdviserRoomKey=selectedKey; if(!selectedKey){renderAdviserStudents([]); resetAdviserSummary(); setStatus('adviserStatus','กรุณาเลือกห้องที่ปรึกษา','warn'); return;} const room=getSelectedAdviserRoom(); if(!room)throw new Error('ไม่พบข้อมูลห้องที่เลือก'); showLoading('กำลังโหลดรายชื่อนักเรียน...'); setStatus('adviserStatus','กำลังโหลดรายชื่อนักเรียน...','info'); const keyword=safeText(el('adviserKeyword').value,'').toLowerCase(); const year=safeNum(room.academic_year); const targetClass=safeText(room.class_level,''); const targetRoom=safeText(room.room,''); let query=supabaseClient.from('students').select('id,sid,raw_full_name,current_room,current_no,entry_academic_year,entry_level,is_active').eq('is_active',true).eq('current_room',targetRoom).order('current_no',{ascending:true}).order('raw_full_name',{ascending:true}); if(targetClass==='ม.1')query=query.eq('entry_academic_year',year).eq('entry_level','ม.1'); else if(targetClass==='ม.2')query=query.eq('entry_academic_year',year-1).eq('entry_level','ม.1'); else if(targetClass==='ม.3')query=query.eq('entry_academic_year',year-2).eq('entry_level','ม.1'); else if(targetClass==='ม.4')query=query.eq('entry_academic_year',year).eq('entry_level','ม.4'); else if(targetClass==='ม.5')query=query.eq('entry_academic_year',year-1).eq('entry_level','ม.4'); else if(targetClass==='ม.6')query=query.eq('entry_academic_year',year-2).eq('entry_level','ม.4'); const {data,error}=await query; if(error)throw error; let students=data||[]; if(keyword){students=students.filter(s=>safeText(s.sid,'').toLowerCase().includes(keyword)||safeText(s.raw_full_name,'').toLowerCase().includes(keyword));} const flags=await fetchStudentGradeFlags(students.map(s=>s.id)); state.adviserStudents=students.map(s=>{const flag=flags.get(String(s.id))||{has_grade_result:false,has_risk_grade:false,grade_count:0,term_flags:{}}; const plans=getTermPlansForStudent(s,room); const riskTerms=plans.filter(p=>flag.term_flags?.[p.key]?.has_risk_grade).map(p=>p.label); return {...s,computed_class_level:targetClass,...flag,term_plans:plans,risk_terms:riskTerms,has_risk_grade:riskTerms.length>0};}).sort((a,b)=>compareStudentNo(a.current_no,b.current_no)||safeText(a.raw_full_name,'').localeCompare(safeText(b.raw_full_name,''),'th')); renderAdviserStudents(state.adviserStudents); updateAdviserSummary(state.adviserStudents); setStatus('adviserStatus',`พบรายชื่อนักเรียน ${state.adviserStudents.length} คน ในห้อง ${targetClass}/${targetRoom}`,state.adviserStudents.length?'success':'warn');}catch(err){console.error(err); renderAdviserStudents([]); resetAdviserSummary(); setStatus('adviserStatus',err.message||'โหลดรายชื่อนักเรียนไม่สำเร็จ','error');}finally{hideLoading();}}
+    function resetAdviserSummary(){el('adviserTotalStudents').textContent='0'; el('adviserGradedStudents').textContent='0'; el('adviserRiskStudents').textContent='0';}
+    function updateAdviserSummary(rows){el('adviserTotalStudents').textContent=rows.length; el('adviserGradedStudents').textContent=rows.filter(r=>r.has_grade_result).length; el('adviserRiskStudents').textContent=rows.filter(r=>r.has_risk_grade).length;}
+    function renderAdviserStudents(rows){const list=el('adviserStudentList'); if(!rows.length){list.innerHTML='<div class="card empty">ยังไม่มีข้อมูลนักเรียนในที่ปรึกษา</div>'; return;} list.innerHTML=rows.map(s=>{const status=s.risk_terms?.length?`<span class="badge badge-risk">เสี่ยง: ${escapeHtml(s.risk_terms.join(', '))}</span>`:s.has_grade_result?'<span class="badge badge-normal">ปกติ</span>':'<span class="badge badge-none">ยังไม่พบผลการเรียน</span>'; const buttons=(s.term_plans||[]).filter(p=>s.term_flags?.[p.key]?.has_grade_result).map(p=>`<button class="term-btn ${s.term_flags?.[p.key]?.has_risk_grade?'risk':''}" data-student-id="${escapeHtml(s.id)}" data-year="${escapeHtml(p.academic_year)}" data-term="${escapeHtml(p.term)}" data-label="${escapeHtml(p.label)}">${escapeHtml(p.class_level)}<br>เทอม ${escapeHtml(p.term)}</button>`).join(''); return `<div class="card"><div class="row-between"><div><div class="mono">${escapeHtml(s.sid||'-')}</div><div class="student-main">${escapeHtml(s.raw_full_name||'-')}</div><div class="student-sub">เลขที่ ${escapeHtml(safeText(s.current_no,'-'))}</div></div>${status}</div><div class="term-grid">${buttons||'<div class="student-sub">ยังไม่มีปุ่มดูผลการเรียน</div>'}</div></div>`;}).join(''); document.querySelectorAll('[data-student-id][data-year][data-term]').forEach(btn=>btn.addEventListener('click',()=>{const student=state.adviserStudents.find(s=>String(s.id)===String(btn.dataset.studentId)); if(student) openStudentDetail(student,{academic_year:safeNum(btn.dataset.year),term:safeNum(btn.dataset.term),label:safeText(btn.dataset.label,'')});}));}
+    async function fetchStudentGrades(studentId,year,term){let q=supabaseClient.from('grade_results').select('id,student_id,student_code,student_name,student_no,academic_year,term,class_level,room,study_unit_score,midterm_score,final_score,total_score,grade_code,retest_grade_code,grading_status,subject_code,subject_name,is_active,subjects:subjects!fk_grade_results_subject(credit,learning_area,subject_type),teachers:teachers!fk_grade_results_teacher(teacher_code,full_name)').eq('student_id',studentId).eq('is_active',true).order('subject_code',{ascending:true}); if(year!=null)q=q.eq('academic_year',year); if(term!=null)q=q.eq('term',term); const {data,error}=await q; if(error){let q2=supabaseClient.from('grade_results').select('id,student_id,student_code,student_name,student_no,academic_year,term,class_level,room,study_unit_score,midterm_score,final_score,total_score,grade_code,retest_grade_code,grading_status,subject_code,subject_name,is_active').eq('student_id',studentId).eq('is_active',true).order('subject_code',{ascending:true}); if(year!=null)q2=q2.eq('academic_year',year); if(term!=null)q2=q2.eq('term',term); const r=await q2; if(r.error)throw r.error; return r.data||[];} return (data||[]).map(r=>({...r,credit:safeNum(r.subjects?.credit)||0,subject_type:safeText(r.subjects?.subject_type,''),teacher_name:safeText(r.teachers?.full_name,'')}));}
+    function getNumericGradeForGpa(grade){const g=normalizeGradeValue(grade); const map={'4':4,'3.5':3.5,'3':3,'2.5':2.5,'2':2,'1.5':1.5,'1':1,'0':0}; return Object.prototype.hasOwnProperty.call(map,g)?map[g]:null;}
+    function buildGradeSummary(rows){let total=0,earned=0,point=0,gpaCredit=0; rows.forEach(r=>{const credit=safeNum(r.credit)||0; const eff=normalizeGradeValue(r.retest_grade_code||r.grade_code); if(credit){total+=credit; if(isPassingGrade(eff))earned+=credit; const ng=getNumericGradeForGpa(eff); if(ng!==null){point+=ng*credit; gpaCredit+=credit;}}}); return {total,earned,gpa:gpaCredit?point/gpaCredit:0};}
+    async function openStudentDetail(student,ctx){try{el('gradeDetailView').classList.add('show'); el('detailStudentName').textContent=safeText(student.raw_full_name,'-'); el('detailStudentMeta').textContent=`${safeText(student.sid,'-')} • ${safeText(ctx.label,'')}`; el('gradeDetailList').innerHTML='<div class="card empty">กำลังโหลดผลการเรียน...</div>'; const rows=await fetchStudentGrades(student.id,ctx.academic_year,ctx.term); const summary=buildGradeSummary(rows); el('detailTotalCredit').textContent=summary.total.toFixed(1); el('detailEarnedCredit').textContent=summary.earned.toFixed(1); el('detailGpa').textContent=summary.gpa.toFixed(2); renderGradeDetailRows(rows);}catch(err){el('gradeDetailList').innerHTML=`<div class="card empty">${escapeHtml(err.message||'โหลดผลการเรียนไม่สำเร็จ')}</div>`;}}
+    function closeGradeDetail(){el('gradeDetailView').classList.remove('show');}
+    function renderGradeDetailRows(rows){const list=el('gradeDetailList'); if(!rows.length){list.innerHTML='<div class="card empty">ยังไม่พบข้อมูลผลการเรียน</div>'; return;} list.innerHTML=rows.map(r=>{const eff=normalizeGradeValue(r.retest_grade_code||r.grade_code); return `<div class="grade-card"><div class="row-between"><div><div class="mono">${escapeHtml(r.subject_code||'-')}</div><div class="subject-name">${escapeHtml(r.subject_name||'-')}</div><div class="student-sub">รวม ${escapeHtml(safeText(r.total_score,'-'))} • ครู ${escapeHtml(r.teacher_name||'-')}</div></div><div class="grade-badge ${isRiskGrade(eff)?'grade-bad':'grade-good'}">${escapeHtml(eff||'-')}</div></div></div>`;}).join('');}
+
+    function getBookingFilters(){return {academic_year:safeNum(el('bookingYear').value),term:safeNum(el('bookingTerm').value),class_level:safeText(el('bookingClassLevel').value,''),room:safeText(el('bookingRoom').value,'')};}
+    function updateBookingSummary(){const f=getBookingFilters(); el('bookingSummaryClassRoom').textContent=f.class_level&&f.room?`${f.class_level}/${f.room}`:'-'; el('bookingSummarySlotCount').textContent=state.bookingSlots.length; el('bookingSummaryMineCount').textContent=state.myReservations.length;}
+    async function loadBookingSlots(){try{const f=getBookingFilters(); if(!f.academic_year||!f.term||!f.class_level||!f.room){renderBookingSlots([]); setStatus('bookingSlotStatus','กรุณาเลือกปี/เทอม ชั้น และห้องให้ครบ','warn'); return;} showLoading('กำลังโหลดคาบว่าง...'); let q=supabaseClient.from('emptysec').select('id,academic_year,term,slot_code,class_level,room,class_room,day_of_week,period_no,note,is_active').eq('academic_year',f.academic_year).eq('term',f.term).eq('class_level',f.class_level).eq('room',f.room).eq('is_active',true).order('day_of_week',{ascending:true}).order('period_no',{ascending:true}); const {data,error}=await q; if(error)throw error; state.bookingSlots=data||[]; renderBookingSlots(state.bookingSlots); updateBookingSummary(); setStatus('bookingSlotStatus',state.bookingSlots.length?`พบคาบว่าง ${state.bookingSlots.length} รายการ`:'ไม่พบคาบว่างตามเงื่อนไข',state.bookingSlots.length?'success':'warn');}catch(err){console.error(err); renderBookingSlots([]); setStatus('bookingSlotStatus',err.message||'โหลดคาบว่างไม่สำเร็จ','error'); showToast('โหลดคาบว่างไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error');}finally{hideLoading();}}
+    function bookingDayClass(day){const d=safeText(day,''); if(d.includes('จันทร์'))return 'day-mon'; if(d.includes('อังคาร'))return 'day-tue'; if(d.includes('พุธ'))return 'day-wed'; if(d.includes('พฤหัส'))return 'day-thu'; if(d.includes('ศุกร์'))return 'day-fri'; return '';}
+    function renderBookingSlots(rows){const list=el('bookingSlotList'); if(!rows.length){list.innerHTML='<div class="card empty">ยังไม่มีข้อมูลคาบว่าง</div>'; updateBookingSummary(); return;} list.innerHTML=rows.map(s=>`<div class="booking-free-card ${bookingDayClass(s.day_of_week)}"><div class="booking-free-top"><div><div class="booking-free-code">${escapeHtml(s.slot_code||'-')}</div><div class="booking-free-room">${escapeHtml(s.class_room || `${s.class_level}/${s.room}`)}</div></div><div class="booking-free-period">คาบ ${escapeHtml(s.period_no||'-')}</div></div><div class="booking-free-note">${escapeHtml(s.day_of_week||'-')} • ${escapeHtml(s.note||'คาบว่าง')}</div><button class="btn btn-primary btn-block" data-book-slot="${escapeHtml(s.id)}">จองคาบนี้</button></div>`).join(''); document.querySelectorAll('[data-book-slot]').forEach(btn=>btn.addEventListener('click',()=>{const slot=state.bookingSlots.find(s=>String(s.id)===String(btn.dataset.bookSlot)); if(slot) openReserveModal(slot);})); updateBookingSummary();}
+    function fpTodayISO(){const d=new Date(); d.setHours(0,0,0,0); const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,'0'); const day=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`;}
+    function fpFormatThaiDate(iso){if(!iso)return '-'; const d=new Date(`${iso}T00:00:00`); if(Number.isNaN(d.getTime()))return iso; return d.toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric'});}
+    function getThaiDayNameFromISO(iso){const days=['วันอาทิตย์','วันจันทร์','วันอังคาร','วันพุธ','วันพฤหัสบดี','วันศุกร์','วันเสาร์']; const d=new Date(`${iso}T00:00:00`); return days[d.getDay()]||'';}
+    function openReserveModal(slot){state.selectedSlot=slot; el('reserveDateInput').value=''; el('reserveDateInput').min=fpTodayISO(); el('reserveModalSub').textContent=`${slot.class_room || `${slot.class_level}/${slot.room}`} • ${slot.day_of_week} • คาบ ${slot.period_no}`; setStatus('reserveStatus',`เลือกได้เฉพาะวันที่ตรงกับ${slot.day_of_week}`,'info'); el('bookingReserveModal').classList.add('show');}
+    function closeReserveModal(){el('bookingReserveModal').classList.remove('show'); state.selectedSlot=null;}
+    function validateReserveDate(slot,date){if(!slot)throw new Error('ไม่พบคาบว่างที่เลือก'); if(!date)throw new Error('กรุณาเลือกวันที่ต้องการจอง'); if(date<fpTodayISO())throw new Error('ไม่สามารถจองย้อนหลังได้'); const day=getThaiDayNameFromISO(date); if(day!==slot.day_of_week)throw new Error(`วันที่เลือกเป็น${day} แต่คาบว่างนี้เป็น${slot.day_of_week}`);}
+    async function confirmReserve(){try{const slot=state.selectedSlot; const date=safeText(el('reserveDateInput').value,''); validateReserveDate(slot,date); el('confirmReserveBtn').disabled=true; setStatus('reserveStatus','กำลังตรวจสอบการจอง...','info'); const {data:existing,error:readError}=await supabaseClient.from('free_period_reservations').select('id,teacher_full_name,teacher_code').eq('status','reserved').eq('reserve_date',date).eq('slot_id',slot.id).limit(1); if(readError)throw readError; if(existing&&existing.length){throw new Error(`คาบนี้ถูกจองแล้วโดย ${existing[0].teacher_full_name || existing[0].teacher_code || 'ครูท่านอื่น'}`);} const payload={slot_id:slot.id,slot_code:slot.slot_code,teacher_id:state.currentUser.id,teacher_code:state.currentUser.teacher_code,teacher_full_name:state.currentUser.full_name,academic_year:Number(slot.academic_year),term:Number(slot.term),class_level:slot.class_level,room:String(slot.room),class_room:slot.class_room,day_of_week:slot.day_of_week,period_no:Number(slot.period_no),reserve_date:date,status:'reserved'}; const {error}=await supabaseClient.from('free_period_reservations').insert(payload); if(error)throw error; closeReserveModal(); showToast('จองคาบว่างสำเร็จ',`${payload.class_room} ${payload.day_of_week} คาบ ${payload.period_no} วันที่ ${fpFormatThaiDate(date)}`,'success'); await loadMyReservations(false);}catch(err){const msg=String(err.message||'จองไม่สำเร็จ'); const friendly=msg.includes('duplicate')||msg.includes('unique')?'คาบนี้ถูกจองแล้วในวันที่เลือก':msg; setStatus('reserveStatus',friendly,'error'); showToast('จองไม่สำเร็จ',friendly,'error');}finally{el('confirmReserveBtn').disabled=false;}}
+    function getReservationFilters(){const f=getBookingFilters(); return f;}
+    async function loadMyReservations(showStatus=true){try{if(!state.currentUser)return; const f=getReservationFilters(); let q=supabaseClient.from('free_period_reservations').select('id,slot_id,slot_code,teacher_id,teacher_code,teacher_full_name,academic_year,term,class_level,room,class_room,day_of_week,period_no,reserve_date,status,created_at,cancelled_at,cancelled_by_teacher_code').eq('status','reserved').eq('teacher_code',state.currentUser.teacher_code).order('reserve_date',{ascending:false}).order('period_no',{ascending:true}); if(f.academic_year)q=q.eq('academic_year',f.academic_year); if(f.term)q=q.eq('term',f.term); const {data,error}=await q; if(error)throw error; state.myReservations=data||[]; renderMyReservations(state.myReservations); updateBookingSummary(); if(showStatus)setStatus('bookingMineStatus',state.myReservations.length?`พบรายการจองของฉัน ${state.myReservations.length} รายการ`:'ยังไม่มีรายการจองของฉัน',state.myReservations.length?'success':'warn');}catch(err){console.error(err); state.myReservations=[]; renderMyReservations([]); showToast('โหลดรายการจองไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error');}}
+    function renderMyReservations(rows){const list=el('bookingMineList'); if(!rows.length){list.innerHTML='<div class="card empty">ยังไม่มีรายการจอง</div>'; updateBookingSummary(); return;} list.innerHTML=rows.map(r=>`<div class="booking-mine-card"><div class="booking-mine-top"><div><div class="booking-mine-date">${escapeHtml(fpFormatThaiDate(r.reserve_date))}</div><div class="booking-mine-code">${escapeHtml(r.slot_code||'-')}</div></div><div class="booking-mine-pill">${escapeHtml(r.status||'reserved')}</div></div><div class="booking-mine-detail"><div class="booking-mine-detail-item"><div class="booking-mine-label">ชั้น/ห้อง</div><div class="booking-mine-value">${escapeHtml(r.class_room||'-')}</div></div><div class="booking-mine-detail-item"><div class="booking-mine-label">วัน/คาบ</div><div class="booking-mine-value">${escapeHtml(r.day_of_week||'-')} คาบ ${escapeHtml(r.period_no||'-')}</div></div></div><button class="btn btn-danger btn-block" data-cancel-reservation="${escapeHtml(r.id)}">ยกเลิกการจอง</button></div>`).join(''); document.querySelectorAll('[data-cancel-reservation]').forEach(btn=>btn.addEventListener('click',()=>cancelReservation(btn.dataset.cancelReservation))); updateBookingSummary();}
+    async function cancelReservation(id){try{if(!confirm('ต้องการยกเลิกรายการจองนี้หรือไม่'))return; showLoading('กำลังยกเลิกการจอง...'); const {data,error:readError}=await supabaseClient.from('free_period_reservations').select('id,teacher_code,status').eq('id',id).limit(1); if(readError)throw readError; const row=data?.[0]; if(!row)throw new Error('ไม่พบรายการจองนี้'); if(row.status!=='reserved')throw new Error('รายการนี้ไม่ได้อยู่ในสถานะจองแล้ว'); if(String(row.teacher_code||'').toUpperCase()!==String(state.currentUser.teacher_code||'').toUpperCase())throw new Error('ยกเลิกได้เฉพาะรายการที่คุณครูเป็นผู้จองเท่านั้น'); const {error}=await supabaseClient.from('free_period_reservations').update({status:'cancelled',cancelled_at:new Date().toISOString(),cancelled_by_teacher_code:state.currentUser.teacher_code}).eq('id',id); if(error)throw error; showToast('ยกเลิกการจองแล้ว','อัปเดตสถานะเป็น cancelled เรียบร้อย','success'); await loadMyReservations(true);}catch(err){showToast('ยกเลิกไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error');}finally{hideLoading();}}
 
     function bindEvents(){
-      el('loginBtn').addEventListener('click', login);
-      el('loginTeacherCode').addEventListener('keydown', e => { if(e.key === 'Enter') login(); });
-      el('loginPassword').addEventListener('keydown', e => { if(e.key === 'Enter') login(); });
-      el('logoutBtn').addEventListener('click', logout);
-
-      el('goRetestBtn').addEventListener('click', () => setActiveTab('retest'));
-      el('goAdviserBtn').addEventListener('click', async () => {
-        setActiveTab('adviser');
-        await loadAdviserRooms();
-      });
-
-        el('goBookingBtn').addEventListener('click', () => {
-         setActiveTab('booking');
-       });
-
-      el('navHomeBtn').addEventListener('click', () => setActiveTab('home'));
-      el('navRetestBtn').addEventListener('click', () => setActiveTab('retest'));
-      el('navAdviserBtn').addEventListener('click', async () => {
-        setActiveTab('adviser');
-        await loadAdviserRooms();
-      });
-
-        el('navBookingBtn').addEventListener('click', () => {
-  setActiveTab('booking');
-});
-
-        el('bookingSearchTabBtn').addEventListener('click', () => {
-  setBookingSubTab('search');
-});
-
-el('bookingMineTabBtn').addEventListener('click', () => {
-  setBookingSubTab('mine');
-});
-
-      el('loadRetestBtn').addEventListener('click', loadRetestRows);
-      el('retestStudentCodeKeyword').addEventListener('keydown', e => { if(e.key === 'Enter') loadRetestRows(); });
-
-      el('adviserYear').addEventListener('change', async () => {
-        await loadAdviserRooms();
-        renderAdviserStudents([]);
-        resetAdviserSummary();
-      });
-
-      el('adviserTerm').addEventListener('change', async () => {
-        await loadAdviserRooms();
-        renderAdviserStudents([]);
-        resetAdviserSummary();
-      });
-
-      el('adviserRoomSelect').addEventListener('change', () => {
-        state.selectedAdviserRoomKey = safeText(el('adviserRoomSelect').value, '');
-        renderAdviserStudents([]);
-        resetAdviserSummary();
-      });
-
-      el('adviserKeyword').addEventListener('input', () => {
-        clearTimeout(window.__mobileAdviserSearchTimer);
-        window.__mobileAdviserSearchTimer = setTimeout(loadAdviserStudents, 350);
-      });
-
-      el('loadAdviserStudentsBtn').addEventListener('click', loadAdviserStudents);
-      el('closeGradeDetailBtn').addEventListener('click', closeGradeDetail);
+      el('loginBtn').addEventListener('click',login); el('loginTeacherCode').addEventListener('keydown',e=>{if(e.key==='Enter')login();}); el('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')login();}); el('logoutBtn').addEventListener('click',logout);
+      el('goRetestBtn').addEventListener('click',()=>setActiveTab('retest')); el('goAdviserBtn').addEventListener('click',async()=>{setActiveTab('adviser'); await loadAdviserRooms();}); el('goBookingBtn').addEventListener('click',()=>setActiveTab('booking'));
+      el('navHomeBtn').addEventListener('click',()=>setActiveTab('home')); el('navRetestBtn').addEventListener('click',()=>setActiveTab('retest')); el('navAdviserBtn').addEventListener('click',async()=>{setActiveTab('adviser'); await loadAdviserRooms();}); el('navBookingBtn').addEventListener('click',()=>setActiveTab('booking'));
+      el('loadRetestBtn').addEventListener('click',loadRetestRows); el('retestStudentCodeKeyword').addEventListener('keydown',e=>{if(e.key==='Enter')loadRetestRows();});
+      el('adviserYear').addEventListener('change',async()=>{await loadAdviserRooms(); renderAdviserStudents([]); resetAdviserSummary();}); el('adviserTerm').addEventListener('change',async()=>{await loadAdviserRooms(); renderAdviserStudents([]); resetAdviserSummary();}); el('adviserRoomSelect').addEventListener('change',()=>{state.selectedAdviserRoomKey=safeText(el('adviserRoomSelect').value,''); renderAdviserStudents([]); resetAdviserSummary();}); el('adviserKeyword').addEventListener('input',()=>{clearTimeout(window.__mobileAdviserSearchTimer); window.__mobileAdviserSearchTimer=setTimeout(loadAdviserStudents,350);}); el('loadAdviserStudentsBtn').addEventListener('click',loadAdviserStudents); el('closeGradeDetailBtn').addEventListener('click',closeGradeDetail);
+      el('bookingSearchTabBtn').addEventListener('click',()=>setBookingSubTab('search')); el('bookingMineTabBtn').addEventListener('click',()=>setBookingSubTab('mine')); el('loadBookingSlotsBtn').addEventListener('click',loadBookingSlots); el('loadMyBookingBtn').addEventListener('click',()=>loadMyReservations(true)); el('cancelReserveBtn').addEventListener('click',closeReserveModal); el('confirmReserveBtn').addEventListener('click',confirmReserve);
     }
-
-    async function init(){
-      bindEvents();
-      resetAdviserSummary();
-
-      const restored = restoreSession();
-      if(restored){
-        setActiveTab('home');
-        await loadMobileSettings();
-        await loadAdviserRooms();
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-
-     if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js')
-        .then(function () {
-          console.log('Teacher Mobile service worker registered');
-        })
-        .catch(function (err) {
-          console.warn('Service worker registration failed:', err);
-        });
-    });
-  }
+    async function init(){bindEvents(); resetAdviserSummary(); const restored=restoreSession(); if(restored){setActiveTab('home'); await loadMobileSettings(); await loadAdviserRooms();}}
+    document.addEventListener('DOMContentLoaded',init);
+    if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(()=>console.log('Teacher Mobile service worker registered')).catch(err=>console.warn('Service worker registration failed:',err));});}
   </script>
 </body>
 </html>
