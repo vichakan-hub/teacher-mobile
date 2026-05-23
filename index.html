@@ -171,7 +171,7 @@
     </main>
 
     <main id="retestView" class="view hidden">
-      <header class="topbar"><div class="top-row"><div><h1 class="page-title">ส่งผลสอบแก้ตัว</h1><p class="page-sub">ส่งผลการสอบแก้ตัวให้งานทะเบียน-วัดผล</p></div></div></header>
+      <header class="topbar"><div class="top-row"><div><h1 class="page-title">📝 ส่งผลสอบแก้ตัว</h1><p class="page-sub">ส่งผลการสอบแก้ตัวให้งานทะเบียน-วัดผล</p></div></div></header>
       <section class="content">
         <div class="card">
           <div class="form-grid"><div class="field" style="margin-top:0;"><label class="label">ปีการศึกษา</label><select id="retestYear" class="select"><option value="">กำลังโหลด...</option></select></div><div class="field" style="margin-top:0;"><label class="label">ภาคเรียน</label><select id="retestTerm" class="select"><option value="">กำลังโหลด...</option></select></div></div>
@@ -184,7 +184,7 @@
     </main>
 
     <main id="adviserView" class="view hidden">
-      <header class="topbar"><div class="top-row"><div><div class="school-pill">🎓 Adviser</div><h1 class="page-title">นักเรียนในที่ปรึกษา</h1><p class="page-sub">ดูเกรดและติดตามนักเรียนกลุ่มเสี่ยง</p></div></div></header>
+      <header class="topbar"><div class="top-row"><div><h1 class="page-title">🎓 ติดตามผลการเรียน</h1><p class="page-sub">ดูเกรดและติดตามนักเรียนกลุ่มเสี่ยง</p></div></div></header>
       <section class="content">
         <div class="card">
           <div class="form-grid"><div class="field" style="margin-top:0;"><label class="label">ปีการศึกษา</label><select id="adviserYear" class="select"><option value="">กำลังโหลด...</option></select></div><div class="field" style="margin-top:0;"><label class="label">ภาคเรียน</label><select id="adviserTerm" class="select"><option value="">กำลังโหลด...</option></select></div></div>
@@ -198,11 +198,11 @@
     </main>
 
     <main id="bookingView" class="view hidden">
-      <header class="topbar"><div class="top-row"><div><div class="school-pill">🗓️ Booking</div><h1 class="page-title">จองคาบว่าง</h1><p class="page-sub">ค้นหาคาบว่างของห้องเรียน และดูรายการจองของฉัน</p></div></div></header>
+      <header class="topbar"><div class="top-row"><div><h1 class="page-title">🗓️ จองคาบว่าง</h1><p class="page-sub">ค้นหาคาบว่างของห้องเรียน และดูรายการจองของฉัน</p></div></div></header>
       <section class="content">
         <div class="card"><div class="booking-tabs"><button id="bookingSearchTabBtn" class="booking-tab active" type="button">ค้นหา</button><button id="bookingMineTabBtn" class="booking-tab" type="button">ของฉัน</button></div></div>
         <section id="bookingSearchPanel" class="booking-panel">
-          <div class="card"><div class="head-title">ค้นหาและจองคาบว่าง</div><div class="student-sub" style="line-height:1.65;margin-top:4px;">เลือกปีการศึกษา ภาคเรียน ชั้น และห้อง เพื่อแสดงคาบว่างแบบรายการ Card</div>
+          <div class="card"><div class="head-title">ค้นหาและจองคาบว่าง</div><div class="student-sub" style="line-height:1.65;margin-top:4px;">เลือกปีการศึกษา ภาคเรียน ชั้น และห้อง แล้วกดแสดงคาบว่างเพื่อจองคาบ</div>
             <div class="form-grid" style="margin-top:12px;"><div class="field" style="margin-top:0;"><label class="label">ปีการศึกษา</label><select id="bookingYear" class="select"><option value="">กำลังโหลด...</option></select></div><div class="field" style="margin-top:0;"><label class="label">ภาคเรียน</label><select id="bookingTerm" class="select"><option value="">กำลังโหลด...</option></select></div></div>
             <div class="form-grid"><div class="field"><label class="label">ชั้น</label><select id="bookingClassLevel" class="select"><option value="">เลือกชั้น</option><option value="ม.1">ม.1</option><option value="ม.2">ม.2</option><option value="ม.3">ม.3</option><option value="ม.4">ม.4</option><option value="ม.5">ม.5</option><option value="ม.6">ม.6</option></select></div><div class="field"><label class="label">ห้อง</label><select id="bookingRoom" class="select"><option value="">เลือกห้อง</option><option value="1">ห้อง 1</option><option value="2">ห้อง 2</option><option value="3">ห้อง 3</option><option value="4">ห้อง 4</option><option value="5">ห้อง 5</option><option value="6">ห้อง 6</option><option value="7">ห้อง 7</option><option value="8">ห้อง 8</option></select></div></div>
             <button id="loadBookingSlotsBtn" class="btn btn-primary btn-block" style="margin-top:14px;">แสดงคาบว่าง</button><div id="bookingSlotStatus" class="status info">เลือกชั้น/ห้อง แล้วกดแสดงคาบว่าง</div>
@@ -214,7 +214,7 @@
       </section>
     </main>
 
-    <nav id="bottomNav" class="bottom-nav hidden"><div class="nav-grid"><button id="navHomeBtn" class="nav-btn active" type="button"><span class="nav-icon">🏠</span><span>หน้าแรก</span></button><button id="navRetestBtn" class="nav-btn" type="button"><span class="nav-icon">📝</span><span>แก้ตัว</span></button><button id="navAdviserBtn" class="nav-btn" type="button"><span class="nav-icon">🎓</span><span>ที่ปรึกษา</span></button><button id="navBookingBtn" class="nav-btn" type="button"><span class="nav-icon">🗓️</span><span>จองคาบ</span></button></div></nav>
+    <nav id="bottomNav" class="bottom-nav hidden"><div class="nav-grid"><button id="navHomeBtn" class="nav-btn active" type="button"><span class="nav-icon">🏠</span><span>หน้าแรก</span></button><button id="navRetestBtn" class="nav-btn" type="button"><span class="nav-icon">📝</span><span>แก้ตัว</span></button><button id="navAdviserBtn" class="nav-btn" type="button"><span class="nav-icon">🎓</span><span>ดูเกรด</span></button><button id="navBookingBtn" class="nav-btn" type="button"><span class="nav-icon">🗓️</span><span>จองคาบ</span></button></div></nav>
   </div>
 
   <div id="gradeDetailView" class="detail-view"><div class="detail-shell"><div class="detail-hero"></div><div class="detail-content"><button id="closeGradeDetailBtn" class="back-btn" type="button">← กลับ</button><div style="color:#fff;margin-top:16px;"><div class="school-pill">ผลการเรียน</div><h1 id="detailStudentName" class="page-title">-</h1><p id="detailStudentMeta" class="page-sub">-</p></div><div class="summary-grid"><div class="summary-mini summary-blue"><div class="summary-mini-label">หน่วยกิต</div><div id="detailTotalCredit" class="summary-mini-value">0.0</div></div><div class="summary-mini summary-green"><div class="summary-mini-label">ได้</div><div id="detailEarnedCredit" class="summary-mini-value">0.0</div></div><div class="summary-mini summary-gray"><div class="summary-mini-label">GPA</div><div id="detailGpa" class="summary-mini-value">0.00</div></div></div><div id="gradeDetailList" class="list" style="margin-top:14px;"><div class="card empty">กำลังโหลด...</div></div></div></div></div>
