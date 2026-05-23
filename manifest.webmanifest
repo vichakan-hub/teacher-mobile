@@ -1,6 +1,6 @@
 {
-  "name": "PR Academic Portal - ศูนย์รวมงานวิชาการสำหรับครู",
-  "short_name": "PR Academic Portal",
+  "name": "AcademicPR - ศูนย์รวมงานวิชาการสำหรับครู",
+  "short_name": "AcademicPR",
   "description": "ส่งผลสอบแก้ตัวและดูเกรดนักเรียนในที่ปรึกษา",
   "start_url": "/",
   "scope": "/",
