@@ -443,7 +443,162 @@ function restoreSession(){
     function resetAdviserSummary(){el('adviserTotalStudents').textContent='0'; el('adviserGradedStudents').textContent='0'; el('adviserRiskStudents').textContent='0';}
     function updateAdviserSummary(rows){el('adviserTotalStudents').textContent=rows.length; el('adviserGradedStudents').textContent=rows.filter(r=>r.has_grade_result).length; el('adviserRiskStudents').textContent=rows.filter(r=>r.has_risk_grade).length;}
     function renderAdviserStudents(rows){const list=el('adviserStudentList'); if(!rows.length){list.innerHTML='<div class="card empty">ยังไม่มีข้อมูลนักเรียนในที่ปรึกษา</div>'; return;} list.innerHTML=rows.map(s=>{const status=s.risk_terms?.length?`<span class="badge badge-risk">เสี่ยง: ${escapeHtml(s.risk_terms.join(', '))}</span>`:s.has_grade_result?'<span class="badge badge-normal">ปกติ</span>':'<span class="badge badge-none">ยังไม่พบผลการเรียน</span>'; const buttons=(s.term_plans||[]).filter(p=>s.term_flags?.[p.key]?.has_grade_result).map(p=>`<button class="term-btn ${s.term_flags?.[p.key]?.has_risk_grade?'risk':''}" data-student-id="${escapeHtml(s.id)}" data-year="${escapeHtml(p.academic_year)}" data-term="${escapeHtml(p.term)}" data-label="${escapeHtml(p.label)}">${escapeHtml(p.class_level)}<br>เทอม ${escapeHtml(p.term)}</button>`).join(''); return `<div class="card"><div class="row-between"><div><div class="mono">${escapeHtml(s.sid||'-')}</div><div class="student-main">${escapeHtml(s.raw_full_name||'-')}</div><div class="student-sub">เลขที่ ${escapeHtml(safeText(s.current_no,'-'))}</div></div>${status}</div><div class="term-grid">${buttons||'<div class="student-sub">ยังไม่มีปุ่มดูผลการเรียน</div>'}</div></div>`;}).join(''); document.querySelectorAll('[data-student-id][data-year][data-term]').forEach(btn=>btn.addEventListener('click',()=>{const student=state.adviserStudents.find(s=>String(s.id)===String(btn.dataset.studentId)); if(student) openStudentDetail(student,{academic_year:safeNum(btn.dataset.year),term:safeNum(btn.dataset.term),label:safeText(btn.dataset.label,'')});}));}
-    async function fetchStudentGrades(studentId,year,term){let q=supabaseClient.from('grade_results').select('id,student_id,student_code,student_name,student_no,academic_year,term,class_level,room,study_unit_score,midterm_score,final_score,total_score,grade_code,retest_grade_code,grading_status,subject_code,subject_name,is_active,subjects:subjects!fk_grade_results_subject(credit,learning_area,subject_type),teachers:teachers!fk_grade_results_teacher(teacher_code,full_name)').eq('student_id',studentId).eq('is_active',true).order('subject_code',{ascending:true}); if(year!=null)q=q.eq('academic_year',year); if(term!=null)q=q.eq('term',term); const {data,error}=await q; if(error){let q2=supabaseClient.from('grade_results').select('id,student_id,student_code,student_name,student_no,academic_year,term,class_level,room,study_unit_score,midterm_score,final_score,total_score,grade_code,retest_grade_code,grading_status,subject_code,subject_name,is_active').eq('student_id',studentId).eq('is_active',true).order('subject_code',{ascending:true}); if(year!=null)q2=q2.eq('academic_year',year); if(term!=null)q2=q2.eq('term',term); const r=await q2; if(r.error)throw r.error; return r.data||[];} return (data||[]).map(r=>({...r,credit:safeNum(r.subjects?.credit)||0,subject_type:safeText(r.subjects?.subject_type,''),teacher_name:safeText(r.teachers?.full_name,'')}));}
+    /*******************************************************
+ * Grade Detail Subject Sort
+ * เรียงกลุ่มสาระ: ท>ค>ว>ส>พ>ศ>ง>อ>ข>จ>ญ>ต>ก
+ * เรียงประเภทวิชา: พื้นฐาน>เพิ่มเติม
+ *******************************************************/
+
+const LEARNING_AREA_SORT_ORDER = ['ท','ค','ว','ส','พ','ศ','ง','อ','ข','จ','ญ','ต','ก'];
+
+const SUBJECT_TYPE_SORT_ORDER = [
+  'พื้นฐาน',
+  'เพิ่มเติม',
+  'กิจกรรม'
+];
+
+function normalizeLearningAreaKey(row){
+  const learningArea = safeText(row.learning_area || row.subjects?.learning_area, '');
+  const subjectCode = safeText(row.subject_code, '');
+
+  // ถ้ามีชื่อกลุ่มสาระใน subjects.learning_area ให้ใช้ตัวอักษรแรก
+  if(learningArea){
+    return learningArea.trim().charAt(0);
+  }
+
+  // fallback: ใช้ตัวอักษรแรกของรหัสวิชา เช่น ท21101, ค21101
+  if(subjectCode){
+    return subjectCode.trim().charAt(0);
+  }
+
+  return '';
+}
+
+function getLearningAreaSortIndex(row){
+  const key = normalizeLearningAreaKey(row);
+  const index = LEARNING_AREA_SORT_ORDER.indexOf(key);
+  return index >= 0 ? index : 999;
+}
+
+function normalizeSubjectTypeKey(row){
+  const subjectType = safeText(row.subject_type || row.subjects?.subject_type, '');
+
+  if(subjectType.includes('พื้นฐาน')) return 'พื้นฐาน';
+  if(subjectType.includes('เพิ่มเติม')) return 'เพิ่มเติม';
+  if(subjectType.includes('กิจกรรม')) return 'กิจกรรม';
+
+  return subjectType || '';
+}
+
+function getSubjectTypeSortIndex(row){
+  const key = normalizeSubjectTypeKey(row);
+  const index = SUBJECT_TYPE_SORT_ORDER.indexOf(key);
+  return index >= 0 ? index : 999;
+}
+
+function compareGradeSubjectRows(a, b){
+  const areaA = getLearningAreaSortIndex(a);
+  const areaB = getLearningAreaSortIndex(b);
+
+  if(areaA !== areaB) return areaA - areaB;
+
+  const typeA = getSubjectTypeSortIndex(a);
+  const typeB = getSubjectTypeSortIndex(b);
+
+  if(typeA !== typeB) return typeA - typeB;
+
+  const codeA = safeText(a.subject_code, '');
+  const codeB = safeText(b.subject_code, '');
+
+  return codeA.localeCompare(codeB, 'th', { numeric:true });
+}
+   async function fetchStudentGrades(studentId,year,term){
+  let q = supabaseClient
+    .from('grade_results')
+    .select(`
+      id,
+      student_id,
+      student_code,
+      student_name,
+      student_no,
+      academic_year,
+      term,
+      class_level,
+      room,
+      study_unit_score,
+      midterm_score,
+      final_score,
+      total_score,
+      grade_code,
+      retest_grade_code,
+      grading_status,
+      subject_code,
+      subject_name,
+      is_active,
+      subjects:subjects!fk_grade_results_subject(
+        credit,
+        learning_area,
+        subject_type
+      ),
+      teachers:teachers!fk_grade_results_teacher(
+        teacher_code,
+        full_name
+      )
+    `)
+    .eq('student_id', studentId)
+    .eq('is_active', true);
+
+  if(year != null) q = q.eq('academic_year', year);
+  if(term != null) q = q.eq('term', term);
+
+  const { data, error } = await q;
+
+  if(error){
+    let q2 = supabaseClient
+      .from('grade_results')
+      .select(`
+        id,
+        student_id,
+        student_code,
+        student_name,
+        student_no,
+        academic_year,
+        term,
+        class_level,
+        room,
+        study_unit_score,
+        midterm_score,
+        final_score,
+        total_score,
+        grade_code,
+        retest_grade_code,
+        grading_status,
+        subject_code,
+        subject_name,
+        is_active
+      `)
+      .eq('student_id', studentId)
+      .eq('is_active', true);
+
+    if(year != null) q2 = q2.eq('academic_year', year);
+    if(term != null) q2 = q2.eq('term', term);
+
+    const r = await q2;
+    if(r.error) throw r.error;
+
+    return (r.data || []).sort(compareGradeSubjectRows);
+  }
+
+  return (data || [])
+    .map(r => ({
+      ...r,
+      credit: safeNum(r.subjects?.credit) || 0,
+      learning_area: safeText(r.subjects?.learning_area, ''),
+      subject_type: safeText(r.subjects?.subject_type, ''),
+      teacher_name: safeText(r.teachers?.full_name, '')
+    }))
+    .sort(compareGradeSubjectRows);
+}
     function getNumericGradeForGpa(grade){const g=normalizeGradeValue(grade); const map={'4':4,'3.5':3.5,'3':3,'2.5':2.5,'2':2,'1.5':1.5,'1':1,'0':0}; return Object.prototype.hasOwnProperty.call(map,g)?map[g]:null;}
     function buildGradeSummary(rows){let total=0,earned=0,point=0,gpaCredit=0; rows.forEach(r=>{const credit=safeNum(r.credit)||0; const eff=normalizeGradeValue(r.retest_grade_code||r.grade_code); if(credit){total+=credit; if(isPassingGrade(eff))earned+=credit; const ng=getNumericGradeForGpa(eff); if(ng!==null){point+=ng*credit; gpaCredit+=credit;}}}); return {total,earned,gpa:gpaCredit?point/gpaCredit:0};}
     async function openStudentDetail(student,ctx){try{el('gradeDetailView').classList.add('show'); el('detailStudentName').textContent=safeText(student.raw_full_name,'-'); el('detailStudentMeta').textContent=`${safeText(student.sid,'-')} • ${safeText(ctx.label,'')}`; el('gradeDetailList').innerHTML='<div class="card empty">กำลังโหลดผลการเรียน...</div>'; const rows=await fetchStudentGrades(student.id,ctx.academic_year,ctx.term); const summary=buildGradeSummary(rows); el('detailTotalCredit').textContent=summary.total.toFixed(1); el('detailEarnedCredit').textContent=summary.earned.toFixed(1); el('detailGpa').textContent=summary.gpa.toFixed(2); renderGradeDetailRows(rows);}catch(err){el('gradeDetailList').innerHTML=`<div class="card empty">${escapeHtml(err.message||'โหลดผลการเรียนไม่สำเร็จ')}</div>`;}}
