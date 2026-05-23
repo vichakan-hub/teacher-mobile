@@ -390,8 +390,70 @@
 .name{
   margin-top:8px;
 }
-@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}</style></head><body><section><div class="header"><img class="logo" src="${escapeHtml(logoUrl)}" alt="logo"><div><div class="school">โรงเรียนท่าใหม่ “พูลสวัสดิ์ราษฎร์นุกูล”</div><div class="title">รายการจองคาบว่างของครูผู้สอน</div><div class="subtitle">ภาคเรียนที่ ${escapeHtml(term)} ปีการศึกษา ${escapeHtml(year)}</div></div></div><div class="meta"><div>ครูผู้จอง : ${escapeHtml(teacherText)}</div><div class="meta-right">วันที่พิมพ์ : ${escapeHtml(printedAt)} น.</div><div>จำนวนรายการ : ${rows.length} รายการ</div><div></div></div><table><thead><tr><th style="width:52px;">ลำดับ</th><th style="width:120px;">วันที่จอง</th><th style="width:110px;">รหัสคาบ</th><th style="width:110px;">ชั้น/ห้อง</th><th style="width:120px;">วัน</th><th style="width:70px;">คาบ</th><th style="width:100px;">สถานะ</th></tr></thead><tbody>${rowHtml}</tbody></table><div class="signature"><div class="signature-box"><div class="sign-line">ลงชื่อ <span class="dots"></span> ผู้จอง</div><div class="name">( ${escapeHtml(teacherName)} )</div></div></div></section><script>window.onload=function(){setTimeout(function(){window.focus();window.print();},350);};<\/script></body></html>`;}
-    function printSelectedMyReservations(){const rows=bookingGetSelectedMyReservations(); if(!rows.length){showToast('ยังไม่ได้เลือกรายการ','กรุณาเลือกรายการที่ต้องการพิมพ์ก่อน','warn'); return;} const printWindow=window.open('','_blank','width=960,height=720'); if(!printWindow){showToast('เปิดหน้าพิมพ์ไม่ได้','กรุณาอนุญาต popup ของเว็บไซต์นี้ก่อน','error'); return;} printWindow.document.open(); printWindow.document.write(bookingBuildReservationPrintHtml(rows)); printWindow.document.close();}
+@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}</style></head><body><section><div class="header"><img class="logo" src="${escapeHtml(logoUrl)}" alt="logo"><div><div class="school">โรงเรียนท่าใหม่ “พูลสวัสดิ์ราษฎร์นุกูล”</div><div class="title">รายการจองคาบว่างของครูผู้สอน</div><div class="subtitle">ภาคเรียนที่ ${escapeHtml(term)} ปีการศึกษา ${escapeHtml(year)}</div></div></div><div class="meta"><div>ครูผู้จอง : ${escapeHtml(teacherText)}</div><div class="meta-right">วันที่พิมพ์ : ${escapeHtml(printedAt)} น.</div><div>จำนวนรายการ : ${rows.length} รายการ</div><div></div></div><table><thead><tr><th style="width:52px;">ลำดับ</th><th style="width:120px;">วันที่จอง</th><th style="width:110px;">รหัสคาบ</th><th style="width:110px;">ชั้น/ห้อง</th><th style="width:120px;">วัน</th><th style="width:70px;">คาบ</th><th style="width:100px;">สถานะ</th></tr></thead><tbody>${rowHtml}</tbody></table><div class="signature"><div class="signature-box"><div class="sign-line">ลงชื่อ <span class="dots"></span> ผู้จอง</div><div class="name">( ${escapeHtml(teacherName)} )</div></div></div></section><script><\/script></body></html>`;}
+    function printSelectedMyReservations(){
+  const rows = bookingGetSelectedMyReservations();
+
+  if(!rows.length){
+    showToast(
+      'ยังไม่ได้เลือกรายการ',
+      'กรุณาเลือกรายการที่ต้องการพิมพ์ก่อน',
+      'warn'
+    );
+    return;
+  }
+
+  const html = bookingBuildReservationPrintHtml(rows);
+  printHtmlInHiddenFrame(html, 'bookingPrintFrame');
+}
+
+    function printHtmlInHiddenFrame(html, frameId = 'printFrame'){
+  let frame = document.getElementById(frameId);
+
+  if(frame){
+    frame.remove();
+  }
+
+  frame = document.createElement('iframe');
+  frame.id = frameId;
+  frame.name = frameId;
+
+  frame.style.position = 'fixed';
+  frame.style.right = '0';
+  frame.style.bottom = '0';
+  frame.style.width = '0';
+  frame.style.height = '0';
+  frame.style.border = '0';
+  frame.style.opacity = '0';
+  frame.style.pointerEvents = 'none';
+
+  document.body.appendChild(frame);
+
+  const doc = frame.contentWindow.document;
+  doc.open();
+  doc.write(html);
+  doc.close();
+
+  frame.onload = function(){
+    setTimeout(() => {
+      try{
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+      }catch(err){
+        console.error('print iframe error', err);
+        showToast(
+          'พิมพ์ไม่สำเร็จ',
+          'ไม่สามารถเปิดหน้าพิมพ์ได้ กรุณาลองใหม่',
+          'error'
+        );
+      }
+
+      setTimeout(() => {
+        frame.remove();
+      }, 1500);
+    }, 350);
+  };
+}
 
     async function loadMyReservations(showStatus=true){try{if(!state.currentUser)return; const f=getReservationFilters(); let q=supabaseClient.from('free_period_reservations').select('id,slot_id,slot_code,teacher_id,teacher_code,teacher_full_name,academic_year,term,class_level,room,class_room,day_of_week,period_no,reserve_date,status,created_at,cancelled_at,cancelled_by_teacher_code').eq('status','reserved').eq('teacher_code',state.currentUser.teacher_code).order('reserve_date',{ascending:false}).order('period_no',{ascending:true}); if(f.academic_year)q=q.eq('academic_year',f.academic_year); if(f.term)q=q.eq('term',f.term); const {data,error}=await q; if(error)throw error; state.myReservations=data||[]; renderMyReservations(state.myReservations); updateBookingSummary(); if(showStatus)setStatus('bookingMineStatus',state.myReservations.length?`พบรายการจองของฉัน ${state.myReservations.length} รายการ`:'ยังไม่มีรายการจองของฉัน',state.myReservations.length?'success':'warn');}catch(err){console.error(err); state.myReservations=[]; renderMyReservations([]); showToast('โหลดรายการจองไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error');}}
     function renderMyReservations(rows){
