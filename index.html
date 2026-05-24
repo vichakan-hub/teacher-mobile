@@ -199,6 +199,161 @@
   height:24px;
   display:block;
 }
+
+    /* ===== booking reservation calendar ===== */
+.booking-calendar-modal-card{
+  max-height:92dvh;
+  overflow:auto;
+}
+
+.booking-reserve-summary{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border:1px solid #d8e4ef;
+  border-radius:18px;
+  overflow:hidden;
+  background:#f8fbff;
+}
+
+.booking-reserve-summary-item{
+  padding:12px 10px;
+  border-right:1px solid #d8e4ef;
+}
+
+.booking-reserve-summary-item:last-child{
+  border-right:0;
+}
+
+.booking-reserve-label{
+  font-size:12px;
+  font-weight:800;
+  color:#6b7a90;
+  margin-bottom:3px;
+}
+
+.booking-reserve-value{
+  font-size:17px;
+  font-weight:900;
+  color:#17324d;
+  line-height:1.2;
+}
+
+.booking-calendar-box{
+  margin-top:8px;
+  border:1px solid #d8e4ef;
+  border-radius:20px;
+  background:#f8fbff;
+  padding:12px;
+}
+
+.booking-calendar-head{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.booking-month-btn{
+  min-height:40px;
+  border-radius:14px;
+  padding:0 12px;
+  background:#eef3f8;
+  color:#17324d;
+  font-size:13px;
+  font-weight:900;
+}
+
+.booking-calendar-title{
+  text-align:center;
+  font-size:18px;
+  font-weight:900;
+  color:#17324d;
+}
+
+.booking-calendar-weekdays,
+.booking-calendar-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+
+.booking-calendar-weekdays{
+  margin-bottom:7px;
+}
+
+.booking-calendar-weekdays div{
+  text-align:center;
+  color:#6b7a90;
+  font-size:13px;
+  font-weight:900;
+}
+
+.booking-day-btn{
+  min-height:38px;
+  border-radius:13px;
+  background:#eef3f8;
+  color:#b0bdca;
+  border:1px solid #dce7f2;
+  font-weight:900;
+  font-size:15px;
+  cursor:not-allowed;
+}
+
+.booking-day-btn.is-empty{
+  visibility:hidden;
+}
+
+.booking-day-btn.is-available{
+  background:#e9f8ef;
+  color:#0f9d58;
+  border-color:#bfe6cb;
+  cursor:pointer;
+}
+
+.booking-day-btn.is-selected{
+  background:#2563eb;
+  color:#ffffff;
+  border-color:#2563eb;
+  box-shadow:0 10px 22px rgba(37,99,235,.25);
+  cursor:pointer;
+}
+
+.booking-day-btn.is-today:not(.is-selected){
+  border-color:#2563eb;
+}
+
+.booking-calendar-hint{
+  margin-top:10px;
+  font-size:13px;
+  font-weight:700;
+  color:#6b7a90;
+}
+
+@media (max-width:390px){
+  .booking-reserve-summary{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .booking-reserve-summary-item:nth-child(2){
+    border-right:0;
+  }
+
+  .booking-reserve-summary-item:nth-child(1),
+  .booking-reserve-summary-item:nth-child(2){
+    border-bottom:1px solid #d8e4ef;
+  }
+
+  .booking-calendar-head{
+    grid-template-columns:1fr;
+  }
+
+  .booking-calendar-title{
+    order:-1;
+  }
+}
 </style>
 </head>
 <body>
@@ -314,7 +469,49 @@
 
   <div id="gradeDetailView" class="detail-view"><div class="detail-shell"><div class="detail-hero"></div><div class="detail-content"><button id="closeGradeDetailBtn" class="back-btn" type="button">← กลับ</button><div style="color:#fff;margin-top:16px;"><h1 id="detailStudentName" class="page-title">-</h1><p id="detailStudentMeta" class="page-sub">-</p></div><div class="summary-grid"><div class="summary-mini summary-blue"><div class="summary-mini-label">หน่วยกิต</div><div id="detailTotalCredit" class="summary-mini-value">0.0</div></div><div class="summary-mini summary-green"><div class="summary-mini-label">ได้</div><div id="detailEarnedCredit" class="summary-mini-value">0.0</div></div><div class="summary-mini summary-gray"><div class="summary-mini-label">GPA</div><div id="detailGpa" class="summary-mini-value">0.00</div></div></div><div id="gradeDetailList" class="list" style="margin-top:14px;"><div class="card empty">กำลังโหลด...</div></div></div></div></div>
 
-  <div id="bookingReserveModal" class="modal"><div class="modal-card"><div class="modal-title">ยืนยันการจองคาบว่าง</div><p id="reserveModalSub" class="modal-sub">-</p><div class="field"><label class="label">วันที่ต้องการจอง</label><input id="reserveDateInput" class="input" type="date"></div><div id="reserveStatus" class="status info">เลือกวันที่ที่ตรงกับวันของคาบว่าง</div><div class="modal-actions"><button id="cancelReserveBtn" class="btn btn-secondary" type="button">ยกเลิก</button><button id="confirmReserveBtn" class="btn btn-primary" type="button">ยืนยัน</button></div></div></div>
+  <div id="bookingReserveModal" class="modal">
+  <div class="modal-card booking-calendar-modal-card">
+    <div class="modal-title">ยืนยันการจองคาบว่าง</div>
+    <p class="modal-sub">กรุณาเลือกวันที่จริงที่ต้องการจอง ระบบจะตรวจสอบว่าวันที่เลือกตรงกับวันของคาบว่างหรือไม่</p>
+
+    <div id="reserveModalSub" class="booking-reserve-summary">-</div>
+
+    <div class="field">
+      <label class="label">วันที่ต้องการจอง</label>
+
+      <input id="reserveDateInput" class="input hidden" type="date">
+
+      <div class="booking-calendar-box">
+        <div class="booking-calendar-head">
+          <button id="reservePrevMonthBtn" class="booking-month-btn" type="button">‹ เดือนก่อน</button>
+          <div id="reserveCalendarTitle" class="booking-calendar-title">-</div>
+          <button id="reserveNextMonthBtn" class="booking-month-btn" type="button">เดือนถัดไป ›</button>
+        </div>
+
+        <div class="booking-calendar-weekdays">
+          <div>อา.</div>
+          <div>จ.</div>
+          <div>อ.</div>
+          <div>พ.</div>
+          <div>พฤ.</div>
+          <div>ศ.</div>
+          <div>ส.</div>
+        </div>
+
+        <div id="reserveCalendarGrid" class="booking-calendar-grid"></div>
+
+        <div id="reserveCalendarHint" class="booking-calendar-hint">เลือกได้เฉพาะวันที่ตรงกับวันของคาบว่างเท่านั้น</div>
+      </div>
+    </div>
+
+    <div id="reserveStatus" class="status info">เลือกวันที่ที่ตรงกับวันของคาบว่าง</div>
+
+    <div class="modal-actions">
+      <button id="cancelReserveBtn" class="btn btn-secondary" type="button">ยกเลิก</button>
+      <button id="confirmReserveBtn" class="btn btn-primary" type="button">ยืนยันการจอง</button>
+    </div>
+  </div>
+</div>
 
   <div id="toastWrap" class="toast-wrap"></div>
   <div id="loadingCover" class="loading-cover"><div class="loading-card"><div class="spinner"></div><div id="loadingText" style="font-weight:800;">กำลังโหลด...</div></div></div>
@@ -343,7 +540,9 @@
       bookingSlots:[],
       myReservations:[],
       selectedMyReservationIds:new Set(),
-      selectedSlot:null
+      selectedSlot:null,
+      reserveCalendarMonth:null,
+      reserveSelectedDate:''
     };
 
     function escapeHtml(text){return String(text ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');}
@@ -769,8 +968,176 @@ function compareGradeSubjectRows(a, b){
   });
 }
     function getThaiDayNameFromISO(iso){const days=['วันอาทิตย์','วันจันทร์','วันอังคาร','วันพุธ','วันพฤหัสบดี','วันศุกร์','วันเสาร์']; const d=new Date(`${iso}T00:00:00`); return days[d.getDay()]||'';}
-    function openReserveModal(slot){state.selectedSlot=slot; el('reserveDateInput').value=''; el('reserveDateInput').min=fpTodayISO(); el('reserveModalSub').textContent=`${slot.class_room || `${slot.class_level}/${slot.room}`} • ${slot.day_of_week} • คาบ ${slot.period_no}`; setStatus('reserveStatus',`เลือกได้เฉพาะวันที่ตรงกับ${slot.day_of_week}`,'info'); el('bookingReserveModal').classList.add('show');}
-    function closeReserveModal(){el('bookingReserveModal').classList.remove('show'); state.selectedSlot=null;}
+    function bookingGetDayIndexFromThaiName(dayName){
+  const d = safeText(dayName, '');
+
+  if(d.includes('อาทิตย์')) return 0;
+  if(d.includes('จันทร์')) return 1;
+  if(d.includes('อังคาร')) return 2;
+  if(d.includes('พุธ')) return 3;
+  if(d.includes('พฤหัส')) return 4;
+  if(d.includes('ศุกร์')) return 5;
+  if(d.includes('เสาร์')) return 6;
+
+  return -1;
+}
+
+function bookingDateToISO(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+function bookingRenderReserveSummary(slot){
+  const box = el('reserveModalSub');
+  if(!box || !slot) return;
+
+  box.innerHTML = `
+    <div class="booking-reserve-summary-item">
+      <div class="booking-reserve-label">รหัสคาบ</div>
+      <div class="booking-reserve-value">${escapeHtml(slot.slot_code || '-')}</div>
+    </div>
+    <div class="booking-reserve-summary-item">
+      <div class="booking-reserve-label">ชั้น/ห้อง</div>
+      <div class="booking-reserve-value">${escapeHtml(slot.class_room || `${slot.class_level}/${slot.room}`)}</div>
+    </div>
+    <div class="booking-reserve-summary-item">
+      <div class="booking-reserve-label">วันประจำสัปดาห์</div>
+      <div class="booking-reserve-value">${escapeHtml(slot.day_of_week || '-')}</div>
+    </div>
+    <div class="booking-reserve-summary-item">
+      <div class="booking-reserve-label">คาบ</div>
+      <div class="booking-reserve-value">${escapeHtml(slot.period_no || '-')}</div>
+    </div>
+  `;
+}
+
+function bookingRenderReserveCalendar(){
+  const slot = state.selectedSlot;
+  const grid = el('reserveCalendarGrid');
+  const title = el('reserveCalendarTitle');
+
+  if(!slot || !grid || !title) return;
+
+  const monthDate = state.reserveCalendarMonth || new Date();
+  const year = monthDate.getFullYear();
+  const month = monthDate.getMonth();
+
+  title.textContent = new Date(year, month, 1).toLocaleDateString('th-TH', {
+    month:'long',
+    year:'numeric'
+  });
+
+  const targetDayIndex = bookingGetDayIndexFromThaiName(slot.day_of_week);
+  const todayISO = fpTodayISO();
+  const selectedISO = safeText(state.reserveSelectedDate, '');
+
+  const firstDay = new Date(year, month, 1);
+  const startBlank = firstDay.getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const html = [];
+
+  for(let i = 0; i < startBlank; i++){
+    html.push(`<button class="booking-day-btn is-empty" type="button" disabled></button>`);
+  }
+
+  for(let day = 1; day <= daysInMonth; day++){
+    const d = new Date(year, month, day);
+    const iso = bookingDateToISO(d);
+
+    const isPast = iso < todayISO;
+    const isTargetDay = d.getDay() === targetDayIndex;
+    const isAvailable = !isPast && isTargetDay;
+    const isSelected = selectedISO === iso;
+    const isToday = iso === todayISO;
+
+    const cls = [
+      'booking-day-btn',
+      isAvailable ? 'is-available' : '',
+      isSelected ? 'is-selected' : '',
+      isToday ? 'is-today' : ''
+    ].filter(Boolean).join(' ');
+
+    html.push(`
+      <button
+        class="${cls}"
+        type="button"
+        data-reserve-date="${escapeHtml(iso)}"
+        ${isAvailable ? '' : 'disabled'}
+      >${day}</button>
+    `);
+  }
+
+  grid.innerHTML = html.join('');
+
+  grid.querySelectorAll('[data-reserve-date]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      bookingSelectReserveDate(btn.dataset.reserveDate);
+    });
+  });
+}
+
+function bookingSelectReserveDate(date){
+  const slot = state.selectedSlot;
+
+  try{
+    validateReserveDate(slot, date);
+
+    state.reserveSelectedDate = date;
+    el('reserveDateInput').value = date;
+
+    setStatus(
+      'reserveStatus',
+      `เลือกวันที่ ${fpFormatThaiDate(date)} แล้ว ตรงกับ${slot.day_of_week}`,
+      'success'
+    );
+
+    bookingRenderReserveCalendar();
+  }catch(err){
+    state.reserveSelectedDate = '';
+    el('reserveDateInput').value = '';
+    setStatus('reserveStatus', err.message || 'วันที่ไม่ถูกต้อง', 'error');
+  }
+}
+
+function bookingMoveReserveMonth(offset){
+  const base = state.reserveCalendarMonth || new Date();
+  state.reserveCalendarMonth = new Date(base.getFullYear(), base.getMonth() + offset, 1);
+  bookingRenderReserveCalendar();
+}
+    function openReserveModal(slot){
+  state.selectedSlot = slot;
+  state.reserveSelectedDate = '';
+
+  const today = new Date();
+  state.reserveCalendarMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+  el('reserveDateInput').value = '';
+  el('reserveDateInput').min = fpTodayISO();
+
+  bookingRenderReserveSummary(slot);
+  bookingRenderReserveCalendar();
+
+  setStatus(
+    'reserveStatus',
+    `เลือกวันที่ที่ตรงกับ${slot.day_of_week}`,
+    'info'
+  );
+
+  el('bookingReserveModal').classList.add('show');
+}
+    function closeReserveModal(){
+  el('bookingReserveModal').classList.remove('show');
+  state.selectedSlot = null;
+  state.reserveSelectedDate = '';
+  state.reserveCalendarMonth = null;
+
+  if(el('reserveDateInput')){
+    el('reserveDateInput').value = '';
+  }
+}
     function validateReserveDate(slot,date){if(!slot)throw new Error('ไม่พบคาบว่างที่เลือก'); if(!date)throw new Error('กรุณาเลือกวันที่ต้องการจอง'); if(date<fpTodayISO())throw new Error('ไม่สามารถจองย้อนหลังได้'); const day=getThaiDayNameFromISO(date); if(day!==slot.day_of_week)throw new Error(`วันที่เลือกเป็น${day} แต่คาบว่างนี้เป็น${slot.day_of_week}`);}
     async function confirmReserve(){try{const slot=state.selectedSlot; const date=safeText(el('reserveDateInput').value,''); validateReserveDate(slot,date); el('confirmReserveBtn').disabled=true; setStatus('reserveStatus','กำลังตรวจสอบการจอง...','info'); const {data:existing,error:readError}=await supabaseClient.from('free_period_reservations').select('id,teacher_full_name,teacher_code').eq('status','reserved').eq('reserve_date',date).eq('slot_id',slot.id).limit(1); if(readError)throw readError; if(existing&&existing.length){throw new Error(`คาบนี้ถูกจองแล้วโดย ${existing[0].teacher_full_name || existing[0].teacher_code || 'ครูท่านอื่น'}`);} const payload={slot_id:slot.id,slot_code:slot.slot_code,teacher_id:state.currentUser.id,teacher_code:state.currentUser.teacher_code,teacher_full_name:state.currentUser.full_name,academic_year:Number(slot.academic_year),term:Number(slot.term),class_level:slot.class_level,room:String(slot.room),class_room:slot.class_room,day_of_week:slot.day_of_week,period_no:Number(slot.period_no),reserve_date:date,status:'reserved'}; const {error}=await supabaseClient.from('free_period_reservations').insert(payload); if(error)throw error; closeReserveModal(); showToast('จองคาบว่างสำเร็จ',`${payload.class_room} ${payload.day_of_week} คาบ ${payload.period_no} วันที่ ${fpFormatThaiDate(date)}`,'success'); await loadMyReservations(false);}catch(err){const msg=String(err.message||'จองไม่สำเร็จ'); const friendly=msg.includes('duplicate')||msg.includes('unique')?'คาบนี้ถูกจองแล้วในวันที่เลือก':msg; setStatus('reserveStatus',friendly,'error'); showToast('จองไม่สำเร็จ',friendly,'error');}finally{el('confirmReserveBtn').disabled=false;}}
     function getReservationFilters(){const f=getBookingFilters(); return f;}
@@ -955,6 +1322,8 @@ el('adviserKeyword').addEventListener('input', () => {
 el('loadAdviserStudentsBtn').addEventListener('click', loadAdviserStudents); 
       el('closeGradeDetailBtn').addEventListener('click',closeGradeDetail);
       el('bookingSearchTabBtn').addEventListener('click',()=>setBookingSubTab('search')); el('bookingMineTabBtn').addEventListener('click',()=>setBookingSubTab('mine')); el('loadBookingSlotsBtn').addEventListener('click',loadBookingSlots); el('loadMyBookingBtn').addEventListener('click',()=>loadMyReservations(true)); el('selectAllMyBookingPrint').addEventListener('change',e=>bookingToggleSelectAllMy(e.target.checked)); el('printMyBookingSelectedBtn').addEventListener('click',printSelectedMyReservations); el('cancelReserveBtn').addEventListener('click',closeReserveModal); el('confirmReserveBtn').addEventListener('click',confirmReserve);
+      el('reservePrevMonthBtn').addEventListener('click', () => bookingMoveReserveMonth(-1));
+      el('reserveNextMonthBtn').addEventListener('click', () => bookingMoveReserveMonth(1));
     }
 async function init(){
   bindEvents();
