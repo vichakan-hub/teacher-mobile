@@ -176,6 +176,29 @@
   gap:14px;
   margin-bottom:14px;
 }
+    /* ===== logout icon button ===== */
+.logout-icon-btn{
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.28);
+  color:#ffffff;
+  box-shadow:0 10px 24px rgba(15,23,42,.16);
+  transition:.16s ease;
+}
+
+.logout-icon-btn:hover{
+  background:rgba(255,255,255,.24);
+  transform:translateY(-1px);
+}
+
+.logout-icon-btn:active{
+  transform:scale(.96);
+}
+
+.logout-svg{
+  width:24px;
+  height:24px;
+  display:block;
+}
 </style>
 </head>
 <body>
@@ -215,7 +238,15 @@
       <header class="topbar"><div class="top-row"><div><div class="school-pill">
   <img src="assets/school-logo.png" alt="ตราโรงเรียน" class="school-pill-logo">
   <span>โรงเรียนท่าใหม่“พูลสวัสดิ์ราษฎร์นุกูล”</span>
-</div><h1 class="page-title">สวัสดีครับ</h1><p id="homeUserName" class="page-sub-Tname">คุณครู -</p></div><button id="logoutBtn" class="icon-btn" title="ออกจากระบบ">⎋</button></div></header>
+</div><h1 class="page-title">สวัสดีครับ</h1><p id="homeUserName" class="page-sub-Tname">คุณครู -</p></div>
+        <button id="logoutBtn" class="icon-btn logout-icon-btn" title="ออกจากระบบ" aria-label="ออกจากระบบ">
+  <svg class="logout-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M10.5 6.75V5.8C10.5 4.8 11.3 4 12.3 4H17.2C18.2 4 19 4.8 19 5.8V18.2C19 19.2 18.2 20 17.2 20H12.3C11.3 20 10.5 19.2 10.5 18.2V17.25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M14.5 12H4.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M7.9 8.9L4.8 12L7.9 15.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+      </div></header>
       <section class="content">
         <div class="card home-card">
   <div class="home-brand-row">
