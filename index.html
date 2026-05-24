@@ -347,12 +347,90 @@
   }
 
   .booking-calendar-head{
-    grid-template-columns:1fr;
+    grid-template-columns:auto 1fr auto;
+    gap:6px;
+  }
+
+  .booking-month-btn{
+    min-height:36px;
+    padding:0 9px;
+    font-size:12px;
+    border-radius:12px;
+    white-space:nowrap;
   }
 
   .booking-calendar-title{
-    order:-1;
+    order:0;
+    font-size:16px;
+    white-space:nowrap;
   }
+}
+    /* ===== compact booking calendar modal ===== */
+.booking-calendar-modal-card{
+  padding:16px;
+}
+
+.booking-reserve-summary{
+  margin-top:10px;
+}
+
+.booking-reserve-summary-item{
+  padding:9px 8px;
+}
+
+.booking-reserve-label{
+  font-size:11px;
+}
+
+.booking-reserve-value{
+  font-size:15px;
+}
+
+.booking-calendar-box{
+  padding:10px;
+}
+
+.booking-calendar-head{
+  grid-template-columns:auto 1fr auto;
+  gap:6px;
+  margin-bottom:9px;
+}
+
+.booking-month-btn{
+  min-height:36px;
+  padding:0 10px;
+  font-size:12px;
+  border-radius:12px;
+  white-space:nowrap;
+}
+
+.booking-calendar-title{
+  font-size:16px;
+  white-space:nowrap;
+}
+
+.booking-calendar-weekdays,
+.booking-calendar-grid{
+  gap:5px;
+}
+
+.booking-calendar-weekdays div{
+  font-size:12px;
+}
+
+.booking-day-btn{
+  min-height:34px;
+  border-radius:11px;
+  font-size:14px;
+}
+
+.booking-calendar-hint{
+  margin-top:7px;
+  font-size:12px;
+}
+
+.modal-actions{
+  margin-top:10px;
 }
 </style>
 </head>
