@@ -389,7 +389,9 @@ function restoreSession(){
   }
 }
     function showApp(){el('loginView').classList.add('hidden'); el('appView').classList.remove('hidden'); el('bottomNav').classList.remove('hidden'); el('homeUserName').textContent=`คุณครู ${state.currentUser?.full_name || '-'}`;}
-    async function login(){try{setStatus('loginStatus','กำลังตรวจสอบสิทธิ์...','info'); showLoading('กำลังเข้าสู่ระบบ...'); const user=await loginWithTeacherRpc(el('loginTeacherCode').value,el('loginPassword').value); state.currentUser=user; saveSession(); showApp(); await loadMobileSettings(); await loadAdviserRooms(); setActiveTab('home'); showToast('เข้าสู่ระบบสำเร็จ',`ยินดีต้อนรับ ${user.full_name}`,'success');}catch(err){setStatus('loginStatus',err.message||'เข้าสู่ระบบไม่สำเร็จ','error'); showToast('เข้าสู่ระบบไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error');}finally{hideLoading();}}
+    async function login(){try{setStatus('loginStatus','กำลังตรวจสอบสิทธิ์...','info'); showLoading('กำลังเข้าสู่ระบบ...'); 
+    const user=await loginWithTeacherRpc(el('loginTeacherCode').value,el('loginPassword').value); state.currentUser=user; saveSession(); showApp(); 
+    await loadMobileSettings(); await loadAdviserRoomsAndStudentsIfSelected(); setActiveTab('home'); showToast('เข้าสู่ระบบสำเร็จ',`ยินดีต้อนรับ ${user.full_name}`,'success');}catch(err){setStatus('loginStatus',err.message||'เข้าสู่ระบบไม่สำเร็จ','error'); showToast('เข้าสู่ระบบไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error');}finally{hideLoading();}}
     function logout(){
   state.currentUser = null;
   state.selectedMyReservationIds = new Set();
@@ -441,6 +443,21 @@ function restoreSession(){
     function getAdviserRoomKey(row){return [row.academic_year,row.term,row.class_level,row.room].map(x=>safeText(x,'')).join('|');}
     function getSelectedAdviserRoom(){return state.adviserRooms.find(r=>getAdviserRoomKey(r)===state.selectedAdviserRoomKey)||null;}
     async function loadAdviserRooms(){try{if(!state.currentUser?.id)return; const year=safeNum(el('adviserYear')?.value)||state.adviserSettings?.academic_year||getCurrentAcademicYear(); const term=safeNum(el('adviserTerm')?.value)||state.adviserSettings?.term||getCurrentTerm(); const {data,error}=await supabaseClient.from('teacher_advisers').select('id,teacher_id,academic_year,term,class_level,room,adviser_role').eq('teacher_id',state.currentUser.id).eq('academic_year',year).eq('term',term).order('class_level',{ascending:true}).order('room',{ascending:true}); if(error)throw error; state.adviserRooms=data||[]; renderAdviserRoomOptions(state.adviserRooms); setStatus('adviserStatus',state.adviserRooms.length?`พบห้องที่ปรึกษา ${state.adviserRooms.length} ห้อง`:'ไม่พบข้อมูลห้องที่ปรึกษาในปี/เทอมที่เลือก',state.adviserRooms.length?'success':'warn');}catch(err){state.adviserRooms=[]; renderAdviserRoomOptions([]); setStatus('adviserStatus',err.message||'โหลดห้องที่ปรึกษาไม่สำเร็จ','error');}}
+    async function loadAdviserRoomsAndStudentsIfSelected(){
+  await loadAdviserRooms();
+
+  const selectedKey = safeText(el('adviserRoomSelect')?.value, '') || state.selectedAdviserRoomKey;
+  state.selectedAdviserRoomKey = selectedKey;
+
+  // ถ้ามีห้องถูกเลือกอัตโนมัติ เช่น ครูมีห้องที่ปรึกษาเดียว
+  // ให้โหลดรายชื่อนักเรียนต่อทันที
+  if(selectedKey){
+    await loadAdviserStudents();
+  }else{
+    renderAdviserStudents([]);
+    resetAdviserSummary();
+  }
+}
     function renderAdviserRoomOptions(rows){const s=el('adviserRoomSelect'); s.innerHTML='<option value="">โปรดเลือกห้อง</option>'+(rows||[]).map(r=>{const key=getAdviserRoomKey(r); const label=`${safeText(r.class_level,'-')}/${safeText(r.room,'-')}${r.adviser_role?` (${r.adviser_role})`:''}`; return `<option value="${escapeHtml(key)}">${escapeHtml(label)}</option>`;}).join(''); if(rows.length===1){state.selectedAdviserRoomKey=getAdviserRoomKey(rows[0]); s.value=state.selectedAdviserRoomKey;}else{state.selectedAdviserRoomKey='';}}
     function compareStudentNo(a,b){const aa=safeNum(a),bb=safeNum(b); if(aa===null&&bb===null)return 0; if(aa===null)return 1; if(bb===null)return -1; return aa-bb;}
     async function fetchAllPages(buildQuery,pageSize=1000){let from=0,rows=[]; while(true){const {data,error}=await buildQuery().range(from,from+pageSize-1); if(error)throw error; const batch=data||[]; rows=rows.concat(batch); if(batch.length<pageSize)break; from+=pageSize;} return rows;}
@@ -802,8 +819,18 @@ function compareGradeSubjectRows(a, b){
 
     function bindEvents(){
       el('loginBtn').addEventListener('click',login); el('loginTeacherCode').addEventListener('keydown',e=>{if(e.key==='Enter')login();}); el('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')login();}); el('logoutBtn').addEventListener('click',logout);
-      el('goRetestBtn').addEventListener('click',()=>setActiveTab('retest')); el('goAdviserBtn').addEventListener('click',async()=>{setActiveTab('adviser'); await loadAdviserRooms();}); el('goBookingBtn').addEventListener('click',()=>setActiveTab('booking'));
-      el('navHomeBtn').addEventListener('click',()=>setActiveTab('home')); el('navRetestBtn').addEventListener('click',()=>setActiveTab('retest')); el('navAdviserBtn').addEventListener('click',async()=>{setActiveTab('adviser'); await loadAdviserRooms();}); el('navBookingBtn').addEventListener('click',()=>setActiveTab('booking'));
+      el('goRetestBtn').addEventListener('click',()=>setActiveTab('retest')); 
+     el('goAdviserBtn').addEventListener('click',async()=>{
+  setActiveTab('adviser');
+  await loadAdviserRoomsAndStudentsIfSelected();
+});
+      el('goBookingBtn').addEventListener('click',()=>setActiveTab('booking'));
+      el('navHomeBtn').addEventListener('click',()=>setActiveTab('home')); el('navRetestBtn').addEventListener('click',()=>setActiveTab('retest')); 
+el('navAdviserBtn').addEventListener('click',async()=>{
+  setActiveTab('adviser');
+  await loadAdviserRoomsAndStudentsIfSelected();
+}); 
+      el('navBookingBtn').addEventListener('click',()=>setActiveTab('booking'));
       el('loadRetestBtn').addEventListener('click',loadRetestRows); el('retestStudentCodeKeyword').addEventListener('keydown',e=>{if(e.key==='Enter')loadRetestRows();});
       el('adviserYear').addEventListener('change',async()=>{await loadAdviserRooms(); renderAdviserStudents([]); resetAdviserSummary();}); el('adviserTerm').addEventListener('change',async()=>{await loadAdviserRooms(); renderAdviserStudents([]); resetAdviserSummary();}); 
       el('adviserRoomSelect').addEventListener('change', async () => {
@@ -841,11 +868,11 @@ async function init(){
 
   const restored = restoreSession();
 
-  if(restored){
-    setActiveTab('home');
-    await loadMobileSettings();
-    await loadAdviserRooms();
-  }
+if(restored){
+  setActiveTab('home');
+  await loadMobileSettings();
+  await loadAdviserRoomsAndStudentsIfSelected();
+}
 }
     document.addEventListener('DOMContentLoaded',init);
     if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(()=>console.log('Teacher Mobile service worker registered')).catch(err=>console.warn('Service worker registration failed:',err));});}
