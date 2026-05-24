@@ -127,12 +127,64 @@
   color:#f472b6;
   text-shadow:0 2px 10px rgba(244,114,182,.35);
 }
+    /* ===== school logo in login / home ===== */
+.school-login-logo-box{
+  width:112px;
+  height:112px;
+  border-radius:34px;
+  background:rgba(255,255,255,.96);
+  padding:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 18px 38px rgba(15,23,42,.22);
+  margin-bottom:18px;
+}
+
+.school-login-logo-box img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.school-pill-logo{
+  width:22px;
+  height:22px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:999px;
+  padding:2px;
+  flex:0 0 auto;
+}
+
+.home-school-logo{
+  width:70px;
+  height:70px;
+  border-radius:24px;
+  background:#ffffff;
+  padding:7px;
+  object-fit:contain;
+  box-shadow:0 10px 24px rgba(15,23,42,.12);
+  flex:0 0 auto;
+}
+
+.home-brand-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:14px;
+}
 </style>
 </head>
 <body>
   <div id="loginView" class="login-view">
-    <div class="login-logo">🏫</div>
-    <div class="school-pill">โรงเรียนท่าใหม่“พูลสวัสดิ์ราษฎร์นุกูล”</div>
+    <div class="school-login-logo-box">
+  <img src="assets/school-logo.png" alt="ตราโรงเรียน">
+</div>
+    <div class="school-pill">
+  <img src="assets/school-logo.png" alt="ตราโรงเรียน" class="school-pill-logo">
+  <span>โรงเรียนท่าใหม่“พูลสวัสดิ์ราษฎร์นุกูล”</span>
+</div>
     <h1 class="login-title">
   Teacher<span class="logo-p">P</span><span class="logo-r">R</span>
 </h1>
@@ -158,7 +210,10 @@
   <div id="appView" class="app-shell hidden">
     <div class="bg-hero"></div>
     <main id="homeView" class="view">
-      <header class="topbar"><div class="top-row"><div><div class="school-pill">🏫 โรงเรียนท่าใหม่“พูลสวัสดิ์ราษฎร์นุกูล”</div><h1 class="page-title">สวัสดีครับ</h1><p id="homeUserName" class="page-sub">คุณครู -</p></div><button id="logoutBtn" class="icon-btn" title="ออกจากระบบ">⎋</button></div></header>
+      <header class="topbar"><div class="top-row"><div><div class="school-pill">
+  <img src="assets/school-logo.png" alt="ตราโรงเรียน" class="school-pill-logo">
+  <span>โรงเรียนท่าใหม่“พูลสวัสดิ์ราษฎร์นุกูล”</span>
+</div><h1 class="page-title">สวัสดีครับ</h1><p id="homeUserName" class="page-sub">คุณครู -</p></div><button id="logoutBtn" class="icon-btn" title="ออกจากระบบ">⎋</button></div></header>
       <section class="content">
         <div class="card home-card">
           <div class="kicker">TeacherPR</div><div class="head-title" style="margin-top:4px;">วันนี้ต้องการทำอะไรครับ</div>
