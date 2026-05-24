@@ -391,7 +391,7 @@ function restoreSession(){
     function showApp(){el('loginView').classList.add('hidden'); el('appView').classList.remove('hidden'); el('bottomNav').classList.remove('hidden'); el('homeUserName').textContent=`คุณครู ${state.currentUser?.full_name || '-'}`;}
     async function login(){try{setStatus('loginStatus','กำลังตรวจสอบสิทธิ์...','info'); showLoading('กำลังเข้าสู่ระบบ...'); 
     const user=await loginWithTeacherRpc(el('loginTeacherCode').value,el('loginPassword').value); state.currentUser=user; saveSession(); showApp(); 
-    await loadMobileSettings(); await loadAdviserRoomsAndStudentsIfSelected(); setActiveTab('home'); showToast('เข้าสู่ระบบสำเร็จ',`ยินดีต้อนรับ ${user.full_name}`,'success');}catch(err){setStatus('loginStatus',err.message||'เข้าสู่ระบบไม่สำเร็จ','error'); showToast('เข้าสู่ระบบไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error');}finally{hideLoading();}}
+    await loadMobileSettings();setActiveTab('home'); showToast('เข้าสู่ระบบสำเร็จ',`ยินดีต้อนรับ ${user.full_name}`,'success');}catch(err){setStatus('loginStatus',err.message||'เข้าสู่ระบบไม่สำเร็จ','error'); showToast('เข้าสู่ระบบไม่สำเร็จ',err.message||'เกิดข้อผิดพลาด','error');}finally{hideLoading();}}
     function logout(){
   state.currentUser = null;
   state.selectedMyReservationIds = new Set();
@@ -871,7 +871,6 @@ async function init(){
 if(restored){
   setActiveTab('home');
   await loadMobileSettings();
-  await loadAdviserRoomsAndStudentsIfSelected();
 }
 }
     document.addEventListener('DOMContentLoaded',init);
