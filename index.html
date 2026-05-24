@@ -805,7 +805,33 @@ function compareGradeSubjectRows(a, b){
       el('goRetestBtn').addEventListener('click',()=>setActiveTab('retest')); el('goAdviserBtn').addEventListener('click',async()=>{setActiveTab('adviser'); await loadAdviserRooms();}); el('goBookingBtn').addEventListener('click',()=>setActiveTab('booking'));
       el('navHomeBtn').addEventListener('click',()=>setActiveTab('home')); el('navRetestBtn').addEventListener('click',()=>setActiveTab('retest')); el('navAdviserBtn').addEventListener('click',async()=>{setActiveTab('adviser'); await loadAdviserRooms();}); el('navBookingBtn').addEventListener('click',()=>setActiveTab('booking'));
       el('loadRetestBtn').addEventListener('click',loadRetestRows); el('retestStudentCodeKeyword').addEventListener('keydown',e=>{if(e.key==='Enter')loadRetestRows();});
-      el('adviserYear').addEventListener('change',async()=>{await loadAdviserRooms(); renderAdviserStudents([]); resetAdviserSummary();}); el('adviserTerm').addEventListener('change',async()=>{await loadAdviserRooms(); renderAdviserStudents([]); resetAdviserSummary();}); el('adviserRoomSelect').addEventListener('change',()=>{state.selectedAdviserRoomKey=safeText(el('adviserRoomSelect').value,''); renderAdviserStudents([]); resetAdviserSummary();}); el('adviserKeyword').addEventListener('input',()=>{clearTimeout(window.__mobileAdviserSearchTimer); window.__mobileAdviserSearchTimer=setTimeout(loadAdviserStudents,350);}); el('loadAdviserStudentsBtn').addEventListener('click',loadAdviserStudents); el('closeGradeDetailBtn').addEventListener('click',closeGradeDetail);
+      el('adviserYear').addEventListener('change',async()=>{await loadAdviserRooms(); renderAdviserStudents([]); resetAdviserSummary();}); el('adviserTerm').addEventListener('change',async()=>{await loadAdviserRooms(); renderAdviserStudents([]); resetAdviserSummary();}); 
+      el('adviserRoomSelect').addEventListener('change', async () => {
+  state.selectedAdviserRoomKey = safeText(el('adviserRoomSelect').value, '');
+
+  renderAdviserStudents([]);
+  resetAdviserSummary();
+
+  // เลือก dropdown ห้องที่ปรึกษาแล้วโหลดรายชื่ออัตโนมัติ
+  if(state.selectedAdviserRoomKey){
+    await loadAdviserStudents();
+  }else{
+    setStatus('adviserStatus', 'กรุณาเลือกห้องที่ปรึกษา', 'warn');
+  }
+});
+
+// พิมพ์ค้นหาแล้วไม่โหลดอัตโนมัติ
+// ต้องกดปุ่ม "โหลดรายชื่อนักเรียน" เท่านั้น
+el('adviserKeyword').addEventListener('input', () => {
+  setStatus(
+    'adviserStatus',
+    'พิมพ์คำค้นหาแล้ว กรุณากดปุ่มโหลดรายชื่อนักเรียน',
+    'info'
+  );
+});
+
+el('loadAdviserStudentsBtn').addEventListener('click', loadAdviserStudents); 
+      el('closeGradeDetailBtn').addEventListener('click',closeGradeDetail);
       el('bookingSearchTabBtn').addEventListener('click',()=>setBookingSubTab('search')); el('bookingMineTabBtn').addEventListener('click',()=>setBookingSubTab('mine')); el('loadBookingSlotsBtn').addEventListener('click',loadBookingSlots); el('loadMyBookingBtn').addEventListener('click',()=>loadMyReservations(true)); el('selectAllMyBookingPrint').addEventListener('change',e=>bookingToggleSelectAllMy(e.target.checked)); el('printMyBookingSelectedBtn').addEventListener('click',printSelectedMyReservations); el('cancelReserveBtn').addEventListener('click',closeReserveModal); el('confirmReserveBtn').addEventListener('click',confirmReserve);
     }
 async function init(){
