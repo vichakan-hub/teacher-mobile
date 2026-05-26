@@ -432,6 +432,31 @@
 .modal-actions{
   margin-top:10px;
 }
+    /* ===== retest grade highlight in student grade detail ===== */
+.grade-card.is-retest-grade{
+  border:2px solid #facc15;
+  background:linear-gradient(180deg,#fffdf2,#ffffff);
+  box-shadow:0 10px 24px rgba(250,204,21,.18);
+}
+
+.grade-badge.is-retest-grade{
+  border:2px solid #facc15;
+  box-shadow:0 0 0 4px rgba(250,204,21,.18);
+}
+
+.retest-grade-note{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  margin-top:6px;
+  padding:4px 9px;
+  border-radius:999px;
+  background:#fef9c3;
+  color:#92400e;
+  border:1px solid #fde68a;
+  font-size:12px;
+  font-weight:900;
+}
 </style>
 </head>
 <body>
@@ -1022,7 +1047,50 @@ function compareGradeSubjectRows(a, b){
     function buildGradeSummary(rows){let total=0,earned=0,point=0,gpaCredit=0; rows.forEach(r=>{const credit=safeNum(r.credit)||0; const eff=normalizeGradeValue(r.retest_grade_code||r.grade_code); if(credit){total+=credit; if(isPassingGrade(eff))earned+=credit; const ng=getNumericGradeForGpa(eff); if(ng!==null){point+=ng*credit; gpaCredit+=credit;}}}); return {total,earned,gpa:gpaCredit?point/gpaCredit:0};}
     async function openStudentDetail(student,ctx){try{el('gradeDetailView').classList.add('show'); el('detailStudentName').textContent=safeText(student.raw_full_name,'-'); el('detailStudentMeta').textContent=`${safeText(student.sid,'-')} • ${safeText(ctx.label,'')}`; el('gradeDetailList').innerHTML='<div class="card empty">กำลังโหลดผลการเรียน...</div>'; const rows=await fetchStudentGrades(student.id,ctx.academic_year,ctx.term); const summary=buildGradeSummary(rows); el('detailTotalCredit').textContent=summary.total.toFixed(1); el('detailEarnedCredit').textContent=summary.earned.toFixed(1); el('detailGpa').textContent=summary.gpa.toFixed(2); renderGradeDetailRows(rows);}catch(err){el('gradeDetailList').innerHTML=`<div class="card empty">${escapeHtml(err.message||'โหลดผลการเรียนไม่สำเร็จ')}</div>`;}}
     function closeGradeDetail(){el('gradeDetailView').classList.remove('show');}
-    function renderGradeDetailRows(rows){const list=el('gradeDetailList'); if(!rows.length){list.innerHTML='<div class="card empty">ยังไม่พบข้อมูลผลการเรียน</div>'; return;} list.innerHTML=rows.map(r=>{const eff=normalizeGradeValue(r.retest_grade_code||r.grade_code); return `<div class="grade-card"><div class="row-between"><div><div class="mono">${escapeHtml(r.subject_code||'-')}</div><div class="subject-name">${escapeHtml(r.subject_name||'-')}</div><div class="student-sub">รวม ${escapeHtml(safeText(r.total_score,'-'))} • ครู ${escapeHtml(r.teacher_name||'-')}</div></div><div class="grade-badge ${isRiskGrade(eff)?'grade-bad':'grade-good'}">${escapeHtml(eff||'-')}</div></div></div>`;}).join('');}
+    function renderGradeDetailRows(rows){
+  const list = el('gradeDetailList');
+
+  if(!rows.length){
+    list.innerHTML = '<div class="card empty">ยังไม่พบข้อมูลผลการเรียน</div>';
+    return;
+  }
+
+  list.innerHTML = rows.map(r => {
+    const originalGrade = normalizeGradeValue(r.grade_code);
+    const retestGrade = normalizeGradeValue(r.retest_grade_code);
+
+    // ถ้ามี retest_grade_code ให้ถือว่าเป็นผลสอบแก้ตัว
+    const isRetestGrade = !!retestGrade;
+
+    // แสดงผลการเรียนที่แก้แล้ว ถ้ามี
+    const effectiveGrade = isRetestGrade ? retestGrade : originalGrade;
+
+    return `
+      <div class="grade-card ${isRetestGrade ? 'is-retest-grade' : ''}">
+        <div class="row-between">
+          <div>
+            <div class="mono">${escapeHtml(r.subject_code || '-')}</div>
+            <div class="subject-name">${escapeHtml(r.subject_name || '-')}</div>
+            <div class="student-sub">
+              รวม ${escapeHtml(safeText(r.total_score, '-'))}
+              • ครู ${escapeHtml(r.teacher_name || '-')}
+            </div>
+
+            ${
+              isRetestGrade
+                ? `<div class="retest-grade-note">แก้ตัวแล้ว: เดิม ${escapeHtml(originalGrade || '-')}</div>`
+                : ''
+            }
+          </div>
+
+          <div class="grade-badge ${isRiskGrade(effectiveGrade) ? 'grade-bad' : 'grade-good'} ${isRetestGrade ? 'is-retest-grade' : ''}">
+            ${escapeHtml(effectiveGrade || '-')}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
 
     function getBookingFilters(){return {academic_year:safeNum(el('bookingYear').value),term:safeNum(el('bookingTerm').value),class_level:safeText(el('bookingClassLevel').value,''),room:safeText(el('bookingRoom').value,'')};}
     function updateBookingSummary(){const f=getBookingFilters(); el('bookingSummaryClassRoom').textContent=f.class_level&&f.room?`${f.class_level}/${f.room}`:'-'; el('bookingSummarySlotCount').textContent=state.bookingSlots.length; el('bookingSummaryMineCount').textContent=state.myReservations.length;}
